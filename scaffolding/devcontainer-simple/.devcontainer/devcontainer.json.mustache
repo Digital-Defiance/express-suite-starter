@@ -1,0 +1,22 @@
+{
+  "name": "{{workspaceName}} - Node.js",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+          "github.vscode-github-actions",
+          "ms-azuretools.vscode-docker",
+          "esbenp.prettier-vscode",
+          "ms-vscode-remote.remote-containers",
+          "firsttris.vscode-jest-runner",
+          "ms-playwright.playwright",
+          "nrwl.angular-console",
+          "GitHub.copilot",
+          "GitHub.copilot-chat",
+          "bruno-api-client.bruno"
+      ]
+    }
+  },
+  "forwardPorts": [3000],
+  "postCreateCommand": "yarn install"
+}

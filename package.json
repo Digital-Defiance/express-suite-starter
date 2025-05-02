@@ -1,0 +1,51 @@
+{
+  "name": "@digitaldefiance/express-suite-starter",
+  "version": "2.1.40",
+  "license": "MIT",
+  "bin": {
+    "create-express-suite": "./dist/src/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "config",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "npx tsc && node dist/src/generate-monorepo.js",
+    "create-project": "yarn start",
+    "build": "npx tsc",
+    "build:logged": "npx tsc 2>&1 | ansifilter -o build.log",
+    "test": "npx jest",
+    "test:watch": "npx jest --watch",
+    "test:coverage": "npx jest --coverage",
+    "test:logged": "npx jest 2>&1 | ansifilter -o test.log",
+    "sync-templates": "npx ts-node tools/sync-templates.ts",
+    "prepublishOnly": "yarn build && yarn test"
+  },
+  "dependencies": {
+    "@digitaldefiance/i18n-lib": "2.1.40",
+    "@inquirer/prompts": "^7.5.0",
+    "chalk": "^4.1.2",
+    "mustache": "^4.2.0",
+    "validator": "^13.15.0"
+  },
+  "devDependencies": {
+    "@digitaldefiance/express-suite-test-utils": "1.0.7",
+    "@nx/js": "22.0.2",
+    "@nx/workspace": "22.0.2",
+    "@types/jest": "^29.5.0",
+    "@types/mustache": "^4.2.5",
+    "@types/node": "^20.0.0",
+    "@types/validator": "^13.15.0",
+    "handlebars": "^4.7.8",
+    "jest": "^29.7.0",
+    "nx": "22.0.2",
+    "plop": "^4.0.1",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "yarn@4.10.3"
+}

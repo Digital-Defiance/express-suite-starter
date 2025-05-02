@@ -1,0 +1,83 @@
+{
+  "groups": [
+    {
+      "name": "testing",
+      "description": "Testing utilities and frameworks",
+      "enabled": true,
+      "packages": [
+        "jest",
+        "@types/jest",
+        "ts-jest",
+        "playwright",
+        "@playwright/test"
+      ]
+    },
+    {
+      "name": "linting",
+      "description": "Code quality and linting tools",
+      "enabled": true,
+      "packages": [
+        "eslint",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint-config-prettier",
+        "eslint-plugin-prettier"
+      ]
+    },
+    {
+      "name": "ui-components",
+      "description": "Material-UI component library",
+      "enabled": true,
+      "packages": [
+        "@mui/material",
+        "@mui/icons-material",
+        "@emotion/react",
+        "@emotion/styled"
+      ]
+    },
+    {
+      "name": "database",
+      "description": "MongoDB and database tools",
+      "enabled": true,
+      "packages": [
+        "mongodb",
+        "mongoose",
+        "mongodb-memory-server"
+      ]
+    },
+    {
+      "name": "authentication",
+      "description": "Authentication and security",
+      "enabled": false,
+      "packages": [
+        "jsonwebtoken",
+        "@types/jsonwebtoken",
+        "bcrypt",
+        "@types/bcrypt",
+        "passport",
+        "passport-jwt"
+      ]
+    },
+    {
+      "name": "validation",
+      "description": "Input validation libraries",
+      "enabled": false,
+      "packages": [
+        "joi",
+        "yup",
+        "validator",
+        "@types/validator"
+      ]
+    },
+    {
+      "name": "documentation",
+      "description": "API documentation tools",
+      "enabled": false,
+      "packages": [
+        "swagger-ui-express",
+        "@types/swagger-ui-express",
+        "swagger-jsdoc"
+      ]
+    }
+  ]
+}

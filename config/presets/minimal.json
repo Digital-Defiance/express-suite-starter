@@ -1,0 +1,32 @@
+{
+  "templates": {
+    "engine": "mustache"
+  },
+  "nx": {
+    "linter": "eslint",
+    "unitTestRunner": "jest",
+    "e2eTestRunner": "none",
+    "style": "css",
+    "bundler": "vite",
+    "ciProvider": "github"
+  },
+  "node": {
+    "version": "22",
+    "yarnVersion": "4.9.1"
+  },
+  "packages": {
+    "dev": [
+      "@typescript-eslint/eslint-plugin",
+      "@typescript-eslint/parser",
+      "@types/node",
+      "@types/react",
+      "@types/react-dom"
+    ],
+    "prod": [
+      "react",
+      "react-dom",
+      "express",
+      "dotenv"
+    ]
+  }
+}

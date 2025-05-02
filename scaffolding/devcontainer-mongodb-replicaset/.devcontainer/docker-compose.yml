@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+    command: ["sleep", "infinity"]
+    # Add init system for better signal handling
+    init: true
+    # Add restart policy
+    restart: unless-stopped
+    # Add memory limits to prevent OOM kills
+    mem_limit: 4g
+    memswap_limit: 4g
+    # Add environment variables for debugging
+    environment:
+      - DB_HOST=db:27017
+      - DEBUG=1
+      - CONTAINER_ROLE=app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+  db:
+    build:
+      context: .
+      dockerfile: ./Mongo.Dockerfile
+    container_name: db          # Ensures the container name is 'db'
+    hostname: db                 # Sets the internal hostname to 'db'
+    restart: unless-stopped
+    # Add memory limits to prevent OOM kills
+    mem_limit: 2g
+    memswap_limit: 2g
+    healthcheck:
+      test: ["CMD", "bash", "/usr/local/bin/mongodb_healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME} 
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_REPLICA_SET_NAME=${MONGO_REPLICA_SET_NAME}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_KEYFILE=${MONGO_KEYFILE}
+      - MONGO_DB_PATH=${MONGO_DB_PATH}
+      - DB_HOST=127.0.0.1:27017
+      - EDITOR=vim
+
+volumes:
+  mongodb-data:

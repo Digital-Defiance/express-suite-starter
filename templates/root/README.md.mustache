@@ -1,0 +1,175 @@
+# {{WORKSPACE_NAME}}
+
+A modern MERN stack application built with Express Suite.
+
+## Features
+
+- **React Frontend**: React 19 with TypeScript, Material-UI, and Vite
+- **Express Backend**: Node.js API with MongoDB and comprehensive authentication
+- **Authentication**: Multi-factor authentication with JWT, backup codes, and email verification
+- **Internationalization**: Multi-language support with i18n
+- **Monorepo**: Nx workspace with integrated projects
+- **Type Safety**: Full TypeScript support across frontend and backend
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 22+
+- Yarn 4.9+
+- MongoDB (local or Docker)
+
+### Installation
+
+```bash
+# Install dependencies
+yarn install
+
+# Set up environment variables
+cp {{API_APP_NAME}}/.env.example {{API_APP_NAME}}/.env
+# Edit {{API_APP_NAME}}/.env with your configuration
+
+# Initialize database (optional - creates test users)
+yarn inituserdb
+
+# Build all projects
+yarn build:dev
+
+# Start development server
+yarn serve:dev
+```
+
+The API will be available at `http://localhost:3000` and the React app at `http://localhost:4200`.
+
+## Project Structure
+
+```
+{{WORKSPACE_NAME}}/
+├── {{API_APP_NAME}}/              # Express.js REST API
+├── {{API_LIB_NAME}}/              # API business logic library
+├── {{REACT_APP_NAME}}/            # React frontend application
+├── {{REACT_LIB_NAME}}/            # Shared React components library
+├── {{LIB_NAME}}/                  # Shared utilities and types
+├── {{INITUSERDB_NAME}}/           # Database initialization utility
+├── {{TEST_UTILS_NAME}}/           # Testing utilities
+└── *-e2e/                         # End-to-end test projects
+```
+
+## Available Scripts
+
+### Build Commands
+```bash
+yarn build              # Production build all projects
+yarn build:dev          # Development build all projects
+yarn build:api          # Build API only
+yarn build:react        # Build React frontend only
+```
+
+### Development Server
+```bash
+yarn serve:dev          # Start API server (development)
+yarn serve              # Start API server (production)
+```
+
+### Testing
+```bash
+yarn test:all           # Run all tests
+yarn test:jest          # Unit tests only
+yarn test:e2e           # End-to-end tests only
+```
+
+### Code Quality
+```bash
+yarn lint:all           # Lint all projects
+yarn prettier:check     # Check code formatting
+yarn prettier:fix       # Fix code formatting
+```
+
+## Environment Configuration
+
+### Required Environment Variables
+
+Edit `{{API_APP_NAME}}/.env`:
+
+**Database**:
+```bash
+MONGO_URI=mongodb://localhost:27017/{{WORKSPACE_NAME}}
+```
+
+**Security Secrets** (generate with `openssl rand -hex 32`):
+```bash
+JWT_SECRET=your-secret-here
+MNEMONIC_ENCRYPTION_KEY=your-key-here
+MNEMONIC_HMAC_SECRET=your-secret-here
+```
+
+**AWS Services** (optional - for email and translation):
+```bash
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_REGION=us-west-2
+```
+
+## API Endpoints
+
+Base URL: `http://localhost:3000/api`
+
+### Authentication
+- `POST /register` - User registration
+- `POST /login` - User login
+- `POST /verify` - Verify JWT token
+- `POST /backup-code` - Backup code login
+- `GET /backup-codes` - Get backup code count
+
+### User Management
+- `POST /change-password` - Change password
+- `POST /user/language` - Update user language
+
+## Development
+
+### Adding New Routes
+
+1. Create route handler in `{{API_APP_NAME}}/src/routes/`
+2. Register route in `{{API_APP_NAME}}/src/app.ts`
+3. Add corresponding React component in `{{REACT_APP_NAME}}/src/app/`
+4. Update routing in `{{REACT_APP_NAME}}/src/app/app.tsx`
+
+### Database Initialization
+
+The `inituserdb` utility creates three system users:
+- **System User**: Internal operations
+- **Admin User**: Administrative access
+- **Member User**: Standard user for testing
+
+Run with:
+```bash
+yarn inituserdb
+```
+
+## Technology Stack
+
+### Frontend
+- React 19
+- TypeScript
+- Material-UI (MUI)
+- React Router
+- Axios
+- Vite
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JWT Authentication
+- @digitaldefiance/node-express-suite
+
+### Development Tools
+- Nx (monorepo management)
+- Jest (testing)
+- Playwright (E2E testing)
+- ESLint (linting)
+- Prettier (formatting)
+
+## License
+
+MIT

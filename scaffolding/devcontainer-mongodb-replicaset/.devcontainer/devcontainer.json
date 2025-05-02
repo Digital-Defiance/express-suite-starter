@@ -1,0 +1,62 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-mongo
+{
+  "name": "Node.js & Mongo DB",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "containerEnv": {
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
+  },
+  // You can also add hostRequirements to check if the host has enough memory
+  "hostRequirements": {
+    "memory": "8gb"
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "mongodb.mongodb-vscode",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "ms-vscode-remote.remote-containers",
+        "firsttris.vscode-jest-runner",
+        "ms-playwright.playwright",
+        "nrwl.angular-console",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "bruno-api-client.bruno"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    443,
+    3000,
+    4200,
+    27017
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "./.devcontainer/post-create.sh",
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  "remoteUser": "node",
+  // Add connection timeout and retry settings
+  "shutdownAction": "none",
+  "userEnvProbe": "none",
+  "updateRemoteUserUID": false,
+  "remoteEnv": {
+    "SHELL": "/bin/bash"
+  },
+  "overrideCommand": false,
+  // Add container environment variables to help with stability
+  "containerEnv": {
+    "VSCODE_REMOTE_CONTAINERS_SESSION": "${containerSessionId}"
+  }
+}

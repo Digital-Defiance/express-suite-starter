@@ -1,0 +1,19 @@
+import { App, Environment, Constants } from '{{namespace}}/api-lib';
+import { DatabaseInitializationService } from '@digitaldefiance/node-express-suite';
+import { GlobalActiveContext, CoreLanguageCode, IActiveContext } from '@digitaldefiance/i18n-lib';
+import { join } from 'path';
+
+const env: Environment = new Environment(
+  join(App.distDir, '{{prefix}}-api', '.env'),
+);
+const app: App = new App(
+  env,
+  DatabaseInitializationService.initUserDb.bind(DatabaseInitializationService),
+  DatabaseInitializationService.serverInitResultHash.bind(DatabaseInitializationService),
+  Constants,
+);
+const context = GlobalActiveContext.getInstance<CoreLanguageCode, IActiveContext<CoreLanguageCode>>();
+context.languageContextSpace = 'admin';
+(async () => {
+  await app.start();
+})();
