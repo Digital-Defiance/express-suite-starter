@@ -26,7 +26,6 @@ import {
 } from "./monorepoConfig";
 const fs = require("fs");
 const path = require("path");
-const https = require("https");
 
 /**
  * Parse --start-at argument from process.argv, or return null if not present.
@@ -166,6 +165,7 @@ async function main() {
         WORKSPACE_NAME: workspaceName,
         PROJECT_PREFIX: projectPrefix,
         EXAMPLE_PASSWORD: obfuscatePassword(projectPrefix),
+        EXAMPLE_JWT_SECRET: obfuscatePassword(`${workspaceName}Secret`),
         NAMESPACE_ROOT: namespaceRoot,
         REACT_APP_NAME: reactAppName,
         API_APP_NAME: apiAppName,

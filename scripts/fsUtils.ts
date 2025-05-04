@@ -12,15 +12,16 @@ export function renderTemplates(
   variables: Record<string, any>
 ) {
   if (!fs.existsSync(templatesDir)) return;
-  const walk = (dir: string) => {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  // Helper to render all templates in a directory to a destination
+  function renderDir(srcDir: string, outDir: string) {
+    if (!fs.existsSync(srcDir)) return;
+    const entries = fs.readdirSync(srcDir, { withFileTypes: true });
     for (const entry of entries) {
-      const srcPath = path.join(dir, entry.name);
-      const relPath = path.relative(templatesDir, srcPath);
-      const destPath = path.join(destDir, relPath.replace(/\.mustache$/, ""));
+      const srcPath = path.join(srcDir, entry.name);
+      const destPath = path.join(outDir, entry.name.replace(/\.mustache$/, ""));
       if (entry.isDirectory()) {
-        fs.mkdirSync(destPath, { recursive: true });
-        walk(srcPath);
+        renderDir(srcPath, destPath);
       } else if (entry.isFile()) {
         const template = fs.readFileSync(srcPath, "utf8");
         const rendered = mustache.render(template, variables);
@@ -30,8 +31,23 @@ export function renderTemplates(
         console.log(`Rendered: ${destPath}`);
       }
     }
-  };
-  walk(templatesDir);
+  }
+
+  // Map subdir to destination
+  const subdirs = [
+    { name: "root", dest: destDir },
+    { name: "react", dest: variables.REACT_APP_NAME ? path.join(destDir, variables.REACT_APP_NAME) : null },
+    { name: "api", dest: variables.API_APP_NAME ? path.join(destDir, variables.API_APP_NAME) : null },
+    { name: "lib", dest: variables.LIB_NAME ? path.join(destDir, variables.LIB_NAME) : null },
+  ];
+
+  for (const { name, dest } of subdirs) {
+    if (!dest) continue;
+    const src = path.join(templatesDir, name);
+    if (fs.existsSync(src)) {
+      renderDir(src, dest);
+    }
+  }
 }
 
 /**
