@@ -1,0 +1,86 @@
+import { setPerms } from "./shellUtils";
+const fs = require("fs");
+const path = require("path");
+const mustache = require("mustache");
+
+/**
+ * Helper to copy and render mustache templates.
+ */
+export function renderTemplates(
+  templatesDir: string,
+  destDir: string,
+  variables: Record<string, any>
+) {
+  if (!fs.existsSync(templatesDir)) return;
+  const walk = (dir: string) => {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const srcPath = path.join(dir, entry.name);
+      const relPath = path.relative(templatesDir, srcPath);
+      const destPath = path.join(destDir, relPath.replace(/\.mustache$/, ""));
+      if (entry.isDirectory()) {
+        fs.mkdirSync(destPath, { recursive: true });
+        walk(srcPath);
+      } else if (entry.isFile()) {
+        const template = fs.readFileSync(srcPath, "utf8");
+        const rendered = mustache.render(template, variables);
+        fs.mkdirSync(path.dirname(destPath), { recursive: true });
+        fs.writeFileSync(destPath, rendered, "utf8");
+        setPerms(destPath);
+        console.log(`Rendered: ${destPath}`);
+      }
+    }
+  };
+  walk(templatesDir);
+}
+
+/**
+ * Recursively copy files from srcDir to destDir, preserving subdirectory structure.
+ * Creates directories as needed. Overwrites files if they exist.
+ */
+export function copyDir(srcDir: string, destDir: string) {
+  if (!fs.existsSync(srcDir)) return;
+  const entries = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(srcDir, entry.name);
+    const destPath = path.join(destDir, entry.name);
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destPath, { recursive: true });
+      copyDir(srcPath, destPath);
+    } else if (entry.isFile()) {
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.copyFileSync(srcPath, destPath);
+      setPerms(destPath);
+      console.log(`Scaffolded: ${destPath}`);
+    }
+  }
+}
+
+/**
+ * Copy files from scaffolding/react, scaffolding/lib, and scaffolding/root
+ * to their respective destinations in the monorepo.
+ */
+export function copyScaffoldingFiles(
+  scaffoldingDir: string,
+  monorepoPath: string,
+  reactAppName: string,
+  libName: string
+) {
+  // Copy react files
+  const reactSrc = path.join(scaffoldingDir, "react");
+  const reactDest = path.join(monorepoPath, reactAppName);
+  if (fs.existsSync(reactSrc)) {
+    copyDir(reactSrc, reactDest);
+  }
+  // Copy lib files
+  const libSrc = path.join(scaffoldingDir, "lib");
+  const libDest = path.join(monorepoPath, libName);
+  if (fs.existsSync(libSrc)) {
+    copyDir(libSrc, libDest);
+  }
+  // Copy root files (preserve structure)
+  const rootSrc = path.join(scaffoldingDir, "root");
+  if (fs.existsSync(rootSrc)) {
+    copyDir(rootSrc, monorepoPath);
+  }
+}

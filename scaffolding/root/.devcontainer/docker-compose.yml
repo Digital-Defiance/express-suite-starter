@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    env_file:
+      - .env
+    network_mode: host
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+  db:
+    build:
+      context: .
+      dockerfile: ./Mongo.Dockerfile
+    container_name: db          # Ensures the container name is 'db'
+    hostname: db                 # Sets the internal hostname to 'db'
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bash", "/usr/local/bin/mongodb_healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME} 
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_REPLICA_SET_NAME=${MONGO_REPLICA_SET_NAME}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_KEYFILE=${MONGO_KEYFILE}
+      - MONGO_DB_PATH=${MONGO_DB_PATH}
+      - DB_HOST=127.0.0.1:27017
+    network_mode: host
+
+volumes:
+  mongodb-data:
