@@ -12,6 +12,7 @@ export const NODE_API_E2E_TEST_RUNNER = "jest";
 export const NODE_API_FRAMEWORK = "express";
 export const LIB_BUNDLER = "none";
 export const NVM_USE_VERSION = "22";
+export const YARN_VERSION = "4.9.1";
 
 export const devPackages: string[] = [
   '@typescript-eslint/eslint-plugin',

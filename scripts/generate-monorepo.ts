@@ -20,7 +20,9 @@ import {
   LIB_BUNDLER,
   devPackages,
   packages,
-  addScripts
+  addScripts,
+  NVM_USE_VERSION,
+  YARN_VERSION
 } from "./monorepoConfig";
 const fs = require("fs");
 const path = require("path");
@@ -172,6 +174,8 @@ async function main() {
         API_IMPORT_PATH: apiImportPath,
         LIB_IMPORT_PATH: libImportPath,
         GIT_REPO: gitRepo,
+        NVM_USE_VERSION: NVM_USE_VERSION,
+        YARN_VERSION: YARN_VERSION,
       });
     },
     copyScaffoldingFiles: () => {
