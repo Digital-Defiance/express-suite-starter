@@ -147,8 +147,8 @@ async function main() {
     
     if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
       mongoPassword = await input({
-        message: 'Enter MongoDB password (leave empty for no auth):',
-        default: '',
+        message: 'Enter MongoDB root password:',
+        validate: (val: string) => val.length > 0 || 'Password required',
       });
     }
   }
@@ -174,7 +174,7 @@ async function main() {
   const crypto = await import('crypto');
   const HEX_64_REGEX = /^[0-9a-f]{64}$/i;
   
-  const promptOrGenerateSecret = async (name: string, description: string): Promise<string> => {
+  const promptOrGenerateSecret = async (name: string): Promise<string> => {
     const generate = await confirm({
       message: `Generate ${name}?`,
       default: true,
@@ -186,15 +186,15 @@ async function main() {
       return secret;
     } else {
       return await input({
-        message: `Enter ${name} (${description}):`,
+        message: `Enter ${name} (64-character hex string):`,
         validate: (val: string) => HEX_64_REGEX.test(val) || 'Must be 64-character hex string',
       });
     }
   };
   
-  const jwtSecret = await promptOrGenerateSecret('JWT_SECRET', '64-char hex');
-  const mnemonicEncryptionKey = await promptOrGenerateSecret('MNEMONIC_ENCRYPTION_KEY', '64-char hex');
-  const mnemonicHmacSecret = await promptOrGenerateSecret('MNEMONIC_HMAC_SECRET', '64-char hex');
+  const jwtSecret = await promptOrGenerateSecret('JWT_SECRET');
+  const mnemonicEncryptionKey = await promptOrGenerateSecret('MNEMONIC_ENCRYPTION_KEY');
+  const mnemonicHmacSecret = await promptOrGenerateSecret('MNEMONIC_HMAC_SECRET');
 
   Logger.section('Express Suite Packages');
 
@@ -674,7 +674,7 @@ async function main() {
       if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
         const devcontainerEnvPath = path.join(monorepoPath, '.devcontainer', '.env');
         const mongoUri = buildMongoUri(workspaceName);
-        const envContent = `MONGO_URI=${mongoUri}\n`;
+        const envContent = `MONGO_PASSWORD=${mongoPassword}\nMONGO_URI=${mongoUri}\n`;
         fs.writeFileSync(devcontainerEnvPath, envContent);
         Logger.info('Created .devcontainer/.env with MongoDB configuration');
       }

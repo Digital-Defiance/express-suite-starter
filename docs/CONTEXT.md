@@ -17,6 +17,7 @@
    - Created barrel exports for clean imports
 
 2. **File Structure Created**
+
    ```
    src/
    ├── core/
@@ -69,6 +70,7 @@
    - ✅ CONTEXT.md - This file
 
 5. **Dependencies Added**
+
    ```json
    {
      "chalk": "^4.1.2",           // Terminal styling
@@ -81,6 +83,7 @@
 ### Current Project Types
 
 The generator currently creates these projects:
+
 1. **{prefix}-react** - React frontend app
 2. **{prefix}-api** - Express API server
 3. **{prefix}-lib** - Shared library (frontend + backend)
@@ -96,10 +99,12 @@ Note: Test utilities provided by `@digitaldefiance/express-suite-test-utils` pac
 **Question:** Should we add a separate `{prefix}-react-lib` project?
 
 **Current Setup:**
+
 - React components live in `{prefix}-react/src/components/`
 - Shared logic in `{prefix}-lib` (used by both frontend and backend)
 
 **Proposed Addition:**
+
 - `{prefix}-react-lib` - Reusable React components, hooks, contexts
   - Only React-specific code
   - Can be imported by `{prefix}-react`
@@ -107,6 +112,7 @@ Note: Test utilities provided by `@digitaldefiance/express-suite-test-utils` pac
   - Examples: UI components, custom hooks, React contexts
 
 **Pros:**
+
 - ✅ Better separation of concerns
 - ✅ Reusable components across multiple React apps
 - ✅ Can be published independently
@@ -114,12 +120,14 @@ Note: Test utilities provided by `@digitaldefiance/express-suite-test-utils` pac
 - ✅ Follows pattern: `api-lib` for API, `react-lib` for React
 
 **Cons:**
+
 - ❌ More complexity for simple projects
 - ❌ Additional build step
 - ❌ Might be overkill for single-app monorepos
 
-**Recommendation:** 
+**Recommendation:**
 Make it **optional** via configuration:
+
 ```json
 {
   "projects": [
@@ -132,12 +140,14 @@ Make it **optional** via configuration:
 ```
 
 **Use Cases for react-lib:**
+
 1. Multiple React apps in monorepo
 2. Shared component library
 3. Design system
 4. Publishable component package
 
 **When to skip:**
+
 1. Single React app
 2. Simple projects
 3. Rapid prototyping
@@ -169,6 +179,7 @@ Make it **optional** via configuration:
 ### Test Coverage Summary
 
 **Unit Tests (16 files):** ✅ All Passing
+
 - config-schema.spec.ts
 - template-engine.spec.ts
 - project-config-builder.spec.ts
@@ -187,6 +198,7 @@ Make it **optional** via configuration:
 - system-check.spec.ts
 
 **Integration Tests (3 files):** ✅ All Passing
+
 - full-generation.spec.ts
 - plugin-integration.spec.ts
 - validation-integration.spec.ts
@@ -196,6 +208,7 @@ Make it **optional** via configuration:
 **Latest Test Run:** 18 test suites, 118+ tests passing
 
 **Phase 2: Plugin System** ✅
+
 - ✅ Plugin interface with hooks
 - ✅ Plugin manager for registration
 - ✅ Hook execution (beforeGeneration, afterGeneration, beforeStep, afterStep, onError)
@@ -206,6 +219,7 @@ Make it **optional** via configuration:
 - ✅ Plugin guide documentation
 
 **Phase 3: Post-Generation Validation** ✅
+
 - ✅ Validation interfaces (ValidationIssue, ValidationReport)
 - ✅ PostGenerationValidator class
 - ✅ Package.json validation
@@ -217,6 +231,7 @@ Make it **optional** via configuration:
 - ✅ Non-blocking validation
 
 **Phase 3 Long-term: Advanced Features** ✅
+
 - ✅ Package management with version resolution
 - ✅ Package groups for optional features
 - ✅ Documentation generation (README, ARCHITECTURE, API)
@@ -225,6 +240,7 @@ Make it **optional** via configuration:
 - ✅ All tests passing with 95%+ coverage
 
 **Phase 4: DevContainer & Template Sync** 🚧
+
 - ✅ DevContainer configuration interface
 - 🚧 Three devcontainer templates:
   - Simple (Node.js only)
@@ -237,6 +253,7 @@ Make it **optional** via configuration:
 ### Files Modified
 
 **New Files:**
+
 - `src/core/interfaces/*.ts` (12 files)
 - `src/core/validators/config-validator.ts`
 - `src/core/step-executor.ts`
@@ -252,11 +269,13 @@ Make it **optional** via configuration:
 - Documentation files (4 files)
 
 **Modified Files:**
+
 - `package.json` - Added dependencies
 - `tsconfig.json` - Updated for new structure
 - `README.md` - Updated with new features
 
 **Preserved Files:**
+
 - `scripts/*` - Original scripts still available
 - `templates/*` - Original templates
 - `scaffolding/*` - Original scaffolding
@@ -457,6 +476,7 @@ yarn sync-templates    # Sync templates from reference project
 ### Generated Projects
 
 Successfully generates 7 projects:
+
 1. **{prefix}-lib** - Shared library with i18n setup, constants, string enumerations
 2. **{prefix}-react** - React 19 frontend with Vite, components, pages, assets
 3. **{prefix}-api** - Express 5 API server with main.ts, views, .env.example
@@ -480,6 +500,7 @@ Note: `@digitaldefiance/express-suite-test-utils` always included as dev depende
 ### Features Implemented
 
 **Interactive Prompts:**
+
 - Workspace configuration (name, prefix, namespace)
 - Optional projects (react-lib, api-lib, e2e, inituserdb)
 - Package groups (authentication, validation, documentation)
@@ -491,10 +512,12 @@ Note: `@digitaldefiance/express-suite-test-utils` always included as dev depende
 - Playwright browser installation
 
 **Always Included:**
+
 - `@digitaldefiance/express-suite-test-utils` (dev dependency)
 - `@digitaldefiance/express-suite-react-components` (prod dependency for useAuth, etc.)
 
 **Automatic Features:**
+
 - System requirements check
 - Yarn Berry setup
 - Nx workspace creation
@@ -512,6 +535,7 @@ Note: `@digitaldefiance/express-suite-test-utils` always included as dev depende
 ### NPX Executable Setup ✅
 
 **Package Configuration:**
+
 ```json
 {
   "bin": {
@@ -522,6 +546,7 @@ Note: `@digitaldefiance/express-suite-test-utils` always included as dev depende
 ```
 
 **Usage:**
+
 ```bash
 npx @digitaldefiance/express-suite-starter
 # or
@@ -529,6 +554,7 @@ npx create-express-suite
 ```
 
 **Local Testing:**
+
 ```bash
 yarn build
 npm link
@@ -538,12 +564,14 @@ create-express-suite
 ### System Requirements ✅
 
 **Automatic Checks:**
+
 - C++ compiler (g++ or clang++)
 - Python 3
 - make
 - git (optional, warning only)
 
 **Automatic Fixes:**
+
 - patch-package installed automatically before Nx plugins
 - Clear error messages with install instructions if checks fail
 - Option to continue or abort if requirements missing
@@ -551,12 +579,14 @@ create-express-suite
 ### Phase 4 Complete: DevContainer & Scaffolding ✅
 
 **DevContainer Options:**
+
 1. **None** - No devcontainer configuration
 2. **Simple** - Node.js 20 only
 3. **MongoDB** - Node.js + MongoDB single instance
 4. **MongoDB Replica Set** - Node.js + MongoDB with transactions
 
 **Scaffolding Complete:**
+
 - lib/ - i18n, constants, enumerations, interfaces
 - api-lib/ - Application, Environment, Constants
 - api/ - main.ts, views, .env.example
@@ -566,12 +596,14 @@ create-express-suite
 - devcontainer-{simple,mongodb,mongodb-replicaset}/
 
 **Template Processing:**
+
 - Files with `.mustache` extension are rendered with variables
 - Variables: `{{workspaceName}}`, `{{WorkspaceName}}`, `{{prefix}}`, `{{namespace}}`, `{{hostname}}`
 - `.mustache` extension automatically stripped after rendering
 - Non-mustache files copied directly without processing
 
 **Cross-Platform Support:**
+
 - Windows: Uses `where` command, Visual Studio Build Tools
 - macOS: Uses `command -v`, Xcode tools
 - Linux: Uses `command -v`, build-essential
@@ -580,6 +612,7 @@ create-express-suite
 ---
 
 **Recent Changes:**
+
 - ✅ NPX executable setup complete (`npx @digitaldefiance/express-suite-starter`)
 - ✅ System check for build tools (cross-platform)
 - ✅ Fixed native module build issues (YARN_ENABLE_SCRIPTS=false globally)
@@ -599,9 +632,19 @@ create-express-suite
 
 **Last Updated:** 2024 (Phase 4 Complete - Generator Working End-to-End!)
 **Status:** Production Ready ✅ - Build Passing! 🎉 - Serve Working! ✅
-**Version:** 2.5.6
+**Version:** 2.1.44
 
-### Recent Updates (v2.5.6+) - In-Memory Database Configuration
+### Recent Updates (v2.1.44) - MongoDB Authentication & Security Improvements
+
+- ✅ MongoDB password now required for ALL MongoDB devcontainer configurations
+- ✅ Removed default password - users must enter one for security
+- ✅ Simple MongoDB devcontainer now uses authentication (MONGO_INITDB_ROOT_USERNAME/PASSWORD)
+- ✅ Password written to .devcontainer/.env as MONGO_PASSWORD
+- ✅ Improved security secret prompts - clearer "64-character hex string" message
+- ✅ Removed redundant description parameter from promptOrGenerateSecret
+
+### Previous Updates (v2.1.43) - In-Memory Database Configuration
+
 - ✅ Added prompts for in-memory database configuration
 - ✅ Prompt 1: "Use in-memory database for development?" (default: false)
 - ✅ Prompt 2: "Enter the in-memory database name:" (default: "test", conditional)
@@ -609,12 +652,14 @@ create-express-suite
 - ✅ Empty DEV_DATABASE falls back to MONGO_URI
 - ✅ Updated .env.example.mustache with clearer comments
 
-### Previous Updates (v2.5.5) - i18n String Keys
+### Previous Updates (v2.1.42) - i18n String Keys
+
 - ✅ Added `Error_JwtSecretMustBe64CharHexString` string key to suite-core-string-key.ts
 - ✅ Added JWT_SECRET validation translations for all 8 languages (EN_US, EN_GB, FR, DE, ES, ZH, JA, UK)
 - ✅ JWT_SECRET validation now available in Environment class
 
-### Recent Fixes (v2.5.5) - Environment & Build Configuration! ⚙️
+### Recent Fixes (v2.1.41) - Environment & Build Configuration! ⚙️
+
 - ✅ Added `.env` setup for all projects (api, inituserdb, devcontainer)
 - ✅ DevContainer `.env` automatically created with correct MONGO_URI
   - Replica set: `mongodb://localhost:27017/dbname?replicaSet=rs0&directConnection=true`
@@ -625,7 +670,8 @@ create-express-suite
 - ✅ Updated completion messages to remind users about .env configuration
 - ✅ Documented production deployment workflow
 
-### Previous Fixes (v2.5.4) - Package Alignment! 📦
+### Previous Fixes (v2.1.40) - Package Alignment! 📦
+
 - ✅ All Express Suite packages updated to v2.1.40
   - @digitaldefiance/i18n-lib@2.1.40
   - @digitaldefiance/ecies-lib@2.1.40
@@ -639,7 +685,8 @@ create-express-suite
 - ✅ Root README updated with consistent `/testing` documentation
 - ✅ All package READMEs updated with v2.1.40 changelog entries
 
-### Previous Fixes (v2.5.3) - /testing Entry Points! 🧪
+### Previous Fixes (v2.1.39) - /testing Entry Points! 🧪
+
 - ✅ Fixed @digitaldefiance/express-suite-react-components package (v2.1.38)
 - ✅ Added emitDeclarationOnly: false to tsconfig.lib.json to emit JS files
 - ✅ Corrected main to "src/index.js" where built files actually are
@@ -663,7 +710,8 @@ create-express-suite
 - ✅ faker-js/faker only required in dev dependencies for testing
 - ✅ Consistent pattern across entire Express Suite
 
-### Previous Fixes (v2.5.1)
+### Previous Fixes (v2.1.38) - Build Errors Resolved! 🛠
+
 - ✅ Added missing dependencies to standard.json preset:
   - @mui/x-date-pickers (prod)
   - date-fns (prod)
@@ -672,7 +720,8 @@ create-express-suite
 - ✅ Fixed build error where @mui/x-date-pickers was missing from generated projects
 - ✅ Removed test-utils project generation (using published package instead)
 
-### Previous Fixes (v2.5.0)
+### Previous Fixes (v2.1.37)
+
 - ✅ Simplified prompts - only E2E tests optional, all core projects always included
 - ✅ Non-interactive Nx generation (--no-interactive flag)
 - ✅ ESLint and Jest hardcoded as defaults
@@ -690,6 +739,7 @@ create-express-suite
 ### Completed - Full Generation Working! 🎉
 
 **All 14 Steps Complete - BUILDS PASSING! ✅:**
+
 1. ✅ Check target directory
 2. ✅ Create Nx monorepo
 3. ✅ Setup git remote (optional)
@@ -707,6 +757,7 @@ create-express-suite
 15. ✅ Install Playwright browsers (optional)
 
 **Fixed Issues:**
+
 - ✅ Native module build failures (YARN_ENABLE_SCRIPTS=false)
 - ✅ Rollup postinstall errors
 - ✅ System requirements checking
