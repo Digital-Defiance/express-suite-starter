@@ -133,6 +133,7 @@ async function main() {
   });
 
   let devcontainerChoice = 'none';
+  let mongoPassword = '';
   if (setupDevcontainer) {
     devcontainerChoice = await select({
       message: 'DevContainer configuration:',
@@ -143,7 +144,57 @@ async function main() {
       ],
       default: 'mongodb-replicaset',
     });
+    
+    if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
+      mongoPassword = await input({
+        message: 'Enter MongoDB password (leave empty for no auth):',
+        default: '',
+      });
+    }
   }
+
+  Logger.section('Database Configuration');
+  
+  const useInMemoryDb = await confirm({
+    message: 'Use in-memory database for development?',
+    default: false,
+  });
+  
+  let devDatabaseName = '';
+  if (useInMemoryDb) {
+    devDatabaseName = await input({
+      message: 'Enter the in-memory database name:',
+      default: 'test',
+      validate: (val: string) => val.length > 0 || 'Database name cannot be empty',
+    });
+  }
+
+  Logger.section('Security Configuration');
+  
+  const crypto = await import('crypto');
+  const HEX_64_REGEX = /^[0-9a-f]{64}$/i;
+  
+  const promptOrGenerateSecret = async (name: string, description: string): Promise<string> => {
+    const generate = await confirm({
+      message: `Generate ${name}?`,
+      default: true,
+    });
+    
+    if (generate) {
+      const secret = crypto.randomBytes(32).toString('hex');
+      Logger.info(`Generated ${name}`);
+      return secret;
+    } else {
+      return await input({
+        message: `Enter ${name} (${description}):`,
+        validate: (val: string) => HEX_64_REGEX.test(val) || 'Must be 64-character hex string',
+      });
+    }
+  };
+  
+  const jwtSecret = await promptOrGenerateSecret('JWT_SECRET', '64-char hex');
+  const mnemonicEncryptionKey = await promptOrGenerateSecret('MNEMONIC_ENCRYPTION_KEY', '64-char hex');
+  const mnemonicHmacSecret = await promptOrGenerateSecret('MNEMONIC_HMAC_SECRET', '64-char hex');
 
   Logger.section('Express Suite Packages');
 
@@ -570,13 +621,42 @@ async function main() {
       const apiProject = projects.find(p => p.type === 'api');
       const initUserDbProject = projects.find(p => p.type === 'inituserdb');
       
+      // Build MONGO_URI with optional password
+      const buildMongoUri = (dbName: string) => {
+        const auth = mongoPassword ? `root:${mongoPassword}@` : '';
+        const params = devcontainerChoice === 'mongodb-replicaset'
+          ? '?replicaSet=rs0&directConnection=true'
+          : '?directConnection=true';
+        return `mongodb://${auth}localhost:27017/${dbName}${params}`;
+      };
+      
       // Setup API .env
       if (apiProject) {
         const envExamplePath = path.join(monorepoPath, apiProject.name, '.env.example');
         const envPath = path.join(monorepoPath, apiProject.name, '.env');
-        if (fs.existsSync(envExamplePath) && !fs.existsSync(envPath)) {
-          fs.copyFileSync(envExamplePath, envPath);
-          Logger.info(`Created ${apiProject.name}/.env from .env.example`);
+        if (fs.existsSync(envExamplePath)) {
+          let envContent = fs.readFileSync(envExamplePath, 'utf-8');
+          
+          // Replace DEV_DATABASE
+          if (useInMemoryDb) {
+            envContent = envContent.replace(/DEV_DATABASE=.*/g, `DEV_DATABASE=${devDatabaseName}`);
+          } else {
+            envContent = envContent.replace(/DEV_DATABASE=.*/g, 'DEV_DATABASE=');
+          }
+          
+          // Replace secrets
+          envContent = envContent.replace(/JWT_SECRET=.*/g, `JWT_SECRET=${jwtSecret}`);
+          envContent = envContent.replace(/MNEMONIC_ENCRYPTION_KEY=.*/g, `MNEMONIC_ENCRYPTION_KEY=${mnemonicEncryptionKey}`);
+          envContent = envContent.replace(/MNEMONIC_HMAC_SECRET=.*/g, `MNEMONIC_HMAC_SECRET=${mnemonicHmacSecret}`);
+          
+          // Replace MONGO_URI if MongoDB devcontainer
+          if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
+            const mongoUri = buildMongoUri(workspaceName);
+            envContent = envContent.replace(/MONGO_URI=.*/g, `MONGO_URI=${mongoUri}`);
+          }
+          
+          fs.writeFileSync(envPath, envContent);
+          Logger.info(`Created ${apiProject.name}/.env with secrets`);
         }
       }
       
@@ -584,7 +664,7 @@ async function main() {
       if (initUserDbProject && apiProject) {
         const apiEnvPath = path.join(monorepoPath, apiProject.name, '.env');
         const initEnvPath = path.join(monorepoPath, initUserDbProject.name, '.env');
-        if (fs.existsSync(apiEnvPath) && !fs.existsSync(initEnvPath)) {
+        if (fs.existsSync(apiEnvPath)) {
           fs.copyFileSync(apiEnvPath, initEnvPath);
           Logger.info(`Created ${initUserDbProject.name}/.env from ${apiProject.name}/.env`);
         }
@@ -593,15 +673,10 @@ async function main() {
       // Setup devcontainer .env if devcontainer with MongoDB
       if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
         const devcontainerEnvPath = path.join(monorepoPath, '.devcontainer', '.env');
-        if (!fs.existsSync(devcontainerEnvPath)) {
-          const mongoUri = devcontainerChoice === 'mongodb-replicaset'
-            ? 'mongodb://localhost:27017/example-project?replicaSet=rs0&directConnection=true'
-            : 'mongodb://localhost:27017/example-project?directConnection=true';
-          
-          const envContent = `MONGO_URI=${mongoUri}\n`;
-          fs.writeFileSync(devcontainerEnvPath, envContent);
-          Logger.info('Created .devcontainer/.env with MongoDB configuration');
-        }
+        const mongoUri = buildMongoUri(workspaceName);
+        const envContent = `MONGO_URI=${mongoUri}\n`;
+        fs.writeFileSync(devcontainerEnvPath, envContent);
+        Logger.info('Created .devcontainer/.env with MongoDB configuration');
       }
     },
   });

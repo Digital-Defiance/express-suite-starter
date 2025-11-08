@@ -321,7 +321,7 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 
 ## Version
 
-**Current**: 2.1.40
+**Current**: 2.1.43
 
 **Status**: Beta
 
@@ -336,6 +336,26 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 MIT © Digital Defiance
 
 ## ChangeLog
+
+### Version 2.1.43
+
+#### Added
+- Interactive database configuration prompts (in-memory vs MongoDB)
+- Automated secret generation (JWT_SECRET, MNEMONIC_ENCRYPTION_KEY, MNEMONIC_HMAC_SECRET)
+- MongoDB password configuration for DevContainers
+- Automatic .env population with generated secrets
+
+#### Changed
+- `.env.example` includes detailed comments
+- DEV_DATABASE now optional (empty = use MONGO_URI)
+- `.env` files populated with values instead of copied from example
+- MONGO_URI dynamically built with workspace name and optional auth
+
+#### Fixed
+- DevContainer MongoDB URI uses workspace name instead of "example-project"
+
+#### Documentation
+- JWT_SECRET validation string keys and translations (8 languages)
 
 ### Version 2.1.41
 

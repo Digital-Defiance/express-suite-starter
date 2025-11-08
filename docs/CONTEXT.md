@@ -484,6 +484,8 @@ Note: `@digitaldefiance/express-suite-test-utils` always included as dev depende
 - Optional projects (react-lib, api-lib, e2e, inituserdb)
 - Package groups (authentication, validation, documentation)
 - DevContainer configuration (none, simple, MongoDB, MongoDB replica set)
+- Database configuration (in-memory database for development)
+- Security configuration (JWT secret, mnemonic keys)
 - Documentation generation
 - Git commit and push
 - Playwright browser installation
@@ -597,7 +599,20 @@ create-express-suite
 
 **Last Updated:** 2024 (Phase 4 Complete - Generator Working End-to-End!)
 **Status:** Production Ready ✅ - Build Passing! 🎉 - Serve Working! ✅
-**Version:** 2.5.5
+**Version:** 2.5.6
+
+### Recent Updates (v2.5.6+) - In-Memory Database Configuration
+- ✅ Added prompts for in-memory database configuration
+- ✅ Prompt 1: "Use in-memory database for development?" (default: false)
+- ✅ Prompt 2: "Enter the in-memory database name:" (default: "test", conditional)
+- ✅ DEV_DATABASE automatically populated in .env based on user choice
+- ✅ Empty DEV_DATABASE falls back to MONGO_URI
+- ✅ Updated .env.example.mustache with clearer comments
+
+### Previous Updates (v2.5.5) - i18n String Keys
+- ✅ Added `Error_JwtSecretMustBe64CharHexString` string key to suite-core-string-key.ts
+- ✅ Added JWT_SECRET validation translations for all 8 languages (EN_US, EN_GB, FR, DE, ES, ZH, JA, UK)
+- ✅ JWT_SECRET validation now available in Environment class
 
 ### Recent Fixes (v2.5.5) - Environment & Build Configuration! ⚙️
 - ✅ Added `.env` setup for all projects (api, inituserdb, devcontainer)
