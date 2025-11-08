@@ -16,6 +16,7 @@ describe('DryRunExecutor', () => {
     context = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
     mockFs.mkdirSync.mockImplementation(() => undefined);

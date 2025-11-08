@@ -16,6 +16,7 @@ describe('StepExecutor', () => {
     context = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
     jest.clearAllMocks();

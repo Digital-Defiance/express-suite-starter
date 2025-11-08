@@ -1,6 +1,10 @@
 import { StarterStringKey } from './starter-string-key';
 
 export const enUsTranslations: Record<StarterStringKey, string> = {
+  // Titles
+  [StarterStringKey.STARTER_TITLE]: 'Node Express Suite Starter',
+  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter generates an NX monorepo MERN stack with React app, Express API, shared libraries, @digitaldefiance/node-express-suite, and @digitaldefiance/express-suite-react-components integration.',
+  
   // CLI Messages
   [StarterStringKey.CLI_BANNER]: 'Express Suite Starter',
   [StarterStringKey.CLI_FATAL_ERROR]: 'Fatal error',

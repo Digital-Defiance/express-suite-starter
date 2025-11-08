@@ -1,6 +1,8 @@
 import { StarterStringKey } from './starter-string-key';
 
 export const frTranslations: Record<StarterStringKey, string> = {
+  [StarterStringKey.STARTER_TITLE]: 'Démarreur Node Express Suite',
+  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter génère un monorepo NX avec stack MERN incluant application React, API Express, bibliothèques partagées, intégration de @digitaldefiance/node-express-suite et @digitaldefiance/express-suite-react-components.',
   [StarterStringKey.CLI_BANNER]: 'Démarreur Express Suite',
   [StarterStringKey.CLI_FATAL_ERROR]: 'Erreur fatale',
   [StarterStringKey.CLI_CANCELLED]: 'Annulé. Veuillez installer les outils requis et réessayer.',

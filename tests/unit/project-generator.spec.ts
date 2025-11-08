@@ -26,7 +26,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/react:application my-react'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('--style=scss'),
@@ -47,7 +47,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/react:library my-react-lib'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('--importPath=@test/react-lib'),
@@ -64,7 +64,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/node:application my-api'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('--framework=express'),
@@ -81,7 +81,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/js:lib my-api-lib'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('--bundler=none'),
@@ -98,7 +98,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/js:lib my-lib'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
     });
   });
@@ -111,7 +111,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/node:application my-inituserdb'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('--framework=none'),
@@ -128,7 +128,7 @@ describe('ProjectGenerator', () => {
       
       expect(mockRunCommand).toHaveBeenCalledWith(
         expect.stringContaining('npx nx g @nx/js:lib my-test-utils'),
-        { cwd: monorepoPath }
+        { cwd: monorepoPath, dryRun: false }
       );
     });
   });

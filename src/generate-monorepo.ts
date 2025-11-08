@@ -4,7 +4,7 @@ import confirm from '@inquirer/confirm';
 import checkbox from '@inquirer/checkbox';
 import * as path from 'path';
 import * as fs from 'fs';
-import { printBanner } from '../scripts/albatross';
+import { printBanner, printIntro } from '../scripts/albatross';
 import { Logger } from './cli/logger';
 import { ConfigValidator, GeneratorConfig } from './core/config-schema';
 import { SystemCheck } from './utils/system-check';
@@ -49,6 +49,8 @@ async function main() {
   // Set the language for the i18n engine
   const i18nEngine = getStarterI18nEngine();
   i18nEngine.setLanguage(selectedLanguage);
+
+  printIntro();
 
   // System check
   Logger.header(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_HEADER));
@@ -268,6 +270,7 @@ async function main() {
     config,
     state: new Map(stateEntries),
     checkpointPath: path.join(parentDir, `.${workspaceName}.checkpoint`),
+    dryRun,
   };
 
   // Merge selected package groups
@@ -318,10 +321,10 @@ async function main() {
   executor.addStep({
     name: 'createMonorepo',
     description: getStarterTranslation(StarterStringKey.STEP_CREATE_MONOREPO),
-    execute: () => {
+    execute: (context) => {
       runCommand(
         `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider}`,
-        { cwd: parentDir }
+        { cwd: parentDir, dryRun: context.dryRun }
       );
     },
   });
@@ -331,7 +334,7 @@ async function main() {
     description: getStarterTranslation(StarterStringKey.STEP_SETUP_GIT_ORIGIN),
     skip: () => !gitRepo,
     execute: () => {
-      runCommand(`git remote add origin ${gitRepo}`, { cwd: monorepoPath });
+      runCommand(`git remote add origin ${gitRepo}`, { cwd: monorepoPath, dryRun: context.dryRun });
     },
   });
 
@@ -339,9 +342,9 @@ async function main() {
     name: 'yarnBerrySetup',
     description: getStarterTranslation(StarterStringKey.STEP_YARN_BERRY_SETUP),
     execute: () => {
-      runCommand('yarn set version berry', { cwd: monorepoPath });
-      runCommand('yarn config set nodeLinker node-modules', { cwd: monorepoPath });
-      runCommand('yarn', { cwd: monorepoPath });
+      runCommand('yarn set version berry', { cwd: monorepoPath, dryRun: context.dryRun });
+      runCommand('yarn config set nodeLinker node-modules', { cwd: monorepoPath, dryRun: context.dryRun });
+      runCommand('yarn', { cwd: monorepoPath, dryRun: context.dryRun });
     },
   });
 
@@ -350,7 +353,7 @@ async function main() {
     description: getStarterTranslation(StarterStringKey.STEP_ADD_NX_PLUGINS),
     execute: () => {
       try {
-        runCommand('yarn add -D @nx/react @nx/node', { cwd: monorepoPath });
+        runCommand('yarn add -D @nx/react @nx/node', { cwd: monorepoPath, dryRun: context.dryRun });
       } catch (error: any) {
         if (error.status === 1) {
           Logger.error('\n' + getStarterTranslation(StarterStringKey.PACKAGE_INSTALLATION_FAILED));
@@ -373,10 +376,10 @@ async function main() {
       const prodPkgs = config.packages?.prod || [];
       
       if (devPkgs.length > 0) {
-        runCommand(`yarn add -D ${devPkgs.join(' ')}`, { cwd: monorepoPath });
+        runCommand(`yarn add -D ${devPkgs.join(' ')}`, { cwd: monorepoPath, dryRun: context.dryRun });
       }
       if (prodPkgs.length > 0) {
-        runCommand(`yarn add ${prodPkgs.join(' ')}`, { cwd: monorepoPath });
+        runCommand(`yarn add ${prodPkgs.join(' ')}`, { cwd: monorepoPath, dryRun: context.dryRun });
       }
     },
   });
@@ -392,22 +395,22 @@ async function main() {
         
         switch (project.type) {
           case 'react':
-            ProjectGenerator.generateReact(project, monorepoPath, config.nx);
+            ProjectGenerator.generateReact(project, monorepoPath, config.nx, context.dryRun);
             break;
           case 'react-lib':
-            ProjectGenerator.generateReactLib(project, monorepoPath, config.nx);
+            ProjectGenerator.generateReactLib(project, monorepoPath, config.nx, context.dryRun);
             break;
           case 'api':
-            ProjectGenerator.generateApi(project, monorepoPath, config.nx);
+            ProjectGenerator.generateApi(project, monorepoPath, config.nx, context.dryRun);
             break;
           case 'api-lib':
-            ProjectGenerator.generateApiLib(project, monorepoPath, config.nx);
+            ProjectGenerator.generateApiLib(project, monorepoPath, config.nx, context.dryRun);
             break;
           case 'lib':
-            ProjectGenerator.generateLib(project, monorepoPath, config.nx);
+            ProjectGenerator.generateLib(project, monorepoPath, config.nx, context.dryRun);
             break;
           case 'inituserdb':
-            ProjectGenerator.generateInitUserDb(project, monorepoPath);
+            ProjectGenerator.generateInitUserDb(project, monorepoPath, context.dryRun);
             break;
         }
       });
@@ -499,7 +502,7 @@ async function main() {
         projectPackageJson.dependencies = projectPackageJson.dependencies || {};
         projectPackageJson.dependencies['@digitaldefiance/express-suite-react-components'] = 'latest';
         fs.writeFileSync(projectPackageJsonPath, JSON.stringify(projectPackageJson, null, 2) + '\n');
-        runCommand('yarn install', { cwd: monorepoPath });
+        runCommand('yarn install', { cwd: monorepoPath, dryRun: context.dryRun });
       }
     },
   });
@@ -529,7 +532,8 @@ async function main() {
         context.state.get('templatesDir'),
         monorepoPath,
         variables,
-        config.templates?.engine
+        config.templates?.engine,
+        context.dryRun
       );
     },
   });
@@ -552,7 +556,7 @@ async function main() {
       // Copy root scaffolding
       const rootSrc = path.join(scaffoldingDir, 'root');
       if (fs.existsSync(rootSrc)) {
-        copyDir(rootSrc, monorepoPath, scaffoldingVars);
+        copyDir(rootSrc, monorepoPath, scaffoldingVars, 'mustache', context.dryRun);
       }
 
       // Copy devcontainer configuration
@@ -560,7 +564,7 @@ async function main() {
         const devcontainerSrc = path.join(scaffoldingDir, `devcontainer-${devcontainerChoice}`);
         if (fs.existsSync(devcontainerSrc)) {
           Logger.info(`Copying devcontainer configuration: ${devcontainerChoice}`);
-          copyDir(devcontainerSrc, monorepoPath, scaffoldingVars);
+          copyDir(devcontainerSrc, monorepoPath, scaffoldingVars, 'mustache', context.dryRun);
         }
       }
 
@@ -568,7 +572,7 @@ async function main() {
       projects.forEach(project => {
         const projectSrc = path.join(scaffoldingDir, project.type);
         if (fs.existsSync(projectSrc)) {
-          copyDir(projectSrc, path.join(monorepoPath, project.name), scaffoldingVars);
+          copyDir(projectSrc, path.join(monorepoPath, project.name), scaffoldingVars, 'mustache', context.dryRun);
         }
       });
     },
@@ -648,9 +652,9 @@ async function main() {
       const apiProject = projects.find(p => p.type === 'api');
       const initUserDbProject = projects.find(p => p.type === 'inituserdb');
       
-      // Build MONGO_URI with optional password
+      // Build MONGO_URI with optional password (URL-encode password for special characters)
       const buildMongoUri = (dbName: string) => {
-        const auth = mongoPassword ? `root:${mongoPassword}@` : '';
+        const auth = mongoPassword ? `root:${encodeURIComponent(mongoPassword)}@` : '';
         const params = devcontainerChoice === 'mongodb-replicaset'
           ? '?replicaSet=rs0&directConnection=true'
           : '?directConnection=true';
@@ -680,6 +684,13 @@ async function main() {
           if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
             const mongoUri = buildMongoUri(workspaceName);
             envContent = envContent.replace(/MONGO_URI=.*/g, `MONGO_URI=${mongoUri}`);
+          }
+          
+          // Enable transactions for replica set
+          if (devcontainerChoice === 'mongodb-replicaset') {
+            envContent = envContent.replace(/MONGO_USE_TRANSACTIONS=.*/g, 'MONGO_USE_TRANSACTIONS=true');
+          } else {
+            envContent = envContent.replace(/MONGO_USE_TRANSACTIONS=.*/g, 'MONGO_USE_TRANSACTIONS=false');
           }
           
           fs.writeFileSync(envPath, envContent);
@@ -742,8 +753,8 @@ async function main() {
     description: getStarterTranslation(StarterStringKey.STEP_REBUILD_NATIVE_MODULES),
     execute: () => {
       Logger.info(getStarterTranslation(StarterStringKey.COMMAND_REBUILDING_NATIVE));
-      runCommand('yarn config set enableScripts true', { cwd: monorepoPath });
-      runCommand('yarn rebuild', { cwd: monorepoPath });
+      runCommand('yarn config set enableScripts true', { cwd: monorepoPath, dryRun: context.dryRun });
+      runCommand('yarn rebuild', { cwd: monorepoPath, dryRun: context.dryRun });
     },
   });
 
@@ -768,7 +779,7 @@ async function main() {
     execute: async () => {
       // Ensure git is initialized
       if (!fs.existsSync(path.join(monorepoPath, '.git'))) {
-        runCommand('git init', { cwd: monorepoPath });
+        runCommand('git init', { cwd: monorepoPath, dryRun: context.dryRun });
       }
 
       const doCommit = await confirm({
@@ -777,8 +788,8 @@ async function main() {
       });
 
       if (doCommit) {
-        runCommand('git add -A', { cwd: monorepoPath });
-        runCommand('git commit -m "Initial commit"', { cwd: monorepoPath });
+        runCommand('git add -A', { cwd: monorepoPath, dryRun: context.dryRun });
+        runCommand('git commit -m "Initial commit"', { cwd: monorepoPath, dryRun: context.dryRun });
 
         if (gitRepo) {
           const doPush = await confirm({
@@ -787,7 +798,7 @@ async function main() {
           });
 
           if (doPush) {
-            runCommand('git push --set-upstream origin main', { cwd: monorepoPath });
+            runCommand('git push --set-upstream origin main', { cwd: monorepoPath, dryRun: context.dryRun });
           }
         }
       }
@@ -806,7 +817,7 @@ async function main() {
 
       if (installPlaywright) {
         Logger.info(getStarterTranslation(StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS));
-        runCommand('yarn playwright install --with-deps', { cwd: monorepoPath });
+        runCommand('yarn playwright install --with-deps', { cwd: monorepoPath, dryRun: context.dryRun });
       } else {
         Logger.warning(getStarterTranslation(StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT));
       }

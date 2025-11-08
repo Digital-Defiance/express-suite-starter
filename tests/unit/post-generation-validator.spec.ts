@@ -15,6 +15,7 @@ describe('PostGenerationValidator', () => {
     context = {
       config: {},
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
   });

@@ -24,4 +24,5 @@ export function checkAndUseNode() {
   } catch {
     console.warn("Failed to enable corepack or set up Yarn. Please ensure corepack and yarn are available.");
   }
+  console.log('');
 }

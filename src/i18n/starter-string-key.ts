@@ -1,4 +1,8 @@
 export enum StarterStringKey {
+  // Titles
+  STARTER_TITLE = 'starter_title',
+  STARTER_DESCRIPTION = 'starter_description',
+
   // CLI Messages
   CLI_BANNER = 'cli_banner',
   CLI_FATAL_ERROR = 'cli_fatalError',

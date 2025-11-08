@@ -29,6 +29,7 @@ describe('Full Generation Flow', () => {
         },
       },
       state: new Map([['monorepoPath', '/tmp/test-app']]),
+      dryRun: false,
       checkpointPath: '/tmp/.test-app.checkpoint',
     };
 
@@ -87,6 +88,7 @@ describe('Full Generation Flow', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 

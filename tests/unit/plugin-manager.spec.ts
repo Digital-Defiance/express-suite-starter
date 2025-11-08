@@ -13,6 +13,7 @@ describe('PluginManager', () => {
     context = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
   });

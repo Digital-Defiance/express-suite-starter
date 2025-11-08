@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
 import { Logger } from '../cli/logger';
+import { getStarterTranslation, StarterStringKey } from '../i18n';
 
 export interface SystemCheckResult {
   passed: boolean;
@@ -52,28 +53,26 @@ export class SystemCheck {
 
   static printReport(result: SystemCheckResult): void {
     if (result.passed && result.warnings.length === 0) {
-      Logger.success('System check passed');
+      Logger.success(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_PASSED));
       return;
     }
 
     if (result.missing.length > 0) {
-      Logger.error('Missing required build tools:');
+      Logger.error(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS));
       result.missing.forEach(tool => Logger.dim(`  - ${tool}`));
-      Logger.section('Installation instructions:');
+      Logger.section(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_INSTALL_INSTRUCTIONS));
       const isWindows = process.platform === 'win32';
       if (isWindows) {
-        Logger.dim('  Windows:       Install Visual Studio Build Tools');
-        Logger.dim('                 https://visualstudio.microsoft.com/downloads/');
-        Logger.dim('                 Or install via: npm install --global windows-build-tools');
+        Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_WINDOWS));
       } else {
-        Logger.dim('  Ubuntu/Debian: sudo apt-get install build-essential python3');
-        Logger.dim('  Fedora/RHEL:   sudo dnf install gcc-c++ make python3');
-        Logger.dim('  macOS:         xcode-select --install');
+        Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN));
+        Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL));
+        Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_MACOS));
       }
     }
 
     if (result.warnings.length > 0) {
-      Logger.warning('Optional tools not found:');
+      Logger.warning(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS));
       result.warnings.forEach(tool => Logger.dim(`  - ${tool}`));
     }
   }

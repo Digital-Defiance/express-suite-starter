@@ -17,6 +17,7 @@ describe('Validation Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 
@@ -47,6 +48,7 @@ describe('Validation Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 
@@ -68,6 +70,7 @@ describe('Validation Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 
@@ -98,6 +101,7 @@ describe('Validation Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 

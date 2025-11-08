@@ -1,6 +1,8 @@
 import { StarterStringKey } from './starter-string-key';
 
 export const zhCnTranslations: Record<StarterStringKey, string> = {
+  [StarterStringKey.STARTER_TITLE]: 'Node Express Suite 启动器',
+  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter 生成一个 NX monorepo MERN 技术栈，包含 React 应用、Express API、共享库、@digitaldefiance/node-express-suite 和 @digitaldefiance/express-suite-react-components 集成。',
   [StarterStringKey.CLI_BANNER]: 'Express Suite 启动器',
   [StarterStringKey.CLI_FATAL_ERROR]: '致命错误',
   [StarterStringKey.CLI_CANCELLED]: '已取消。请安装所需工具后重试。',

@@ -23,6 +23,7 @@ describe('Plugin Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map([['monorepoPath', '/test']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 
@@ -74,6 +75,7 @@ describe('Plugin Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 
@@ -117,6 +119,7 @@ describe('Plugin Integration', () => {
     const context: GeneratorContext = {
       config: {},
       state: new Map(),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
 

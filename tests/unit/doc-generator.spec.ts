@@ -21,6 +21,7 @@ describe('DocGenerator', () => {
         ],
       },
       state: new Map([['monorepoPath', '/test/monorepo']]),
+      dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
     mockFs.writeFileSync.mockImplementation(() => undefined);
