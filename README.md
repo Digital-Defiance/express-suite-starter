@@ -321,7 +321,7 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 
 ## Version
 
-**Current**: 2.1.43
+**Current**: 2.1.45
 
 **Status**: Beta
 
@@ -336,6 +336,10 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 MIT © Digital Defiance
 
 ## ChangeLog
+
+### Version 2.1.45
+
+- Translate UI
 
 ### Version 2.1.43
 

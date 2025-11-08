@@ -1,6 +1,8 @@
 import { PackageResolution } from './interfaces/package-resolution.interface';
 import { Logger } from '../cli/logger';
 import { runCommand } from '../utils/shell-utils';
+import { getStarterTranslation } from '../i18n';
+import { StarterStringKey } from '../i18n/starter-string-key';
 
 export class PackageResolver {
   static async resolveVersion(packageName: string, versionSpec: string): Promise<string> {
@@ -47,7 +49,7 @@ export class PackageResolver {
       });
       return `^${result.trim()}`;
     } catch (error) {
-      Logger.warning(`Failed to resolve latest version for ${packageName}, using 'latest'`);
+      Logger.warning(getStarterTranslation(StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST, { package: packageName }));
       return 'latest';
     }
   }
@@ -61,7 +63,7 @@ export class PackageResolver {
       });
       return `^${result.trim()}`;
     } catch (error) {
-      Logger.warning(`Failed to resolve stable version for ${packageName}, using 'latest'`);
+      Logger.warning(getStarterTranslation(StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE, { package: packageName }));
       return 'latest';
     }
   }

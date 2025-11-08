@@ -19,6 +19,9 @@ import { checkAndUseNode } from '../scripts/nodeSetup';
 import { promptAndGenerateLicense } from '../scripts/licensePrompt';
 import { addScriptsToPackageJson } from '../scripts/addScriptsToPackageJson';
 import { interpolateTemplateStrings } from '../scripts/templateUtils';
+import { getStarterTranslation, StarterStringKey, getStarterI18nEngine, StarterComponentId } from './i18n';
+import { TranslatableGenericError } from '@digitaldefiance/i18n-lib';
+import { LanguageCodes } from '@digitaldefiance/i18n-lib';
 
 async function main() {
   printBanner();
@@ -27,19 +30,39 @@ async function main() {
   // Disable Yarn build scripts globally to avoid native module issues
   process.env.YARN_ENABLE_SCRIPTS = 'false';
 
+  // Language selection
+  const selectedLanguage = await select({
+    message: 'Select language / Seleccionar idioma / Choisir la langue / Sprache wählen / 选择语言 / 言語を選択 / Виберіть мову:',
+    choices: [
+      { name: 'English (US)', value: LanguageCodes.EN_US },
+      { name: 'English (UK)', value: LanguageCodes.EN_GB },
+      { name: 'Español', value: LanguageCodes.ES },
+      { name: 'Français', value: LanguageCodes.FR },
+      { name: 'Deutsch', value: LanguageCodes.DE },
+      { name: '中文', value: LanguageCodes.ZH_CN },
+      { name: '日本語', value: LanguageCodes.JA },
+      { name: 'Українська', value: LanguageCodes.UK },
+    ],
+    default: LanguageCodes.EN_US,
+  });
+
+  // Set the language for the i18n engine
+  const i18nEngine = getStarterI18nEngine();
+  i18nEngine.setLanguage(selectedLanguage);
+
   // System check
-  Logger.header('System Check');
+  Logger.header(getStarterTranslation(StarterStringKey.SYSTEM_CHECK_HEADER));
   const systemCheck = SystemCheck.check();
   SystemCheck.printReport(systemCheck);
   
   if (!systemCheck.passed) {
     const proceed = await confirm({
-      message: 'Continue anyway? (Installation may fail)',
+      message: getStarterTranslation(StarterStringKey.SYSTEM_CHECK_CONTINUE_ANYWAY),
       default: false,
     });
     
     if (!proceed) {
-      Logger.info('Cancelled. Please install required tools and try again.');
+      Logger.info(getStarterTranslation(StarterStringKey.CLI_CANCELLED));
       process.exit(0);
     }
   }
@@ -49,68 +72,68 @@ async function main() {
   const preset = JSON.parse(fs.readFileSync(presetPath, 'utf-8'));
 
   // Prompt for workspace configuration
-  Logger.header('Workspace Configuration');
+  Logger.header(getStarterTranslation(StarterStringKey.SECTION_WORKSPACE_CONFIG));
 
   const workspaceName = await input({
-    message: 'Enter the workspace name:',
+    message: getStarterTranslation(StarterStringKey.PROMPT_WORKSPACE_NAME),
     default: 'example-project',
     validate: (val: string) =>
-      ConfigValidator.validateWorkspaceName(val) || 'Invalid workspace name (letters, numbers, dashes only)',
+      ConfigValidator.validateWorkspaceName(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME),
   });
 
   const projectPrefix = await input({
-    message: 'Enter the project prefix:',
+    message: getStarterTranslation(StarterStringKey.PROMPT_PROJECT_PREFIX),
     default: workspaceName,
     validate: (val: string) =>
-      ConfigValidator.validatePrefix(val) || 'Invalid prefix (lowercase letters, numbers, dashes only)',
+      ConfigValidator.validatePrefix(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_PREFIX),
   });
 
   const namespaceRoot = await input({
-    message: 'Enter the npm namespace:',
+    message: getStarterTranslation(StarterStringKey.PROMPT_NPM_NAMESPACE),
     default: `@${projectPrefix}`,
     validate: (val: string) =>
-      ConfigValidator.validateNamespace(val) || 'Invalid namespace (must start with @)',
+      ConfigValidator.validateNamespace(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_NAMESPACE),
   });
 
   const parentDir = path.resolve(
     await input({
-      message: 'Enter the parent directory:',
+      message: getStarterTranslation(StarterStringKey.PROMPT_PARENT_DIRECTORY),
       default: process.cwd(),
     })
   );
 
   const gitRepo = await input({
-    message: 'Enter the git repository URL (optional):',
+    message: getStarterTranslation(StarterStringKey.PROMPT_GIT_REPO),
     validate: (val: string) =>
-      ConfigValidator.validateGitRepo(val) || 'Invalid git repository URL',
+      ConfigValidator.validateGitRepo(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_GIT_REPO),
   });
 
   const hostname = await input({
-    message: 'Enter the hostname for development (e.g., example-project.local):',
+    message: getStarterTranslation(StarterStringKey.PROMPT_HOSTNAME),
     default: `${workspaceName}.local`,
     validate: (val: string) =>
-      /^[a-z0-9-]+(\.[a-z0-9-]+)*$/.test(val) || 'Invalid hostname format',
+      /^[a-z0-9-]+(\.[a-z0-9-]+)*$/.test(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_HOSTNAME),
   });
 
   const dryRun = await confirm({
-    message: 'Run in dry-run mode (preview without creating files)?',
+    message: getStarterTranslation(StarterStringKey.PROMPT_DRY_RUN),
     default: false,
   });
 
-  Logger.section('Optional Projects');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_OPTIONAL_PROJECTS));
   
   const includeE2e = await confirm({
-    message: 'Include E2E tests?',
+    message: getStarterTranslation(StarterStringKey.PROMPT_INCLUDE_E2E),
     default: true,
   });
 
-  Logger.section('Package Groups');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_PACKAGE_GROUPS));
   
   const packageGroupsPath = path.resolve(__dirname, '../../config/package-groups.json');
   const packageGroups = JSON.parse(fs.readFileSync(packageGroupsPath, 'utf-8')).groups;
   
   const selectedGroups = await checkbox({
-    message: 'Select optional package groups:',
+    message: getStarterTranslation(StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS),
     choices: packageGroups
       .filter((g: any) => !g.enabled)
       .map((g: any) => ({
@@ -121,14 +144,14 @@ async function main() {
   });
 
   const enableDocGeneration = await confirm({
-    message: 'Generate documentation (README, ARCHITECTURE, API docs)?',
+    message: getStarterTranslation(StarterStringKey.PROMPT_ENABLE_DOC_GENERATION),
     default: true,
   });
 
-  Logger.section('DevContainer Configuration');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_DEVCONTAINER_CONFIG));
   
   const setupDevcontainer = await confirm({
-    message: 'Set up DevContainer configuration?',
+    message: getStarterTranslation(StarterStringKey.PROMPT_SETUP_DEVCONTAINER),
     default: true,
   });
 
@@ -136,58 +159,58 @@ async function main() {
   let mongoPassword = '';
   if (setupDevcontainer) {
     devcontainerChoice = await select({
-      message: 'DevContainer configuration:',
+      message: getStarterTranslation(StarterStringKey.PROMPT_DEVCONTAINER_CONFIG),
       choices: [
-        { name: 'Simple (Node.js only)', value: 'simple' },
-        { name: 'With MongoDB', value: 'mongodb' },
-        { name: 'With MongoDB Replica Set', value: 'mongodb-replicaset' },
+        { name: getStarterTranslation(StarterStringKey.DEVCONTAINER_SIMPLE), value: 'simple' },
+        { name: getStarterTranslation(StarterStringKey.DEVCONTAINER_MONGODB), value: 'mongodb' },
+        { name: getStarterTranslation(StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET), value: 'mongodb-replicaset' },
       ],
       default: 'mongodb-replicaset',
     });
     
     if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
       mongoPassword = await input({
-        message: 'Enter MongoDB root password:',
-        validate: (val: string) => val.length > 0 || 'Password required',
+        message: getStarterTranslation(StarterStringKey.PROMPT_MONGO_PASSWORD),
+        validate: (val: string) => val.length > 0 || getStarterTranslation(StarterStringKey.VALIDATION_PASSWORD_REQUIRED),
       });
     }
   }
 
-  Logger.section('Database Configuration');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_DATABASE_CONFIG));
   
   const useInMemoryDb = await confirm({
-    message: 'Use in-memory database for development?',
+    message: getStarterTranslation(StarterStringKey.PROMPT_USE_IN_MEMORY_DB),
     default: false,
   });
   
   let devDatabaseName = '';
   if (useInMemoryDb) {
     devDatabaseName = await input({
-      message: 'Enter the in-memory database name:',
+      message: getStarterTranslation(StarterStringKey.PROMPT_DEV_DATABASE_NAME),
       default: 'test',
-      validate: (val: string) => val.length > 0 || 'Database name cannot be empty',
+      validate: (val: string) => val.length > 0 || getStarterTranslation(StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED),
     });
   }
 
-  Logger.section('Security Configuration');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_SECURITY_CONFIG));
   
   const crypto = await import('crypto');
   const HEX_64_REGEX = /^[0-9a-f]{64}$/i;
   
   const promptOrGenerateSecret = async (name: string): Promise<string> => {
     const generate = await confirm({
-      message: `Generate ${name}?`,
+      message: getStarterTranslation(StarterStringKey.PROMPT_GENERATE_SECRET, { name }),
       default: true,
     });
     
     if (generate) {
       const secret = crypto.randomBytes(32).toString('hex');
-      Logger.info(`Generated ${name}`);
+      Logger.info(getStarterTranslation(StarterStringKey.ENV_GENERATED_SECRET, { name }));
       return secret;
     } else {
       return await input({
-        message: `Enter ${name} (64-character hex string):`,
-        validate: (val: string) => HEX_64_REGEX.test(val) || 'Must be 64-character hex string',
+        message: getStarterTranslation(StarterStringKey.PROMPT_ENTER_SECRET, { name }),
+        validate: (val: string) => HEX_64_REGEX.test(val) || getStarterTranslation(StarterStringKey.VALIDATION_MUST_BE_HEX_64),
       });
     }
   };
@@ -196,7 +219,7 @@ async function main() {
   const mnemonicEncryptionKey = await promptOrGenerateSecret('MNEMONIC_ENCRYPTION_KEY');
   const mnemonicHmacSecret = await promptOrGenerateSecret('MNEMONIC_HMAC_SECRET');
 
-  Logger.section('Express Suite Packages');
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_EXPRESS_SUITE_PACKAGES));
 
   const monorepoPath = path.join(parentDir, workspaceName);
 
@@ -275,22 +298,26 @@ async function main() {
     : new StepExecutor();
 
   if (dryRun) {
-    Logger.warning('DRY RUN MODE - No files will be created');
+    Logger.warning(getStarterTranslation(StarterStringKey.GENERATION_DRY_RUN_MODE));
   }
 
   executor.addStep({
     name: 'checkTargetDir',
-    description: 'Checking target directory',
+    description: getStarterTranslation(StarterStringKey.STEP_CHECK_TARGET_DIR),
     execute: () => {
       if (fs.existsSync(monorepoPath) && fs.readdirSync(monorepoPath).length > 0) {
-        throw new Error(`Directory ${Logger.path(monorepoPath)} already exists and is not empty`);
+        throw new TranslatableGenericError(
+          StarterComponentId,
+          StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY,
+          { path: monorepoPath }
+        );
       }
     },
   });
 
   executor.addStep({
     name: 'createMonorepo',
-    description: 'Creating Nx monorepo',
+    description: getStarterTranslation(StarterStringKey.STEP_CREATE_MONOREPO),
     execute: () => {
       runCommand(
         `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider}`,
@@ -301,7 +328,7 @@ async function main() {
 
   executor.addStep({
     name: 'setupGitOrigin',
-    description: 'Setting up git remote',
+    description: getStarterTranslation(StarterStringKey.STEP_SETUP_GIT_ORIGIN),
     skip: () => !gitRepo,
     execute: () => {
       runCommand(`git remote add origin ${gitRepo}`, { cwd: monorepoPath });
@@ -310,7 +337,7 @@ async function main() {
 
   executor.addStep({
     name: 'yarnBerrySetup',
-    description: 'Configuring Yarn Berry',
+    description: getStarterTranslation(StarterStringKey.STEP_YARN_BERRY_SETUP),
     execute: () => {
       runCommand('yarn set version berry', { cwd: monorepoPath });
       runCommand('yarn config set nodeLinker node-modules', { cwd: monorepoPath });
@@ -320,18 +347,18 @@ async function main() {
 
   executor.addStep({
     name: 'addNxPlugins',
-    description: 'Installing Nx plugins',
+    description: getStarterTranslation(StarterStringKey.STEP_ADD_NX_PLUGINS),
     execute: () => {
       try {
         runCommand('yarn add -D @nx/react @nx/node', { cwd: monorepoPath });
       } catch (error: any) {
         if (error.status === 1) {
-          Logger.error('\nPackage installation failed.');
-          Logger.section('If you see "exit code 127" above, install build tools:');
-          Logger.dim('  Ubuntu/Debian: sudo apt-get install build-essential python3');
-          Logger.dim('  Fedora/RHEL:   sudo dnf install gcc-c++ make python3');
-          Logger.dim('  macOS:         xcode-select --install');
-          Logger.section('\nThen retry or skip: yarn start --start-at=addYarnPackages');
+          Logger.error('\n' + getStarterTranslation(StarterStringKey.PACKAGE_INSTALLATION_FAILED));
+          Logger.section(getStarterTranslation(StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS));
+          Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN));
+          Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL));
+          Logger.dim('  ' + getStarterTranslation(StarterStringKey.SYSTEM_CHECK_MACOS));
+          Logger.section('\n' + getStarterTranslation(StarterStringKey.PACKAGE_RETRY_OR_SKIP));
         }
         throw error;
       }
@@ -340,7 +367,7 @@ async function main() {
 
   executor.addStep({
     name: 'addYarnPackages',
-    description: 'Installing dependencies',
+    description: getStarterTranslation(StarterStringKey.STEP_ADD_YARN_PACKAGES),
     execute: () => {
       const devPkgs = config.packages?.dev || [];
       const prodPkgs = config.packages?.prod || [];
@@ -356,12 +383,12 @@ async function main() {
 
   executor.addStep({
     name: 'generateProjects',
-    description: 'Generating project structure',
+    description: getStarterTranslation(StarterStringKey.STEP_GENERATE_PROJECTS),
     execute: () => {
       projects.forEach(project => {
         if (!project.enabled) return;
         
-        Logger.info(`Generating ${project.type}: ${project.name}`);
+        Logger.info(getStarterTranslation(StarterStringKey.PROJECT_GENERATING, { type: project.type, name: project.name }));
         
         switch (project.type) {
           case 'react':
@@ -417,7 +444,7 @@ async function main() {
             }
           }
           fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
-          Logger.info(`Added copy-env and post-build targets to ${apiProject.name}/project.json`);
+          Logger.info(getStarterTranslation(StarterStringKey.PROJECT_ADDED_TARGETS, { name: apiProject.name }));
         }
       }
       
@@ -453,7 +480,7 @@ async function main() {
             }
           }
           fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
-          Logger.info(`Added copy-env and post-build targets to ${initUserDbProject.name}/project.json`);
+          Logger.info(getStarterTranslation(StarterStringKey.PROJECT_ADDED_TARGETS, { name: initUserDbProject.name }));
         }
       }
     },
@@ -461,12 +488,12 @@ async function main() {
 
   executor.addStep({
     name: 'installReactComponents',
-    description: 'Installing React components package',
+    description: getStarterTranslation(StarterStringKey.STEP_INSTALL_REACT_COMPONENTS),
     execute: () => {
       const reactLibProject = projects.find(p => p.type === 'react-lib' && p.enabled);
       
       if (reactLibProject) {
-        Logger.info(`Installing @digitaldefiance/express-suite-react-components in ${reactLibProject.name}`);
+        Logger.info(getStarterTranslation(StarterStringKey.PROJECT_INSTALLING_PACKAGE, { package: '@digitaldefiance/express-suite-react-components', project: reactLibProject.name }));
         const projectPackageJsonPath = path.join(monorepoPath, reactLibProject.name, 'package.json');
         const projectPackageJson = JSON.parse(fs.readFileSync(projectPackageJsonPath, 'utf-8'));
         projectPackageJson.dependencies = projectPackageJson.dependencies || {};
@@ -479,7 +506,7 @@ async function main() {
 
   executor.addStep({
     name: 'renderTemplates',
-    description: 'Rendering configuration templates',
+    description: getStarterTranslation(StarterStringKey.STEP_RENDER_TEMPLATES),
     execute: () => {
       const variables: Record<string, any> = {
         WORKSPACE_NAME: workspaceName,
@@ -509,7 +536,7 @@ async function main() {
 
   executor.addStep({
     name: 'copyScaffolding',
-    description: 'Copying scaffolding files',
+    description: getStarterTranslation(StarterStringKey.STEP_COPY_SCAFFOLDING),
     execute: () => {
       const scaffoldingDir = context.state.get('scaffoldingDir');
       
@@ -549,7 +576,7 @@ async function main() {
 
   executor.addStep({
     name: 'generateLicense',
-    description: 'Generating LICENSE file',
+    description: getStarterTranslation(StarterStringKey.STEP_GENERATE_LICENSE),
     execute: async () => {
       await promptAndGenerateLicense(monorepoPath);
     },
@@ -557,7 +584,7 @@ async function main() {
 
   executor.addStep({
     name: 'addScripts',
-    description: 'Adding package.json scripts',
+    description: getStarterTranslation(StarterStringKey.STEP_ADD_SCRIPTS),
     execute: () => {
       const packageJsonPath = path.join(monorepoPath, 'package.json');
       const scriptContext: Record<string, any> = {
@@ -606,7 +633,7 @@ async function main() {
 
   executor.addStep({
     name: 'generateDocumentation',
-    description: 'Generating documentation',
+    description: getStarterTranslation(StarterStringKey.STEP_GENERATE_DOCUMENTATION),
     skip: () => !enableDocGeneration || dryRun,
     execute: async () => {
       const { DocGenerator } = await import('./utils/doc-generator');
@@ -616,7 +643,7 @@ async function main() {
 
   executor.addStep({
     name: 'setupEnvironment',
-    description: 'Setting up environment files',
+    description: getStarterTranslation(StarterStringKey.STEP_SETUP_ENVIRONMENT),
     execute: () => {
       const apiProject = projects.find(p => p.type === 'api');
       const initUserDbProject = projects.find(p => p.type === 'inituserdb');
@@ -672,20 +699,49 @@ async function main() {
       
       // Setup devcontainer .env if devcontainer with MongoDB
       if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
+        const devcontainerEnvExamplePath = path.join(monorepoPath, '.devcontainer', '.env.example');
         const devcontainerEnvPath = path.join(monorepoPath, '.devcontainer', '.env');
-        const mongoUri = buildMongoUri(workspaceName);
-        const envContent = `MONGO_PASSWORD=${mongoPassword}\nMONGO_URI=${mongoUri}\n`;
-        fs.writeFileSync(devcontainerEnvPath, envContent);
-        Logger.info('Created .devcontainer/.env with MongoDB configuration');
+        
+        if (fs.existsSync(devcontainerEnvExamplePath)) {
+          let envContent = fs.readFileSync(devcontainerEnvExamplePath, 'utf-8');
+          const mongoUri = buildMongoUri(workspaceName);
+          
+          // Replace MongoDB configuration
+          envContent = envContent.replace(/MONGO_INITDB_ROOT_PASSWORD=.*/g, `MONGO_INITDB_ROOT_PASSWORD=${mongoPassword}`);
+          envContent = envContent.replace(/MONGO_INITDB_DATABASE=.*/g, `MONGO_INITDB_DATABASE=${workspaceName}`);
+          envContent = envContent.replace(/COMPOSE_PROJECT_NAME=.*/g, `COMPOSE_PROJECT_NAME=${workspaceName}_devcontainer`);
+          
+          // Add MONGO_PASSWORD and MONGO_URI if not present
+          if (!envContent.includes('MONGO_PASSWORD=')) {
+            envContent += `\nMONGO_PASSWORD=${mongoPassword}\n`;
+          } else {
+            envContent = envContent.replace(/MONGO_PASSWORD=.*/g, `MONGO_PASSWORD=${mongoPassword}`);
+          }
+          
+          if (!envContent.includes('MONGO_URI=')) {
+            envContent += `MONGO_URI=${mongoUri}\n`;
+          } else {
+            envContent = envContent.replace(/MONGO_URI=.*/g, `MONGO_URI=${mongoUri}`);
+          }
+          
+          fs.writeFileSync(devcontainerEnvPath, envContent);
+          Logger.info(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE));
+        } else {
+          // Fallback to minimal .env if .env.example doesn't exist
+          const mongoUri = buildMongoUri(workspaceName);
+          const envContent = `MONGO_PASSWORD=${mongoPassword}\nMONGO_URI=${mongoUri}\n`;
+          fs.writeFileSync(devcontainerEnvPath, envContent);
+          Logger.warning(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL));
+        }
       }
     },
   });
 
   executor.addStep({
     name: 'rebuildNativeModules',
-    description: 'Building native modules',
+    description: getStarterTranslation(StarterStringKey.STEP_REBUILD_NATIVE_MODULES),
     execute: () => {
-      Logger.info('Re-enabling build scripts and building native modules...');
+      Logger.info(getStarterTranslation(StarterStringKey.COMMAND_REBUILDING_NATIVE));
       runCommand('yarn config set enableScripts true', { cwd: monorepoPath });
       runCommand('yarn rebuild', { cwd: monorepoPath });
     },
@@ -693,7 +749,7 @@ async function main() {
 
   executor.addStep({
     name: 'validateGeneration',
-    description: 'Validating generated project',
+    description: getStarterTranslation(StarterStringKey.STEP_VALIDATE_GENERATION),
     skip: () => dryRun,
     execute: async () => {
       const { PostGenerationValidator } = await import('./core/validators/post-generation-validator');
@@ -701,14 +757,14 @@ async function main() {
       PostGenerationValidator.printReport(report);
       
       if (!report.passed) {
-        Logger.warning('Validation found errors, but continuing...');
+        Logger.warning(getStarterTranslation(StarterStringKey.WARNING_VALIDATION_ERRORS));
       }
     },
   });
 
   executor.addStep({
     name: 'initialCommit',
-    description: 'Creating initial commit',
+    description: getStarterTranslation(StarterStringKey.STEP_INITIAL_COMMIT),
     execute: async () => {
       // Ensure git is initialized
       if (!fs.existsSync(path.join(monorepoPath, '.git'))) {
@@ -716,7 +772,7 @@ async function main() {
       }
 
       const doCommit = await confirm({
-        message: 'Create initial git commit?',
+        message: getStarterTranslation(StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT),
         default: true,
       });
 
@@ -726,7 +782,7 @@ async function main() {
 
         if (gitRepo) {
           const doPush = await confirm({
-            message: 'Push to remote repository?',
+            message: getStarterTranslation(StarterStringKey.PROMPT_PUSH_TO_REMOTE),
             default: true,
           });
 
@@ -740,19 +796,19 @@ async function main() {
 
   executor.addStep({
     name: 'installPlaywright',
-    description: 'Installing Playwright browsers',
+    description: getStarterTranslation(StarterStringKey.STEP_INSTALL_PLAYWRIGHT),
     skip: () => !includeE2e,
     execute: async () => {
       const installPlaywright = await confirm({
-        message: 'Install Playwright browsers? (Required for E2E tests)',
+        message: getStarterTranslation(StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT),
         default: true,
       });
 
       if (installPlaywright) {
-        Logger.info('Installing Playwright browsers (this may take a few minutes)...');
+        Logger.info(getStarterTranslation(StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS));
         runCommand('yarn playwright install --with-deps', { cwd: monorepoPath });
       } else {
-        Logger.warning('Skipped. Run manually later: yarn playwright install --with-deps');
+        Logger.warning(getStarterTranslation(StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT));
       }
     },
   });
@@ -762,38 +818,38 @@ async function main() {
     await executor.execute(context);
     
     if (dryRun) {
-      Logger.warning('Dry-run complete. Re-run without dry-run to generate.');
+      Logger.warning(getStarterTranslation(StarterStringKey.WARNING_DRY_RUN_RERUN));
       process.exit(0);
     }
     
-    Logger.header('Generation Complete!');
-    Logger.success(`Monorepo created at: ${Logger.path(monorepoPath)}`);
+    Logger.header(getStarterTranslation(StarterStringKey.SUCCESS_GENERATION_COMPLETE));
+    Logger.success(getStarterTranslation(StarterStringKey.SUCCESS_MONOREPO_CREATED, { path: Logger.path(monorepoPath) }));
     
     const apiProject = projects.find(p => p.type === 'api');
     if (apiProject) {
-      Logger.warning(`\nIMPORTANT: Update ${apiProject.name}/.env with your configuration`);
+      Logger.warning(`\n` + getStarterTranslation(StarterStringKey.WARNING_UPDATE_ENV_FILE, { name: apiProject.name }));
     }
     
     if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
-      Logger.warning(`IMPORTANT: Update .devcontainer/.env with your MongoDB configuration`);
+      Logger.warning(getStarterTranslation(StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV));
     }
     
-    Logger.section('Next steps:');
+    Logger.section(getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS));
     Logger.dim(`  cd ${workspaceName}`);
     if (apiProject) {
-      Logger.dim(`  # Update ${apiProject.name}/.env with your settings`);
+      Logger.dim(`  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV, { name: apiProject.name })}`);
     }
     Logger.dim(`  yarn build:dev`);
     Logger.dim(`  yarn serve:dev`);
     
-    Logger.section('Generated projects:');
+    Logger.section(getStarterTranslation(StarterStringKey.SECTION_GENERATED_PROJECTS));
     projects.forEach(p => {
       if (p.enabled) {
         Logger.dim(`  ${p.type.padEnd(12)} ${p.name}`);
       }
     });
   } catch (error) {
-    Logger.error('Generation failed');
+    Logger.error(getStarterTranslation(StarterStringKey.GENERATION_FAILED));
     console.error(error);
     process.exit(1);
   }
@@ -803,7 +859,7 @@ export { main };
 
 if (require.main === module) {
   main().catch((err) => {
-    Logger.error('Fatal error');
+    Logger.error(getStarterTranslation(StarterStringKey.ERROR_FATAL));
     console.error(err);
     process.exit(1);
   });

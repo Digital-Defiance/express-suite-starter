@@ -5,6 +5,8 @@ import { Step } from './interfaces/step.interface';
 import { GeneratorContext } from './interfaces/generator-context.interface';
 import { Checkpoint } from './interfaces/checkpoint.interface';
 import { PluginManager } from './plugin-manager';
+import { getStarterTranslation } from '../i18n';
+import { StarterStringKey } from '../i18n/starter-string-key';
 
 export class StepExecutor {
   private steps: Step[] = [];
@@ -28,10 +30,10 @@ export class StepExecutor {
     const startIndex = startAt ? this.steps.findIndex(s => s.name === startAt) : 0;
     
     if (startIndex === -1) {
-      throw new Error(`Invalid start step: ${startAt}`);
+      throw new Error(getStarterTranslation(StarterStringKey.ERROR_INVALID_START_STEP, { step: startAt || '' }));
     }
 
-    Logger.header(`Starting generation (${this.steps.length - startIndex} steps)`);
+    Logger.header(getStarterTranslation(StarterStringKey.GENERATION_STARTING, { count: this.steps.length - startIndex }));
 
     // Before generation hook
     await this.pluginManager.executeHook('beforeGeneration', context);
@@ -40,7 +42,7 @@ export class StepExecutor {
       const step = this.steps[i];
       
       if (step.skip?.(context)) {
-        Logger.dim(`Skipping: ${step.description}`);
+        Logger.dim(getStarterTranslation(StarterStringKey.STEP_SKIPPING, { description: step.description }));
         continue;
       }
 
@@ -52,12 +54,12 @@ export class StepExecutor {
         await step.execute(context);
         this.executedSteps.push(step.name);
         await this.saveCheckpoint(context);
-        Logger.success(`Completed: ${step.description}`);
+        Logger.success(getStarterTranslation(StarterStringKey.STEP_COMPLETED, { description: step.description }));
         
         // After step hook
         await this.pluginManager.executeHook('afterStep', context, step.name);
       } catch (error) {
-        Logger.error(`Failed: ${step.description}`);
+        Logger.error(getStarterTranslation(StarterStringKey.STEP_FAILED, { description: step.description }));
         
         // Error hook
         await this.pluginManager.executeHook('onError', context, error);
@@ -69,11 +71,11 @@ export class StepExecutor {
     // After generation hook
     await this.pluginManager.executeHook('afterGeneration', context);
 
-    Logger.header('Generation complete!');
+    Logger.header(getStarterTranslation(StarterStringKey.GENERATION_COMPLETE));
   }
 
   async rollback(context: GeneratorContext): Promise<void> {
-    Logger.warning('Rolling back changes...');
+    Logger.warning(getStarterTranslation(StarterStringKey.GENERATION_ROLLBACK));
     
     for (let i = this.executedSteps.length - 1; i >= 0; i--) {
       const stepName = this.executedSteps[i];
@@ -84,7 +86,7 @@ export class StepExecutor {
           Logger.info(`Rolling back: ${step.description}`);
           await step.rollback(context);
         } catch (error) {
-          Logger.error(`Rollback failed for: ${step.description}`);
+          Logger.error(getStarterTranslation(StarterStringKey.GENERATION_ROLLBACK_FAILED, { description: step.description }));
         }
       }
     }

@@ -2,12 +2,14 @@ import { Plugin } from './interfaces/plugin.interface';
 import { GeneratorContext } from './interfaces/generator-context.interface';
 import { Step } from './interfaces/step.interface';
 import { Logger } from '../cli/logger';
+import { getStarterTranslation } from '../i18n';
+import { StarterStringKey } from '../i18n/starter-string-key';
 
 export class PluginManager {
   private plugins: Plugin[] = [];
 
   register(plugin: Plugin): void {
-    Logger.info(`Registering plugin: ${plugin.name} v${plugin.version}`);
+    Logger.info(getStarterTranslation(StarterStringKey.PLUGIN_REGISTERING, { name: plugin.name, version: plugin.version }));
     this.plugins.push(plugin);
   }
 
@@ -30,7 +32,7 @@ export class PluginManager {
         try {
           await (hook as any)(...args, context);
         } catch (error) {
-          Logger.warning(`Plugin ${plugin.name} hook ${hookName} failed: ${error}`);
+          Logger.warning(getStarterTranslation(StarterStringKey.PLUGIN_HOOK_FAILED, { name: plugin.name, hook: hookName, error: String(error) }));
         }
       }
     }
