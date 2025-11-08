@@ -7,6 +7,12 @@ export function runCommand(command: string, options: CommandOptions = {}): void 
     Logger.command(command);
   }
 
+  // Skip execution in dry run mode
+  if (options.dryRun) {
+    Logger.dim('  [DRY RUN] Would execute: ' + command);
+    return;
+  }
+
   try {
     execSync(command, { 
       stdio: options.silent ? 'pipe' : 'inherit', 

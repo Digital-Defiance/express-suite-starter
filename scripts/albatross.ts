@@ -1,5 +1,12 @@
-export const STARTER_VERSION = "1.0.0";
-export const STARTER_DESCRIPTION = "Node Express Suite Starter generates an NX monorepo MERN stack with React app, Express API, shared libraries, @digitaldefiance/node-express-suite, and @digitaldefiance/express-suite-react-components integration.";
+import { getStarterTranslation, StarterStringKey } from '../src/i18n';
+import chalk from 'chalk';
+import * as path from 'path';
+import * as fs from 'fs';
+
+// Read version from package.json
+const packageJsonPath = path.resolve(__dirname, '../../package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+export const STARTER_VERSION = packageJson.version;
 
 export function printBanner(): void {
     console.log(`
@@ -28,5 +35,44 @@ export function printBanner(): void {
 \u001b[48;5;116m                                                \u001b[m
 \u001b[48;5;116m                                                \u001b[m
 `);
-console.log(`\nNode Express Suite Starter (v${STARTER_VERSION})\n\n${STARTER_DESCRIPTION}\n`);
+}
+export function printIntro(): void {
+    const title = getStarterTranslation(StarterStringKey.STARTER_TITLE);
+    const description = getStarterTranslation(StarterStringKey.STARTER_DESCRIPTION);
+    const boxWidth = 79;
+    const contentWidth = boxWidth - 4; // Account for '║ ' and ' ║'
+    const titleLine = `${title} v${STARTER_VERSION}`;
+    const titlePadding = ' '.repeat(Math.max(0, contentWidth - titleLine.length));
+    
+    const wrappedLines = wrapText(description, contentWidth);
+    const descriptionLines = wrappedLines.map(line => 
+        chalk.bold.cyan('║ ') + chalk.gray(line) + chalk.bold.cyan(' ║')
+    ).join('\n');
+    
+    console.log(
+        '\n' +
+        chalk.bold.cyan('╔' + '═'.repeat(boxWidth - 2) + '╗') + '\n' +
+        chalk.bold.cyan('║ ') + chalk.bold.white(title) + chalk.bold.yellow(` v${STARTER_VERSION}`) + titlePadding + chalk.bold.cyan(' ║') + '\n' +
+        chalk.bold.cyan('╠' + '═'.repeat(boxWidth - 2) + '╣') + '\n' +
+        descriptionLines + '\n' +
+        chalk.bold.cyan('╚' + '═'.repeat(boxWidth - 2) + '╝') + '\n'
+    );
+}
+
+function wrapText(text: string, width: number): string[] {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    for (const word of words) {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        if (testLine.length <= width) {
+            currentLine = testLine;
+        } else {
+            if (currentLine) lines.push(currentLine.padEnd(width));
+            currentLine = word;
+        }
+    }
+    if (currentLine) lines.push(currentLine.padEnd(width));
+    return lines;
 }

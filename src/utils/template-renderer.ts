@@ -8,7 +8,8 @@ export function renderTemplates(
   templatesDir: string,
   destDir: string,
   variables: Record<string, any>,
-  engineType: 'mustache' | 'handlebars' = 'mustache'
+  engineType: 'mustache' | 'handlebars' = 'mustache',
+  dryRun = false
 ): void {
   if (!fs.existsSync(templatesDir)) return;
 
@@ -27,10 +28,12 @@ export function renderTemplates(
       } else if (entry.isFile()) {
         const template = fs.readFileSync(srcPath, 'utf8');
         const rendered = engine.render(template, variables);
-        fs.mkdirSync(path.dirname(destPath), { recursive: true });
-        fs.writeFileSync(destPath, rendered, 'utf8');
-        setPerms(destPath);
-        Logger.dim(`  Rendered: ${path.relative(destDir, destPath)}`);
+        if (!dryRun) {
+          fs.mkdirSync(path.dirname(destPath), { recursive: true });
+          fs.writeFileSync(destPath, rendered, 'utf8');
+          setPerms(destPath);
+        }
+        Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
       }
     }
   }
@@ -53,7 +56,7 @@ export function renderTemplates(
   }
 }
 
-export function copyDir(srcDir: string, destDir: string, variables?: Record<string, any>, engineType: 'mustache' | 'handlebars' = 'mustache'): void {
+export function copyDir(srcDir: string, destDir: string, variables?: Record<string, any>, engineType: 'mustache' | 'handlebars' = 'mustache', dryRun = false): void {
   if (!fs.existsSync(srcDir)) return;
   const entries = fs.readdirSync(srcDir, { withFileTypes: true });
   const engine = variables ? createEngine(engineType) : null;
@@ -65,17 +68,23 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
     const destPath = path.join(destDir, destName);
     
     if (entry.isDirectory()) {
-      fs.mkdirSync(destPath, { recursive: true });
-      copyDir(srcPath, destPath, variables, engineType);
+      if (!dryRun) {
+        fs.mkdirSync(destPath, { recursive: true });
+      }
+      copyDir(srcPath, destPath, variables, engineType, dryRun);
     } else if (entry.isFile()) {
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      if (!dryRun) {
+        fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      }
       
       if (isMustache && engine && variables) {
         // Render mustache template
         const template = fs.readFileSync(srcPath, 'utf8');
         const rendered = engine.render(template, variables);
-        fs.writeFileSync(destPath, rendered, 'utf8');
-        Logger.dim(`  Rendered: ${path.relative(destDir, destPath)}`);
+        if (!dryRun) {
+          fs.writeFileSync(destPath, rendered, 'utf8');
+        }
+        Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
       } else {
         // Direct copy with simple placeholder replacement
         let content = fs.readFileSync(srcPath, 'utf8');
@@ -89,11 +98,15 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
             }
           });
         }
-        fs.writeFileSync(destPath, content, 'utf8');
-        Logger.dim(`  Copied: ${path.relative(destDir, destPath)}`);
+        if (!dryRun) {
+          fs.writeFileSync(destPath, content, 'utf8');
+        }
+        Logger.dim(`  ${dryRun ? '[DRY RUN] Would copy' : 'Copied'}: ${path.relative(destDir, destPath)}`);
       }
       
-      setPerms(destPath);
+      if (!dryRun) {
+        setPerms(destPath);
+      }
     }
   }
 }
