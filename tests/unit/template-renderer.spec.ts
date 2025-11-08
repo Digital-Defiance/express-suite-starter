@@ -93,13 +93,15 @@ describe('template-renderer', () => {
       ] as any);
       
       mockFs.mkdirSync.mockImplementation(() => undefined);
-      mockFs.copyFileSync.mockImplementation(() => undefined);
+      mockFs.readFileSync.mockReturnValue('content');
+      mockFs.writeFileSync.mockImplementation(() => undefined);
 
       copyDir('/src', '/dest');
 
-      expect(mockFs.copyFileSync).toHaveBeenCalledWith(
+      expect(mockFs.writeFileSync).toHaveBeenCalledWith(
         expect.stringContaining('file.txt'),
-        expect.stringContaining('file.txt')
+        expect.anything(),
+        'utf8'
       );
     });
 
@@ -112,7 +114,8 @@ describe('template-renderer', () => {
       ] as any);
       
       mockFs.mkdirSync.mockImplementation(() => undefined);
-      mockFs.copyFileSync.mockImplementation(() => undefined);
+      mockFs.readFileSync.mockReturnValue('content');
+      mockFs.writeFileSync.mockImplementation(() => undefined);
 
       copyDir('/src', '/dest');
 

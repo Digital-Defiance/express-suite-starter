@@ -323,7 +323,7 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 
 **Current**: 2.1.40
 
-**Status**: Production Ready ✅
+**Status**: Beta
 
 ## Links
 
