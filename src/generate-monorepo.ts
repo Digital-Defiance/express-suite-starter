@@ -331,9 +331,80 @@ async function main() {
           case 'inituserdb':
             ProjectGenerator.generateInitUserDb(project, monorepoPath);
             break;
-
         }
       });
+      
+      // Add copy-env and post-build targets to api and inituserdb project.json
+      const apiProject = projects.find(p => p.type === 'api' && p.enabled);
+      const initUserDbProject = projects.find(p => p.type === 'inituserdb' && p.enabled);
+      
+      if (apiProject) {
+        const projectJsonPath = path.join(monorepoPath, apiProject.name, 'project.json');
+        if (fs.existsSync(projectJsonPath)) {
+          const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
+          projectJson.targets['copy-env'] = {
+            executor: 'nx:run-commands',
+            options: {
+              command: `cp ${apiProject.name}/.env dist/${apiProject.name}/.env`
+            }
+          };
+          projectJson.targets['post-build'] = {
+            executor: 'nx:run-commands',
+            dependsOn: ['build'],
+            options: {
+              command: `cp ${apiProject.name}/.env dist/${apiProject.name}/.env`
+            }
+          };
+          // Update serve to depend on post-build instead of build
+          if (projectJson.targets.serve) {
+            projectJson.targets.serve.dependsOn = ['post-build'];
+            projectJson.targets.serve.options.buildTarget = `${apiProject.name}:post-build`;
+            if (projectJson.targets.serve.configurations) {
+              Object.keys(projectJson.targets.serve.configurations).forEach(config => {
+                projectJson.targets.serve.configurations[config].buildTarget = `${apiProject.name}:post-build`;
+              });
+            }
+          }
+          fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
+          Logger.info(`Added copy-env and post-build targets to ${apiProject.name}/project.json`);
+        }
+      }
+      
+      if (initUserDbProject) {
+        const projectJsonPath = path.join(monorepoPath, initUserDbProject.name, 'project.json');
+        if (fs.existsSync(projectJsonPath)) {
+          const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
+          projectJson.targets['copy-env'] = {
+            executor: 'nx:run-commands',
+            options: {
+              command: `cp ${initUserDbProject.name}/.env dist/${initUserDbProject.name}/.env`
+            }
+          };
+          projectJson.targets['post-build'] = {
+            executor: 'nx:run-commands',
+            dependsOn: ['build'],
+            options: {
+              commands: [
+                `cp ${initUserDbProject.name}/.env dist/${initUserDbProject.name}/.env`,
+                `cd dist/${initUserDbProject.name} && yarn install`
+              ],
+              parallel: false
+            }
+          };
+          // Update serve to depend on post-build instead of build
+          if (projectJson.targets.serve) {
+            projectJson.targets.serve.dependsOn = ['post-build'];
+            projectJson.targets.serve.options.buildTarget = `${initUserDbProject.name}:post-build`;
+            if (projectJson.targets.serve.configurations) {
+              Object.keys(projectJson.targets.serve.configurations).forEach(config => {
+                projectJson.targets.serve.configurations[config].buildTarget = `${initUserDbProject.name}:post-build`;
+              });
+            }
+          }
+          fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
+          Logger.info(`Added copy-env and post-build targets to ${initUserDbProject.name}/project.json`);
+        }
+      }
     },
   });
 
@@ -497,12 +568,39 @@ async function main() {
     description: 'Setting up environment files',
     execute: () => {
       const apiProject = projects.find(p => p.type === 'api');
+      const initUserDbProject = projects.find(p => p.type === 'inituserdb');
+      
+      // Setup API .env
       if (apiProject) {
         const envExamplePath = path.join(monorepoPath, apiProject.name, '.env.example');
         const envPath = path.join(monorepoPath, apiProject.name, '.env');
         if (fs.existsSync(envExamplePath) && !fs.existsSync(envPath)) {
           fs.copyFileSync(envExamplePath, envPath);
           Logger.info(`Created ${apiProject.name}/.env from .env.example`);
+        }
+      }
+      
+      // Setup inituserdb .env
+      if (initUserDbProject && apiProject) {
+        const apiEnvPath = path.join(monorepoPath, apiProject.name, '.env');
+        const initEnvPath = path.join(monorepoPath, initUserDbProject.name, '.env');
+        if (fs.existsSync(apiEnvPath) && !fs.existsSync(initEnvPath)) {
+          fs.copyFileSync(apiEnvPath, initEnvPath);
+          Logger.info(`Created ${initUserDbProject.name}/.env from ${apiProject.name}/.env`);
+        }
+      }
+      
+      // Setup devcontainer .env if devcontainer with MongoDB
+      if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
+        const devcontainerEnvPath = path.join(monorepoPath, '.devcontainer', '.env');
+        if (!fs.existsSync(devcontainerEnvPath)) {
+          const mongoUri = devcontainerChoice === 'mongodb-replicaset'
+            ? 'mongodb://localhost:27017/example-project?replicaSet=rs0&directConnection=true'
+            : 'mongodb://localhost:27017/example-project?directConnection=true';
+          
+          const envContent = `MONGO_URI=${mongoUri}\n`;
+          fs.writeFileSync(devcontainerEnvPath, envContent);
+          Logger.info('Created .devcontainer/.env with MongoDB configuration');
         }
       }
     },
@@ -599,6 +697,10 @@ async function main() {
     const apiProject = projects.find(p => p.type === 'api');
     if (apiProject) {
       Logger.warning(`\nIMPORTANT: Update ${apiProject.name}/.env with your configuration`);
+    }
+    
+    if (devcontainerChoice === 'mongodb' || devcontainerChoice === 'mongodb-replicaset') {
+      Logger.warning(`IMPORTANT: Update .devcontainer/.env with your MongoDB configuration`);
     }
     
     Logger.section('Next steps:');

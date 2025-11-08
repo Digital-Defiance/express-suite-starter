@@ -597,9 +597,20 @@ create-express-suite
 
 **Last Updated:** 2024 (Phase 4 Complete - Generator Working End-to-End!)
 **Status:** Production Ready ✅ - Build Passing! 🎉 - Serve Working! ✅
-**Version:** 2.5.4
+**Version:** 2.5.5
 
-### Recent Fixes (v2.5.4) - Package Alignment! 📦
+### Recent Fixes (v2.5.5) - Environment & Build Configuration! ⚙️
+- ✅ Added `.env` setup for all projects (api, inituserdb, devcontainer)
+- ✅ DevContainer `.env` automatically created with correct MONGO_URI
+  - Replica set: `mongodb://localhost:27017/dbname?replicaSet=rs0&directConnection=true`
+  - Single instance: `mongodb://localhost:27017/dbname?directConnection=true`
+- ✅ Added `copy-env` and `post-build` targets to api and inituserdb project.json
+- ✅ `serve` target now depends on `post-build` (ensures .env is copied to dist/)
+- ✅ Production deployment: `yarn build` then `node dist/{prefix}-api/main.js`
+- ✅ Updated completion messages to remind users about .env configuration
+- ✅ Documented production deployment workflow
+
+### Previous Fixes (v2.5.4) - Package Alignment! 📦
 - ✅ All Express Suite packages updated to v2.1.40
   - @digitaldefiance/i18n-lib@2.1.40
   - @digitaldefiance/ecies-lib@2.1.40

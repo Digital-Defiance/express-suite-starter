@@ -75,16 +75,24 @@ Note: Test utilities are provided by `@digitaldefiance/express-suite-test-utils`
 The generated monorepo includes:
 
 ```bash
-yarn build              # Build all packages
+# Development
 yarn build:dev          # Development build
-yarn serve:dev          # Start API server
+yarn serve:dev          # Start API server (dev mode)
+yarn serve:dev:stream   # Start API with streaming output
+
+# Production
+yarn build              # Production build (copies .env to dist/)
+yarn serve              # Start API server (production mode)
+node dist/example-project-api/main.js  # Direct production run
+
+# Testing & Database
 yarn test:all           # Run all tests
 yarn inituserdb:full:drop  # Initialize database
 ```
 
 ## Architecture
 
-### Structure (v2.4.0)
+### Structure (v2.1.40)
 
 ```
 src/
@@ -287,9 +295,33 @@ Logger.command('cmd')        // $ Gray
 - **95%+ coverage** on core components
 - **100% coverage** on critical paths
 
+## Environment Configuration
+
+### Development
+
+1. **API .env**: Update `{prefix}-api/.env` with your configuration
+2. **DevContainer .env** (if using MongoDB devcontainer): Update `.devcontainer/.env`
+   - Replica set: `MONGO_URI=mongodb://localhost:27017/dbname?replicaSet=rs0&directConnection=true`
+   - Single instance: `MONGO_URI=mongodb://localhost:27017/dbname?directConnection=true`
+
+### Production Deployment
+
+```bash
+# Build (copies .env to dist/)
+yarn build
+
+# Run from dist/
+node dist/example-project-api/main.js
+
+# Or use process manager
+pm2 start dist/example-project-api/main.js
+```
+
+The `.env` file is automatically copied to `dist/` during build via `post-build` target in `project.json`.
+
 ## Version
 
-**Current**: 2.5.1
+**Current**: 2.1.40
 
 **Status**: Production Ready ✅
 
@@ -302,3 +334,9 @@ Logger.command('cmd')        // $ Gray
 ## License
 
 MIT © Digital Defiance
+
+## ChangeLog
+
+### Version 2.1.41
+
+- Update MONGO_URI and docs
