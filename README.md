@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.52
+
+- Bugfix to workspacename
+
 ### Version 2.1.51
 
 - Misc updates
