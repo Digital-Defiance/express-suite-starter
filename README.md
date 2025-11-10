@@ -337,6 +337,8 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+- Missing file bugfix
+
 ### Version 2.1.52
 
 - Bugfix to workspacename
