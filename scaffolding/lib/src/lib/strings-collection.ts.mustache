@@ -1,10 +1,10 @@
 import { LanguageCodes } from '@digitaldefiance/i18n-lib';
-import { StringName } from './enumerations/string-name';
+import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-string-key';
 
 export const Strings = {
   [LanguageCodes.EN_US]: {
-    [StringName.SiteTitle]: 'Your Site Title',
-    [StringName.SiteDescription]: 'Your description here',
-    [StringName.SiteTagline]: 'Your tagline here',
+    [{{WorkspaceName}}StringKey.SiteTitle]: 'Your Site Title',
+    [{{WorkspaceName}}StringKey.SiteDescription]: 'Your description here',
+    [{{WorkspaceName}}StringKey.SiteTagline]: 'Your tagline here',
   },
 };

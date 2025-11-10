@@ -22,10 +22,10 @@ import {
   VerifyEmailPageWrapper
 } from '@digitaldefiance/express-suite-react-components';
 import { Constants } from '@digitaldefiance/suite-core-lib';
-import { ECIES } from '@digitaldefiance/ecies-lib';
 import { theme } from '@NAMESPACE@/react-lib';
 import { StringName, i18nEngine } from '@NAMESPACE@/lib';
 import { environment } from '../environments/environment';
+import { config as eciesConfig } from '../config/ecies';
 import SplashPage from './pages/SplashPage';
 import '../styles.scss';
 
@@ -48,7 +48,7 @@ const App: FC = () => {
         <ThemeProvider theme={theme}>
           <AppThemeProvider>
             <CssBaseline />
-            <AuthProvider baseUrl={API_BASE_URL} constants={Constants} eciesConfig={ECIES}>
+            <AuthProvider baseUrl={API_BASE_URL} constants={Constants} eciesConfig={eciesConfig}>
               <InnerApp />
             </AuthProvider>
           </AppThemeProvider>

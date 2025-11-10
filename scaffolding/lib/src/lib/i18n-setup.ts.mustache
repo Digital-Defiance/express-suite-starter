@@ -9,7 +9,7 @@ import {
   I18nEngine,
 } from '@digitaldefiance/i18n-lib';
 import { AppConstants } from './constants';
-import { StringName } from './enumerations/string-name';
+import { {{WorkspaceName}}StringKey } from './enumerations/{{WorkspaceName}}-string-key';
 import { Strings } from './strings-collection';
 import { createSuiteCoreComponentConfig } from '@digitaldefiance/suite-core-lib';
 
@@ -39,7 +39,7 @@ export { i18nEngine };
 const registrationResult = i18nEngine.registerIfNotExists({
   id: ComponentId,
   strings: componentStrings,
-  aliases: ['StringName'],
+  aliases: ['{{WorkspaceName}}StringKey'],
 });
 
 if (!registrationResult.isValid) {
@@ -71,7 +71,7 @@ export const i18nContext: IActiveContext<CoreLanguageCode> = {
 };
 
 export const translate = (
-  name: StringName,
+  name: {{WorkspaceName}}StringKey,
   variables?: Record<string, string | number>,
   language?: CoreLanguageCode,
   context?: LanguageContextSpace,

@@ -67,9 +67,16 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
     const isMustache = entry.name.endsWith('.mustache');
     const isHandlebars = entry.name.endsWith('.hbs');
     const isTemplate = isMustache || isHandlebars;
-    const destName = isMustache ? entry.name.replace(/\.mustache$/, '') : 
-                     isHandlebars ? entry.name.replace(/\.hbs$/, '') : 
-                     entry.name;
+    
+    // Render filename with variables (e.g., {{workspaceName}}-string-key.ts.mustache)
+    let destName = isMustache ? entry.name.replace(/\.mustache$/, '') : 
+                   isHandlebars ? entry.name.replace(/\.hbs$/, '') : 
+                   entry.name;
+    
+    if (variables && engine) {
+      destName = engine.render(destName, variables);
+    }
+    
     const destPath = path.join(destDir, destName);
     
     if (entry.isDirectory()) {
