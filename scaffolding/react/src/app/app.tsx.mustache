@@ -22,8 +22,8 @@ import {
   VerifyEmailPageWrapper
 } from '@digitaldefiance/express-suite-react-components';
 import { Constants } from '@digitaldefiance/suite-core-lib';
-import { theme } from '@{{namespace}}/react-lib';
-import { {{WorkspaceName}}StringKey, i18nEngine } from '@{{namespace}}/lib';
+import { theme } from '{{namespace}}/react-lib';
+import { {{WorkspaceName}}StringKey, i18nEngine } from '{{namespace}}/lib';
 import { environment } from '../environments/environment';
 import { config as eciesConfig } from '../config/ecies';
 import SplashPage from './pages/SplashPage';
@@ -60,7 +60,7 @@ const App: FC = () => {
 
 const InnerApp: FC = () => {
   return (
-    <Box className="app-container" sx={{ paddingTop: '64px' }}>
+    {{=<% %>=}}<Box className="app-container" sx={{ paddingTop: '64px' }}><%={{ }}=%>
       <TopMenu Logo="/assets/albatross.svg" />
       <Routes>
                 <Route path="/" element={<SplashPage />} />

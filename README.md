@@ -337,6 +337,12 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.54
+
+- Fix @@ in app.tsx
+
+### Version 2.1.53
+
 - Missing file bugfix
 
 ### Version 2.1.52
