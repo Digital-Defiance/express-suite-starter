@@ -626,6 +626,12 @@ async function main() {
         addScripts['build:react'] = `npx nx build ${reactProject.name}`;
       }
 
+      const initUserDbProject = projects.find(p => p.type === 'inituserdb');
+      if (initUserDbProject) {
+        addScripts['inituserdb'] = `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream`;
+        addScripts['inituserdb:drop'] = `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args=--drop`;
+      }
+
       const interpolatedScripts: Record<string, string> = {};
       for (const [k, v] of Object.entries(addScripts)) {
         interpolatedScripts[k] = interpolateTemplateStrings(v, scriptContext);

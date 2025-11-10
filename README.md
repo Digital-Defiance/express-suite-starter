@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.55
+
+- Add inituserdb to package.json
+
 ### Version 2.1.54
 
 - Fix @@ in app.tsx
