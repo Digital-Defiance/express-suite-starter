@@ -564,7 +564,7 @@ async function main() {
         const devcontainerSrc = path.join(scaffoldingDir, `devcontainer-${devcontainerChoice}`);
         if (fs.existsSync(devcontainerSrc)) {
           Logger.info(`Copying devcontainer configuration: ${devcontainerChoice}`);
-          copyDir(devcontainerSrc, monorepoPath, scaffoldingVars, 'mustache', context.dryRun);
+          copyDir(devcontainerSrc, monorepoPath, scaffoldingVars, 'handlebars', context.dryRun);
         }
       }
 
@@ -652,6 +652,14 @@ async function main() {
       const apiProject = projects.find(p => p.type === 'api');
       const initUserDbProject = projects.find(p => p.type === 'inituserdb');
       
+      // Escape password for .env file usage
+      const escapeEnvValue = (value: string) => {
+        // Use single quotes - safest for passwords with special chars
+        // Only need to escape single quotes themselves
+        const escaped = value.replace(/'/g, "'\\''")
+        return `'${escaped}'`;
+      };
+      
       // Build MONGO_URI with optional password (URL-encode password for special characters)
       const buildMongoUri = (dbName: string) => {
         const auth = mongoPassword ? `root:${encodeURIComponent(mongoPassword)}@` : '';
@@ -717,30 +725,16 @@ async function main() {
           let envContent = fs.readFileSync(devcontainerEnvExamplePath, 'utf-8');
           const mongoUri = buildMongoUri(workspaceName);
           
-          // Replace MongoDB configuration
-          envContent = envContent.replace(/MONGO_INITDB_ROOT_PASSWORD=.*/g, `MONGO_INITDB_ROOT_PASSWORD=${mongoPassword}`);
+          // Replace MongoDB configuration for Docker Compose
+          envContent = envContent.replace(/MONGO_INITDB_ROOT_PASSWORD=.*/g, `MONGO_INITDB_ROOT_PASSWORD=${escapeEnvValue(mongoPassword)}`);
           envContent = envContent.replace(/MONGO_INITDB_DATABASE=.*/g, `MONGO_INITDB_DATABASE=${workspaceName}`);
           envContent = envContent.replace(/COMPOSE_PROJECT_NAME=.*/g, `COMPOSE_PROJECT_NAME=${workspaceName}_devcontainer`);
-          
-          // Add MONGO_PASSWORD and MONGO_URI if not present
-          if (!envContent.includes('MONGO_PASSWORD=')) {
-            envContent += `\nMONGO_PASSWORD=${mongoPassword}\n`;
-          } else {
-            envContent = envContent.replace(/MONGO_PASSWORD=.*/g, `MONGO_PASSWORD=${mongoPassword}`);
-          }
-          
-          if (!envContent.includes('MONGO_URI=')) {
-            envContent += `MONGO_URI=${mongoUri}\n`;
-          } else {
-            envContent = envContent.replace(/MONGO_URI=.*/g, `MONGO_URI=${mongoUri}`);
-          }
           
           fs.writeFileSync(devcontainerEnvPath, envContent);
           Logger.info(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE));
         } else {
           // Fallback to minimal .env if .env.example doesn't exist
-          const mongoUri = buildMongoUri(workspaceName);
-          const envContent = `MONGO_PASSWORD=${mongoPassword}\nMONGO_URI=${mongoUri}\n`;
+          const envContent = `MONGO_INITDB_ROOT_PASSWORD=${escapeEnvValue(mongoPassword)}\nMONGO_INITDB_DATABASE=${workspaceName}\nCOMPOSE_PROJECT_NAME=${workspaceName}_devcontainer\n`;
           fs.writeFileSync(devcontainerEnvPath, envContent);
           Logger.warning(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL));
         }

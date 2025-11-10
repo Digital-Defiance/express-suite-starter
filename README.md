@@ -337,6 +337,26 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.50
+
+#### Added:
+
+- Complete user guide and deployment documentation
+
+- Runtime configuration support for multi-domain deployments
+
+#### Changed:
+
+- inituserdb now always included (breaking change)
+
+- React app uses environment-based API URLs
+
+#### Fixed:
+
+- Template renderer no longer copies .mustache source files
+
+- VerifyEmailPage wrapper usage in scaffolding
+
 ### Version 2.1.45
 
 - Translate UI

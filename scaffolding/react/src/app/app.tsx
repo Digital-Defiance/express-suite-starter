@@ -8,33 +8,61 @@ import {
   UnAuthRoute, 
   TopMenu,
   DashboardPage,
-  LoginForm,
-  RegisterForm,
-  LogoutPage,
+  LogoutPageWrapper,
   TranslatedTitle,
   AppThemeProvider,
   I18nProvider as TranslationProvider,
   ApiAccess,
-  BackupCodeLoginForm,
-  BackupCodesForm,
-  ChangePasswordForm,
-  VerifyEmailPage
+  AuthProvider,
+  BackupCodeLoginWrapper,
+  BackupCodesWrapper,
+  ChangePasswordFormWrapper,
+  LoginFormWrapper,
+  RegisterFormWrapper,
+  VerifyEmailPageWrapper
 } from '@digitaldefiance/express-suite-react-components';
+import { Constants } from '@digitaldefiance/suite-core-lib';
+import { ECIES } from '@digitaldefiance/ecies-lib';
 import { theme } from '@NAMESPACE@/react-lib';
+import { StringName, i18nEngine } from '@NAMESPACE@/lib';
+import { environment } from '../environments/environment';
 import SplashPage from './pages/SplashPage';
 import '../styles.scss';
+
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && (window as any).__RUNTIME_CONFIG__) {
+    return (window as any).__RUNTIME_CONFIG__.apiUrl?.replace(/\/api$/, '') || '';
+  }
+  return environment.apiUrl.replace(/\/api$/, '');
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+
 
 const App: FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <TranslationProvider>
-        <TranslatedTitle />
+      <TranslationProvider i18nEngine={i18nEngine}>
+        <TranslatedTitle<StringName> componentId="StringName" stringKey={StringName.SiteTitle} />
         <ThemeProvider theme={theme}>
           <AppThemeProvider>
             <CssBaseline />
-            <Box className="app-container" sx={{ paddingTop: '64px' }}>
-              <TopMenu />
-              <Routes>
+            <AuthProvider baseUrl={API_BASE_URL} constants={Constants} eciesConfig={ECIES}>
+              <InnerApp />
+            </AuthProvider>
+          </AppThemeProvider>
+        </ThemeProvider>
+      </TranslationProvider>
+    </LocalizationProvider>
+  );
+};
+
+const InnerApp: FC = () => {
+  return (
+    <Box className="app-container" sx={{ paddingTop: '64px' }}>
+      <TopMenu Logo="/assets/albatross.svg" />
+      <Routes>
                 <Route path="/" element={<SplashPage />} />
                 <Route
                   path="/api-access"
@@ -44,12 +72,12 @@ const App: FC = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="/backup-code" element={<BackupCodeLoginForm />} />
+                <Route path="/backup-code" element={<BackupCodeLoginWrapper />} />
                 <Route
                   path="/backup-codes"
                   element={
                     <PrivateRoute>
-                      <BackupCodesForm />
+                      <BackupCodesWrapper baseUrl={API_BASE_URL} />
                     </PrivateRoute>
                   }
                 />
@@ -57,7 +85,7 @@ const App: FC = () => {
                   path="/login"
                   element={
                     <UnAuthRoute>
-                      <LoginForm />
+                      <LoginFormWrapper />
                     </UnAuthRoute>
                   }
                 />
@@ -65,7 +93,7 @@ const App: FC = () => {
                   path="/logout"
                   element={
                     <PrivateRoute>
-                      <LogoutPage />
+                      <LogoutPageWrapper />
                     </PrivateRoute>
                   }
                 />
@@ -73,7 +101,7 @@ const App: FC = () => {
                   path="/register"
                   element={
                     <UnAuthRoute>
-                      <RegisterForm />
+                      <RegisterFormWrapper />
                     </UnAuthRoute>
                   }
                 />
@@ -89,7 +117,7 @@ const App: FC = () => {
                   path="/change-password"
                   element={
                     <PrivateRoute>
-                      <ChangePasswordForm />
+                      <ChangePasswordFormWrapper />
                     </PrivateRoute>
                   }
                 />
@@ -97,16 +125,12 @@ const App: FC = () => {
                   path="/verify-email"
                   element={
                     <UnAuthRoute>
-                      <VerifyEmailPage />
+                      <VerifyEmailPageWrapper baseUrl={API_BASE_URL} />
                     </UnAuthRoute>
                   }
                 />
-              </Routes>
-            </Box>
-          </AppThemeProvider>
-        </ThemeProvider>
-      </TranslationProvider>
-    </LocalizationProvider>
+      </Routes>
+    </Box>
   );
 };
 

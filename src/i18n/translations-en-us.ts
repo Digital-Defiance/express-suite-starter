@@ -29,7 +29,7 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'Enter the npm namespace:',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: 'Enter the parent directory:',
   [StarterStringKey.PROMPT_GIT_REPO]: 'Enter the git repository URL (optional):',
-  [StarterStringKey.PROMPT_HOSTNAME]: 'Enter the hostname for development:',
+  [StarterStringKey.PROMPT_HOSTNAME]: 'Enter the hostname that will be used for production:',
   [StarterStringKey.PROMPT_DRY_RUN]: 'Run in dry-run mode (preview without creating files)?',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: 'Include E2E tests?',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'Select optional package groups:',

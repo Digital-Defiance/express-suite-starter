@@ -2,11 +2,12 @@
 
 ## Summary
 
-The Express Suite Starter scaffolding is now complete with a full MERN stack application setup that mirrors the DigitalBurnbag architecture but with generic, reusable components.
+The Express Suite Starter scaffolding is now complete with a full MERN stack application setup that mirrors the source project architecture but with generic, reusable components.
 
 ## What's Included
 
 ### React Application (`react/`)
+
 - ✅ **Complete routing** with all authentication pages
 - ✅ **Main app** (`app.tsx`) with LocalizationProvider, ThemeProvider, and routing
 - ✅ **Splash page** with conditional navigation based on auth state
@@ -15,22 +16,25 @@ The Express Suite Starter scaffolding is now complete with a full MERN stack app
 - ✅ **Test setup** for Jest
 
 ### React Library (`react-lib/`)
+
 - ✅ **Custom theme** (theme.tsx) with Material-UI configuration
 - ✅ **Re-exports** all components from `@digitaldefiance/express-suite-react-components`
 - ✅ Provides single import point for all React components
 
 ### Templates
+
 - ✅ **API .env.example** with all required configuration variables
 - ✅ **Root README** with comprehensive setup instructions
 
 ### DevContainer Configurations
+
 - ✅ Simple (Node.js only)
 - ✅ With MongoDB
 - ✅ With MongoDB Replica Set (default)
 
 ## Routes Included
 
-All routes from DigitalBurnbag, genericized:
+All routes from source, genericized:
 
 - `/` - Splash page
 - `/login` - Login form (UnAuthRoute)
@@ -48,6 +52,7 @@ All routes from DigitalBurnbag, genericized:
 The scaffolding leverages these pre-built components:
 
 ### Auth Components
+
 - `LoginForm` - Email/password login
 - `RegisterForm` - User registration
 - `BackupCodeLoginForm` - Backup code authentication
@@ -56,10 +61,12 @@ The scaffolding leverages these pre-built components:
 - `BackupCodesForm` - Backup codes display
 
 ### Route Guards
+
 - `PrivateRoute` - Requires authentication
 - `UnAuthRoute` - Redirects if authenticated
 
 ### UI Components
+
 - `TopMenu` - Navigation bar
 - `DashboardPage` - User dashboard
 - `ApiAccess` - API key management
@@ -67,14 +74,17 @@ The scaffolding leverages these pre-built components:
 - `TranslatedTitle` - Dynamic page titles
 
 ### Providers
+
 - `TranslationProvider` - i18n support
 - `AppThemeProvider` - Theme management
 
 ### Services
+
 - `api` - Axios instance for public endpoints
 - `authenticatedApi` - Axios instance with JWT interceptor
 
 ### Hooks
+
 - `useAuth` - Authentication context
 - `useLocalStorage` - Persistent state
 - `useExpiringValue` - Time-limited values

@@ -21,11 +21,12 @@ export function renderTemplates(
     
     for (const entry of entries) {
       const srcPath = path.join(srcDir, entry.name);
-      const destPath = path.join(outDir, entry.name.replace(/\\.mustache$/, ''));
+      const isMustache = entry.name.endsWith('.mustache');
+      const destPath = path.join(outDir, isMustache ? entry.name.replace(/\.mustache$/, '') : entry.name);
       
       if (entry.isDirectory()) {
         renderDir(srcPath, destPath);
-      } else if (entry.isFile()) {
+      } else if (entry.isFile() && isMustache) {
         const template = fs.readFileSync(srcPath, 'utf8');
         const rendered = engine.render(template, variables);
         if (!dryRun) {
@@ -64,7 +65,11 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
   for (const entry of entries) {
     const srcPath = path.join(srcDir, entry.name);
     const isMustache = entry.name.endsWith('.mustache');
-    const destName = isMustache ? entry.name.replace(/\.mustache$/, '') : entry.name;
+    const isHandlebars = entry.name.endsWith('.hbs');
+    const isTemplate = isMustache || isHandlebars;
+    const destName = isMustache ? entry.name.replace(/\.mustache$/, '') : 
+                     isHandlebars ? entry.name.replace(/\.hbs$/, '') : 
+                     entry.name;
     const destPath = path.join(destDir, destName);
     
     if (entry.isDirectory()) {
@@ -77,8 +82,8 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
         fs.mkdirSync(path.dirname(destPath), { recursive: true });
       }
       
-      if (isMustache && engine && variables) {
-        // Render mustache template
+      if (isTemplate && engine && variables) {
+        // Render template (mustache or handlebars)
         const template = fs.readFileSync(srcPath, 'utf8');
         const rendered = engine.render(template, variables);
         if (!dryRun) {

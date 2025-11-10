@@ -18,10 +18,7 @@ interface SyncConfig {
 }
 
 const DEFAULT_REPLACEMENTS: Record<string, string> = {
-  'digital-burnbag': '{{workspaceName}}',
-  'DigitalBurnbag': '{{WorkspaceName}}',
-  'digitalBurnbag': '{{workspaceNameCamel}}',
-  'DIGITAL_BURNBAG': '{{WORKSPACE_NAME}}',
+  'DIGITAL_DEFIANCE': '{{WORKSPACE_NAME}}',
   '@digitaldefiance': '{{namespace}}',
   'digitaldefiance': '{{namespaceShort}}',
 };

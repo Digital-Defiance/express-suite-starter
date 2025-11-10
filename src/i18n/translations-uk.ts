@@ -18,7 +18,7 @@ export const ukTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'Введіть простір імен npm:',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: 'Введіть батьківський каталог:',
   [StarterStringKey.PROMPT_GIT_REPO]: 'Введіть URL git-репозиторію (необов\'язково):',
-  [StarterStringKey.PROMPT_HOSTNAME]: 'Введіть ім\'я хоста для розробки:',
+  [StarterStringKey.PROMPT_HOSTNAME]: 'Введіть ім\'я хоста, яке буде використовуватися для продакшну:',
   [StarterStringKey.PROMPT_DRY_RUN]: 'Запустити в режимі пробного запуску (попередній перегляд без створення файлів)?',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: 'Включити E2E тести?',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'Виберіть опціональні групи пакетів:',

@@ -18,7 +18,7 @@ export const deTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'Geben Sie den npm-Namespace ein:',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: 'Geben Sie das übergeordnete Verzeichnis ein:',
   [StarterStringKey.PROMPT_GIT_REPO]: 'Geben Sie die Git-Repository-URL ein (optional):',
-  [StarterStringKey.PROMPT_HOSTNAME]: 'Geben Sie den Hostnamen für die Entwicklung ein:',
+  [StarterStringKey.PROMPT_HOSTNAME]: 'Geben Sie den Hostnamen ein, der für die Produktion verwendet wird:',
   [StarterStringKey.PROMPT_DRY_RUN]: 'Im Testmodus ausführen (Vorschau ohne Dateierstellung)?',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: 'E2E-Tests einschließen?',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'Wählen Sie optionale Paketgruppen:',

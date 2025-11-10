@@ -22,7 +22,7 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: '输入 npm 命名空间：',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: '输入父目录：',
   [StarterStringKey.PROMPT_GIT_REPO]: '输入 git 仓库 URL（可选）：',
-  [StarterStringKey.PROMPT_HOSTNAME]: '输入开发主机名：',
+  [StarterStringKey.PROMPT_HOSTNAME]: '输入将用于生产环境的主机名：',
   [StarterStringKey.PROMPT_DRY_RUN]: '以试运行模式运行（预览而不创建文件）？',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: '包含 E2E 测试？',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: '选择可选包组：',

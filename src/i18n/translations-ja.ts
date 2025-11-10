@@ -18,7 +18,7 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'npm 名前空間を入力してください：',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: '親ディレクトリを入力してください：',
   [StarterStringKey.PROMPT_GIT_REPO]: 'git リポジトリ URL を入力してください（オプション）：',
-  [StarterStringKey.PROMPT_HOSTNAME]: '開発用のホスト名を入力してください：',
+  [StarterStringKey.PROMPT_HOSTNAME]: '本番環境で使用されるホスト名を入力してください：',
   [StarterStringKey.PROMPT_DRY_RUN]: 'ドライランモードで実行しますか（ファイルを作成せずにプレビュー）？',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: 'E2E テストを含めますか？',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'オプションのパッケージグループを選択してください：',

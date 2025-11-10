@@ -26,7 +26,7 @@ cd ${WORKSPACE} && corepack yarn config set nodeLinker node-modules
 cd ${WORKSPACE} && ./npm-install-globals.sh
 cd ${WORKSPACE} && ./do-yarn.sh || echo "Dependency installation failed"
 
-cd ${WORKSPACE} && /usr/local/bin/mkcert localhost {{HOSTNAME}}
+cd ${WORKSPACE} && /usr/local/bin/mkcert localhost {{hostname}}
 
 echo ""
 cd ${WORKSPACE} && yarn playwright install --with-deps || echo "Playwright installation failed"

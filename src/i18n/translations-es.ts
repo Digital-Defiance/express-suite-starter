@@ -22,7 +22,7 @@ export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'Ingrese el espacio de nombres npm:',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: 'Ingrese el directorio padre:',
   [StarterStringKey.PROMPT_GIT_REPO]: 'Ingrese la URL del repositorio git (opcional):',
-  [StarterStringKey.PROMPT_HOSTNAME]: 'Ingrese el nombre de host para desarrollo:',
+  [StarterStringKey.PROMPT_HOSTNAME]: 'Ingrese el nombre de host que se utilizará para producción:',
   [StarterStringKey.PROMPT_DRY_RUN]: '¿Ejecutar en modo de prueba (vista previa sin crear archivos)?',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: '¿Incluir pruebas E2E?',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'Seleccione grupos de paquetes opcionales:',

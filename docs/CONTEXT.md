@@ -90,7 +90,9 @@ The generator currently creates these projects:
 4. **{prefix}-api-lib** - API business logic
 5. **{prefix}-api-e2e** - API end-to-end tests
 6. **{prefix}-react-e2e** - React end-to-end tests
-7. **{prefix}-inituserdb** - Database initialization
+7. **{prefix}-inituserdb** - Database initialization (always included)
+8. **{prefix}-api-e2e** - API E2E tests (optional)
+9. **{prefix}-react-e2e** - React E2E tests (optional)
 
 Note: Test utilities provided by `@digitaldefiance/express-suite-test-utils` package (always included in dev dependencies).
 
@@ -475,16 +477,16 @@ yarn sync-templates    # Sync templates from reference project
 
 ### Generated Projects
 
-Successfully generates 7 projects:
+Successfully generates 8 projects:
 
 1. **{prefix}-lib** - Shared library with i18n setup, constants, string enumerations
 2. **{prefix}-react** - React 19 frontend with Vite, components, pages, assets
 3. **{prefix}-api** - Express 5 API server with main.ts, views, .env.example
-4. **{prefix}-react-lib** - React component library with theme (optional)
+4. **{prefix}-react-lib** - React component library with theme
 5. **{prefix}-api-lib** - API business logic with App, Environment, Constants, interfaces
-6. **{prefix}-api-e2e** - API E2E tests (Jest)
-7. **{prefix}-react-e2e** - React E2E tests (Playwright, optional)
-8. **{prefix}-inituserdb** - Database initialization (optional)
+6. **{prefix}-inituserdb** - Database initialization (always included)
+7. **{prefix}-api-e2e** - API E2E tests (Jest, optional)
+8. **{prefix}-react-e2e** - React E2E tests (Playwright, optional)
 
 Note: `@digitaldefiance/express-suite-test-utils` always included as dev dependency.
 
@@ -738,7 +740,7 @@ create-express-suite
 
 ### Completed - Full Generation Working! 🎉
 
-**All 14 Steps Complete - BUILDS PASSING! ✅:**
+**All 15 Steps Complete - BUILDS PASSING! ✅:**
 
 1. ✅ Check target directory
 2. ✅ Create Nx monorepo
@@ -762,3 +764,16 @@ create-express-suite
 - ✅ Rollup postinstall errors
 - ✅ System requirements checking
 - ✅ Clear error messages with solutions
+
+
+## Most Recent Topic
+**Topic**: Fixing VerifyEmailPage missing props error in scaffolding app.tsx
+
+**Progress**: The scaffolding app was using VerifyEmailPage directly, but VerifyEmailPage requires `token` and `onVerify` props. The solution was to use VerifyEmailPageWrapper instead, which was already created in the wrappers/index.tsx file and handles:
+- Extracting token from URL query parameters
+- Creating authenticated API client
+- Providing handleVerify callback
+- Passing both token and onVerify to VerifyEmailPage
+
+**Tools Used**:
+- **fsReplace**: Updated scaffolding app.tsx to import and use VerifyEmailPageWrapper instead of VerifyEmailPage in the /verify-email route, resolving the TypeScript error about missing required props
