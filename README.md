@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.60
+
+- CORS + mkcert tweaks
+
 ### Version 2.1.59
 
 - Fix views assets project.json config

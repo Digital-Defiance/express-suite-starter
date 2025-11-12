@@ -16,7 +16,7 @@ import { IncomingMessage, ServerResponse } from 'http';
    * CORS whitelist
    */
   const corsWhitelist = [
-    /^https?:\/\/localhost:(3000|3443)$/,
+    /^https?:\/\/localhost:(3000|3443|4200)$/,
     new RegExp(
       `^https?:\\/\\/${AppConstants.SiteHostname.replace(
         /[.*+?^${}()|[\]\\]/g,
@@ -77,9 +77,11 @@ export const initMiddleware = (app: Application): void => {
             "'self'",
             'http://localhost:3000',
             'https://localhost:3000',
+            'http://localhost:4200',
+            'https://localhost:4200',
             'https://localhost:3443',
-            `https://${AppConstants.SiteHostname}`,
             `http://${AppConstants.SiteHostname}`,
+            `https://${AppConstants.SiteHostname}`,
           ],
           scriptSrc: [
             "'self'",
