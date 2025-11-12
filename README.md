@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.62
+
+- Fix AuthProvider navigation
+
 ### Version 2.1.61
 
 - Fix vite.config

@@ -1,8 +1,8 @@
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { FC } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { FC, useCallback } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { 
   PrivateRoute, 
   UnAuthRoute, 
@@ -38,7 +38,24 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
+const AuthProviderWithNavigation: FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+  
+  const handleLogout = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
 
+  return (
+    <AuthProvider 
+      baseUrl={API_BASE_URL} 
+      constants={Constants} 
+      eciesConfig={eciesConfig}
+      onLogout={handleLogout}
+    >
+      {children}
+    </AuthProvider>
+  );
+};
 
 const App: FC = () => {
   return (
@@ -48,9 +65,9 @@ const App: FC = () => {
         <ThemeProvider theme={theme}>
           <AppThemeProvider>
             <CssBaseline />
-            <AuthProvider baseUrl={API_BASE_URL} constants={Constants} eciesConfig={eciesConfig}>
+            <AuthProviderWithNavigation>
               <InnerApp />
-            </AuthProvider>
+            </AuthProviderWithNavigation>
           </AppThemeProvider>
         </ThemeProvider>
       </TranslationProvider>
