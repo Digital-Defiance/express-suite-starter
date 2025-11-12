@@ -176,7 +176,7 @@ describe('i18n Translations', () => {
 
         expect(steps[0]).toBe('Starting generation (5 steps)');
         expect(steps[1]).toBe('Checking target directory');
-        expect(steps[2]).toBe('Creating Nx monorepo');
+        expect(steps[2]).toBe('Creating Nx workspace');
         expect(steps[3]).toBe('Generating project structure');
         expect(steps[4]).toBe('Generation complete!');
       });

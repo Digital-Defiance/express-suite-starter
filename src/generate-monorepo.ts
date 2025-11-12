@@ -442,6 +442,15 @@ async function main() {
         const projectJsonPath = path.join(monorepoPath, apiProject.name, 'project.json');
         if (fs.existsSync(projectJsonPath)) {
           const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
+          
+          // Add views directory to assets if not already present
+          if (projectJson.targets?.build?.options?.assets) {
+            const viewsPath = `${apiProject.name}/src/views`;
+            if (!projectJson.targets.build.options.assets.includes(viewsPath)) {
+              projectJson.targets.build.options.assets.push(viewsPath);
+            }
+          }
+          
           projectJson.targets['copy-env'] = {
             executor: 'nx:run-commands',
             options: {

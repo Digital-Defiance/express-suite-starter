@@ -16,11 +16,13 @@ import { IncomingMessage, ServerResponse } from 'http';
    * CORS whitelist
    */
   const corsWhitelist = [
-    'http://localhost:3000',
-    'https://localhost:3000',
-    'https://localhost:3443',
-    `http://${AppConstants.SiteHostname}`,
-    `https://${AppConstants.SiteHostname}`,
+    /^https?:\/\/localhost:(3000|3443)$/,
+    new RegExp(
+      `^https?:\\/\\/${AppConstants.SiteHostname.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        '\\$&'
+      )}$`
+    ),
   ];
 
   /**

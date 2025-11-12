@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.57
+
+- Misc Improvements
+
 ### Version 2.1.55
 
 - Add inituserdb to package.json

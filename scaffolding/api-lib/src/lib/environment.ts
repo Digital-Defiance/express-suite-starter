@@ -1,9 +1,10 @@
 import { SecureString } from '@digitaldefiance/ecies-lib';
-import { Environment as BaseEnvironment } from '@digitaldefiance/node-express-suite';
+import { Environment as BaseEnvironment, emailServiceRegistry } from '@digitaldefiance/node-express-suite';
 import { IEnvironment } from './interfaces/environment';
 import { IEnvironmentAws } from './interfaces/environment-aws';
 import { Constants } from './constants';
 import { getSuiteCoreTranslation, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
+import { EmailService } from './services/email';
 
 export class Environment extends BaseEnvironment implements IEnvironment {
   private _aws: IEnvironmentAws;
@@ -18,14 +19,20 @@ export class Environment extends BaseEnvironment implements IEnvironment {
       region: (envObj as any)['AWS_REGION'] ?? 'us-west-2',
     };
 
-    if (process.env['NODE_ENV'] !== 'test' && this._aws.accessKeyId.length === 0) {
+    if (process.env['NODE_ENV'] !== 'test' &&
+        process.env['NODE_ENV'] !== 'development' &&
+        emailServiceRegistry.isServiceType(EmailService) && // only enforce if real EmailService is used
+       this._aws.accessKeyId.length === 0) {
       throw new Error(
         getSuiteCoreTranslation(SuiteCoreStringKey.Admin_EnvNotSetTemplate, {
           variable: 'AWS_ACCESS_KEY_ID',
         }),
       );
     }
-    if (process.env['NODE_ENV'] !== 'test' && this._aws.secretAccessKey.length === 0) {
+    if (process.env['NODE_ENV'] !== 'test' && 
+        process.env['NODE_ENV'] !== 'development' &&
+        emailServiceRegistry.isServiceType(EmailService) && // only enforce if real EmailService is used
+      this._aws.secretAccessKey.length === 0) {
       throw new Error(
         getSuiteCoreTranslation(SuiteCoreStringKey.Admin_EnvNotSetTemplate, {
           variable: 'AWS_SECRET_ACCESS_KEY',
