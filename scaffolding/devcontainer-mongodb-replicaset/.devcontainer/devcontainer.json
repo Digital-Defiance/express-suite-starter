@@ -9,13 +9,21 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
+  // Add container environment variables to help with stability
   "containerEnv": {
-    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0",
+    "VSCODE_REMOTE_CONTAINERS_SESSION": "${containerSessionId}"
   },
   // You can also add hostRequirements to check if the host has enough memory
   "hostRequirements": {
-    "memory": "8gb"
+    "memory": "16gb",
+    "cpus": 4
   },
+  "runArgs": [
+    "--memory=12g",
+    "--memory-swap=16g",
+    "--cpus=4"
+  ],
   // Configure tool-specific properties.
   "customizations": {
     // Configure properties specific to VS Code.
@@ -55,8 +63,4 @@
     "SHELL": "/bin/bash"
   },
   "overrideCommand": false,
-  // Add container environment variables to help with stability
-  "containerEnv": {
-    "VSCODE_REMOTE_CONTAINERS_SESSION": "${containerSessionId}"
-  }
 }

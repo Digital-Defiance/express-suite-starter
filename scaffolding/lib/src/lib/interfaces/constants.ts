@@ -4,6 +4,7 @@ export interface IConstants extends ISuiteCoreConstants {
   readonly Site: string;
   readonly SiteTagline: string;
   readonly SiteDescription: string;
+  readonly SiteHostname: string;
   readonly PasswordRegex: RegExp;
   readonly UsernameMinLength: number;
   readonly UsernameMaxLength: number;

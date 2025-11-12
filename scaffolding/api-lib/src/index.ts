@@ -3,3 +3,7 @@ export * from './lib/constants';
 export * from './lib/environment';
 export * from './lib/interfaces/constants';
 export * from './lib/interfaces/environment';
+export * from './lib/documents';
+export * from './lib/routers';
+export * from './lib/schemas';
+export * from './lib/services';

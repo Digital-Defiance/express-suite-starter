@@ -14,6 +14,15 @@
       ]
     }
   },
+  "hostRequirements": {
+    "memory": "16gb",
+    "cpus": 4
+  },
+  "runArgs": [
+    "--memory=12g",
+    "--memory-swap=16g",
+    "--cpus=4"
+  ],
   "forwardPorts": [3000, 27017],
   "postCreateCommand": "yarn install"
 }

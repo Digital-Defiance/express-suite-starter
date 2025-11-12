@@ -7,6 +7,10 @@ services:
       - ../..:/workspaces:cached
     command: sleep infinity
     network_mode: service:db
+    # Add memory limits to prevent OOM kills
+    mem_limit: 16g
+    memswap_limit: 16g
+    cpus: 4
 
   db:
     image: mongo:8

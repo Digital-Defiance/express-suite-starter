@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "2.1.55",
+  "version": "2.1.56",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -14,8 +14,8 @@
   "scripts": {
     "start": "npx tsc && node dist/src/generate-monorepo.js",
     "create-project": "yarn start",
-    "build": "npx tsc",
-    "build:logged": "npx tsc 2>&1 | ansifilter -o build.log",
+    "build": "npx tsc && chmod +x dist/src/cli.js",
+    "build:logged": "npx tsc 2>&1 | ansifilter -o build.log && chmod +x dist/src/cli.js",
     "test": "npx jest",
     "test:watch": "npx jest --watch",
     "test:coverage": "npx jest --coverage",

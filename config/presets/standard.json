@@ -51,6 +51,7 @@
       "@mui/material",
       "@mui/system",
       "@mui/x-date-pickers",
+      "@aws-sdk/client-ses",
       "axios",
       "bip39",
       "currency-codes",

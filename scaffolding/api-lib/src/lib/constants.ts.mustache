@@ -1,10 +1,8 @@
 import { IConstants } from './interfaces/constants';
 import { createExpressConstants } from '@digitaldefiance/node-express-suite';
 
-export const HOSTNAME = '{{hostname}}' as const;
-
 export const Constants: IConstants = {
-  ...createExpressConstants(HOSTNAME),
+  ...createExpressConstants('{{hostname}}', '{{hostname}}'),
   Site: '{{workspaceName}}' as const,
   SiteTagline: 'Your tagline here' as const,
   SiteDescription: 'Your description here' as const,

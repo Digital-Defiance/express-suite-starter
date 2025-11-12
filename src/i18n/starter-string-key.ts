@@ -74,6 +74,7 @@ export enum StarterStringKey {
   // Step Descriptions
   STEP_CHECK_TARGET_DIR = 'step_checkTargetDir',
   STEP_CREATE_MONOREPO = 'step_createMonorepo',
+  STEP_UPDATE_TSCONFIG_BASE = 'step_updateTsConfigBase',
   STEP_SETUP_GIT_ORIGIN = 'step_setupGitOrigin',
   STEP_YARN_BERRY_SETUP = 'step_yarnBerrySetup',
   STEP_ADD_NX_PLUGINS = 'step_addNxPlugins',
@@ -108,6 +109,9 @@ export enum StarterStringKey {
   PROJECT_ADDED_TARGETS = 'project_addedTargets',
   PROJECT_INSTALLING_PACKAGE = 'project_installingPackage',
   PROJECT_COPYING_DEVCONTAINER = 'project_copyingDevcontainer',
+  
+  // TypeScript Configuration
+  TSCONFIG_BASE_UPDATED = 'tsconfig_baseUpdated',
   
   // Environment Setup
   ENV_CREATED_WITH_SECRETS = 'env_createdWithSecrets',

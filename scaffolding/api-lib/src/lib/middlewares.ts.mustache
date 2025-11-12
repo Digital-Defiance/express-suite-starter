@@ -1,0 +1,109 @@
+import { AppConstants } from '{{namespace}}/lib';
+import cors from 'cors';
+import { randomBytes } from 'crypto';
+import {
+  Application,
+  json,
+  NextFunction,
+  Request,
+  Response,
+  urlencoded,
+} from 'express';
+import helmet from 'helmet';
+import { IncomingMessage, ServerResponse } from 'http';
+
+  /**
+   * CORS whitelist
+   */
+  const corsWhitelist = [
+    'http://localhost:3000',
+    'https://localhost:3000',
+    'https://localhost:3443',
+    `http://${AppConstants.SiteHostname}`,
+    `https://${AppConstants.SiteHostname}`,
+  ];
+
+  /**
+   * CORS options delegate
+   * @param req - CORS request
+   * @param callback - Callback function
+   */
+  const corsOptionsDelegate = (
+    req: cors.CorsRequest,
+    callback: (
+      error: Error | null,
+      options: cors.CorsOptions | undefined,
+    ) => void,
+  ) => {
+    let corsOptions: cors.CorsOptions;
+    const origin = req.headers.origin;
+    if (
+      origin &&
+      corsWhitelist.find((w) => {
+        if (w instanceof RegExp) {
+          return w.test(origin);
+        } else {
+          return w === origin;
+        }
+      })
+    ) {
+      corsOptions = { origin: true };
+    } else {
+      corsOptions = { origin: false };
+    }
+    callback(null, corsOptions);
+  };
+
+  /**
+   * Initialize the middleware
+   * @param app - Express application
+   */
+export const initMiddleware = (app: Application): void => {
+  // Helmet helps you secure your Express apps by setting various HTTP headers
+  // CSP nonce
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    res.locals['cspNonce'] = randomBytes(32).toString('hex');
+    next();
+  });
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", 'https://flagcdn.com', 'data:', 'blob:'],
+          connectSrc: [
+            "'self'",
+            'http://localhost:3000',
+            'https://localhost:3000',
+            'https://localhost:3443',
+            `https://${AppConstants.SiteHostname}`,
+            `http://${AppConstants.SiteHostname}`,
+          ],
+          scriptSrc: [
+            "'self'",
+            //"'unsafe-inline'",
+            "'strict-dynamic'",
+            (req: IncomingMessage, res: ServerResponse) =>
+              `'nonce-${(res as Response).locals['cspNonce']}'`,
+          ],
+          styleSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://fonts.googleapis.com',
+          ],
+          fontSrc: [
+            "'self'",
+            'https://fonts.gstatic.com',
+          ],
+          frameSrc: ["'self'"],
+        },
+      },
+    }),
+  );
+  // Enable CORS
+  app.use(cors(corsOptionsDelegate));
+  // Parse incoming requests with JSON payloads
+  app.use(json());
+  // Parse incoming requests with urlencoded payloads
+  app.use(urlencoded({ extended: true }));
+}

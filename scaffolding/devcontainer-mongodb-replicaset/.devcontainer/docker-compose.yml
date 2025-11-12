@@ -11,8 +11,9 @@ services:
     # Add restart policy
     restart: unless-stopped
     # Add memory limits to prevent OOM kills
-    mem_limit: 4g
-    memswap_limit: 4g
+    mem_limit: 16g
+    memswap_limit: 16g
+    cpus: 4
     # Add environment variables for debugging
     environment:
       - DB_HOST=db:27017

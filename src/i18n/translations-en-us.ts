@@ -74,11 +74,13 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.VALIDATION_FIX]: 'Fix: {fix}',
   
   // Step Descriptions
+  // Step Descriptions
   [StarterStringKey.STEP_CHECK_TARGET_DIR]: 'Checking target directory',
-  [StarterStringKey.STEP_CREATE_MONOREPO]: 'Creating Nx monorepo',
-  [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Setting up git remote',
-  [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Configuring Yarn Berry',
-  [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Installing Nx plugins',
+  [StarterStringKey.STEP_CREATE_MONOREPO]: 'Creating Nx workspace',
+  [StarterStringKey.STEP_UPDATE_TSCONFIG_BASE]: 'Updating TypeScript base configuration',
+  [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Setting up Git remote',
+  [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Setting up Yarn Berry',
+  [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Adding Nx plugins',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Installing dependencies',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: 'Generating project structure',
   [StarterStringKey.STEP_INSTALL_REACT_COMPONENTS]: 'Installing React components package',
@@ -110,6 +112,9 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROJECT_ADDED_TARGETS]: 'Added copy-env and post-build targets to {name}/project.json',
   [StarterStringKey.PROJECT_INSTALLING_PACKAGE]: 'Installing {package} in {project}',
   [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]: 'Copying devcontainer configuration: {type}',
+  
+  // TypeScript Configuration
+  [StarterStringKey.TSCONFIG_BASE_UPDATED]: 'Updated tsconfig.base.json with esModuleInterop and allowSyntheticDefaultImports',
   
   // Environment Setup
   [StarterStringKey.ENV_CREATED_WITH_SECRETS]: 'Created {name}/.env with secrets',

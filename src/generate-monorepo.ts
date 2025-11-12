@@ -330,6 +330,25 @@ async function main() {
   });
 
   executor.addStep({
+    name: 'updateTsConfigBase',
+    description: getStarterTranslation(StarterStringKey.STEP_UPDATE_TSCONFIG_BASE),
+    execute: (context) => {
+      const tsconfigBasePath = path.join(monorepoPath, 'tsconfig.base.json');
+      if (fs.existsSync(tsconfigBasePath)) {
+        const tsconfigBase = JSON.parse(fs.readFileSync(tsconfigBasePath, 'utf-8'));
+        
+        // Add esModuleInterop and allowSyntheticDefaultImports to compilerOptions
+        tsconfigBase.compilerOptions = tsconfigBase.compilerOptions || {};
+        tsconfigBase.compilerOptions.esModuleInterop = true;
+        tsconfigBase.compilerOptions.allowSyntheticDefaultImports = true;
+        
+        fs.writeFileSync(tsconfigBasePath, JSON.stringify(tsconfigBase, null, 2) + '\n');
+        Logger.info(getStarterTranslation(StarterStringKey.TSCONFIG_BASE_UPDATED));
+      }
+    },
+  });
+
+  executor.addStep({
     name: 'setupGitOrigin',
     description: getStarterTranslation(StarterStringKey.STEP_SETUP_GIT_ORIGIN),
     skip: () => !gitRepo,
@@ -668,11 +687,13 @@ async function main() {
       
       // Build MONGO_URI with optional password (URL-encode password for special characters)
       const buildMongoUri = (dbName: string) => {
-        const auth = mongoPassword ? `root:${encodeURIComponent(mongoPassword)}@` : '';
+        const auth = mongoPassword ? `admin:${encodeURIComponent(mongoPassword)}@` : '';
+        // authSource=admin is always required when authenticating as admin user
+        // replicaSet and directConnection settings depend on the MongoDB setup
         const params = devcontainerChoice === 'mongodb-replicaset'
-          ? '?replicaSet=rs0&directConnection=true'
-          : '?directConnection=true';
-        return `mongodb://${auth}localhost:27017/${dbName}${params}`;
+          ? '?authSource=admin&replicaSet=rs0&directConnection=true'
+          : '?authSource=admin&directConnection=true';
+        return `mongodb://${auth}db:27017/${dbName}${params}`;
       };
       
       // Setup API .env

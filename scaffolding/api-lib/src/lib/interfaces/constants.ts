@@ -4,5 +4,6 @@ export interface IConstants extends IBaseConstants {
   readonly Site: string;
   readonly SiteTagline: string;
   readonly SiteDescription: string;
+  readonly SiteHostname: string;
   readonly PasswordRegex: RegExp;
 }
