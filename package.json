@@ -24,7 +24,7 @@
     "prepublishOnly": "yarn build && yarn test"
   },
   "dependencies": {
-    "@digitaldefiance/express-suite-react-components": "^2.1.53",
+    "@digitaldefiance/express-suite-react-components": "^2.1.54",
     "@digitaldefiance/i18n-lib": "2.1.40",
     "@inquirer/prompts": "^7.5.0",
     "chalk": "^4.1.2",

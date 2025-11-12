@@ -1521,9 +1521,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.1.52":
-  version: 2.1.52
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.1.52"
+"@digitaldefiance/express-suite-react-components@npm:^2.1.54":
+  version: 2.1.55
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.1.55"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:2.1.40"
     "@digitaldefiance/suite-core-lib": "npm:2.1.50"
@@ -1536,12 +1536,12 @@ __metadata:
     axios: "npm:^1.9.0"
     formik: "npm:^2.4.6"
     react-number-format: "npm:^5.4.4"
-    react-router-dom: "npm:^6.29.0"
     yup: "npm:^1.6.1"
   peerDependencies:
     react: ^19.0.0
     react-dom: ^19.0.0
-  checksum: 10c0/3c45dedddc38547f4e6605f4083fc5b02921d70c301a787b032742d29665f239bfb1d700a1bf2e7527497434750408c3bff6be56849fd06f16f9b60a423052f0
+    react-router-dom: ^6.29.0
+  checksum: 10c0/035e0943711c0486022634ea8151044b31d16a692a71175f6a1212b3291a93f7520af682ce03bdcfb59644d5d37a738b7e41949cdc5217eeaaf44e1dad9936c9
   languageName: node
   linkType: hard
 
@@ -1549,8 +1549,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.1.52"
-    "@digitaldefiance/express-suite-test-utils": "npm:1.0.7"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.1.54"
+    "@digitaldefiance/express-suite-test-utils": "npm:1.0.8"
     "@digitaldefiance/i18n-lib": "npm:2.1.40"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
@@ -1575,14 +1575,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@digitaldefiance/express-suite-test-utils@npm:1.0.7":
-  version: 1.0.7
-  resolution: "@digitaldefiance/express-suite-test-utils@npm:1.0.7"
+"@digitaldefiance/express-suite-test-utils@npm:1.0.8":
+  version: 1.0.8
+  resolution: "@digitaldefiance/express-suite-test-utils@npm:1.0.8"
   dependencies:
     "@jest/globals": "npm:^30.0.5"
     "@types/jest": "npm:^30.0.0"
     expect: "npm:^30.0.5"
-  checksum: 10c0/fbbee71dff9fcb927bccd8ba5055d9b74c06e92ecddd5607921bb86a73eec596c6c2172b9645305c7c96c1a090451d4b69976d0ad1c03463438a80740bf34c69
+  checksum: 10c0/82e0ae17951a37b7f5d584e8e8dba5a2d826c936727ff173aaed498f81a41ca9a66f7eea8c69f6aacd6069bb295a9b28f8bb0a8389961822d0818e837eb25285
   languageName: node
   linkType: hard
 
@@ -3031,13 +3031,6 @@ __metadata:
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
   checksum: 10c0/4681e682abc006d25eb380d0cf3efc7557043f53b6aea7a5057d0d1e7df849a00e281cd8ea79c902a35a414d7919621fc2ba293ecec05f413598e0b23d5a1e63
-  languageName: node
-  linkType: hard
-
-"@remix-run/router@npm:1.23.0":
-  version: 1.23.0
-  resolution: "@remix-run/router@npm:1.23.0"
-  checksum: 10c0/eaef5cb46a1e413f7d1019a75990808307e08e53a39d4cf69c339432ddc03143d725decef3d6b9b5071b898da07f72a4a57c4e73f787005fcf10162973d8d7d7
   languageName: node
   linkType: hard
 
@@ -7483,30 +7476,6 @@ __metadata:
     react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/e55cd16d9f7379a717e77d519db06ed455cc2df9842cd23499b60bc2ba1179df580742e27867a4ae84e0d308b18c0773b7e8943f9162e853f97bd194d15b0de7
-  languageName: node
-  linkType: hard
-
-"react-router-dom@npm:^6.29.0":
-  version: 6.30.1
-  resolution: "react-router-dom@npm:6.30.1"
-  dependencies:
-    "@remix-run/router": "npm:1.23.0"
-    react-router: "npm:6.30.1"
-  peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: 10c0/e9e1297236b0faa864424ad7d51c392fc6e118595d4dad4cd542fd217c479a81601a81c6266d5801f04f9e154de02d3b094fc22ccb544e755c2eb448fab4ec6b
-  languageName: node
-  linkType: hard
-
-"react-router@npm:6.30.1":
-  version: 6.30.1
-  resolution: "react-router@npm:6.30.1"
-  dependencies:
-    "@remix-run/router": "npm:1.23.0"
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 10c0/0414326f2d8e0c107fb4603cf4066dacba6a1f6f025c6e273f003e177b2f18888aca3de06d9b5522908f0e41de93be1754c37e82aa97b3a269c4742c08e82539
   languageName: node
   linkType: hard
 

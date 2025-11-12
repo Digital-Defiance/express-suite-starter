@@ -3,7 +3,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { FC, useCallback } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import AlbatrossLogo from '../assets/albatross.svg';
 import { 
+  MenuProvider,
   PrivateRoute, 
   UnAuthRoute, 
   TopMenu,
@@ -75,79 +77,83 @@ const App: FC = () => {
   );
 };
 
+const LogoComponent = () => <img src={AlbatrossLogo} alt="Logo" />;
+
 const InnerApp: FC = () => {
   return (
-    {{=<% %>=}}<Box className="app-container" sx={{ paddingTop: '64px' }}><%={{ }}=%>
-      <TopMenu Logo="/assets/albatross.svg" />
-      <Routes>
-                <Route path="/" element={<SplashPage />} />
-                <Route
-                  path="/api-access"
-                  element={
-                    <PrivateRoute>
-                      <ApiAccess />
-                    </PrivateRoute>
-                  }
-                />
-                <Route path="/backup-code" element={<BackupCodeLoginWrapper />} />
-                <Route
-                  path="/backup-codes"
-                  element={
-                    <PrivateRoute>
-                      <BackupCodesWrapper baseUrl={API_BASE_URL} />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <UnAuthRoute>
-                      <LoginFormWrapper />
-                    </UnAuthRoute>
-                  }
-                />
-                <Route
-                  path="/logout"
-                  element={
-                    <PrivateRoute>
-                      <LogoutPageWrapper />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <UnAuthRoute>
-                      <RegisterFormWrapper />
-                    </UnAuthRoute>
-                  }
-                />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <PrivateRoute>
-                      <DashboardPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/change-password"
-                  element={
-                    <PrivateRoute>
-                      <ChangePasswordFormWrapper />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/verify-email"
-                  element={
-                    <UnAuthRoute>
-                      <VerifyEmailPageWrapper baseUrl={API_BASE_URL} />
-                    </UnAuthRoute>
-                  }
-                />
-      </Routes>
-    </Box>
+    <MenuProvider>
+      {{=<% %>=}}<Box className="app-container" sx={{ paddingTop: '64px' }}><%={{ }}=%>
+        <TopMenu Logo={<LogoComponent />} />
+        <Routes>
+                  <Route path="/" element={<SplashPage />} />
+                  <Route
+                    path="/api-access"
+                    element={
+                      <PrivateRoute>
+                        <ApiAccess />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route path="/backup-code" element={<BackupCodeLoginWrapper />} />
+                  <Route
+                    path="/backup-codes"
+                    element={
+                      <PrivateRoute>
+                        <BackupCodesWrapper baseUrl={API_BASE_URL} />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <UnAuthRoute>
+                        <LoginFormWrapper />
+                      </UnAuthRoute>
+                    }
+                  />
+                  <Route
+                    path="/logout"
+                    element={
+                      <PrivateRoute>
+                        <LogoutPageWrapper />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <UnAuthRoute>
+                        <RegisterFormWrapper />
+                      </UnAuthRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <PrivateRoute>
+                        <DashboardPage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/change-password"
+                    element={
+                      <PrivateRoute>
+                        <ChangePasswordFormWrapper />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/verify-email"
+                    element={
+                      <UnAuthRoute>
+                        <VerifyEmailPageWrapper baseUrl={API_BASE_URL} />
+                      </UnAuthRoute>
+                    }
+                  />
+        </Routes>
+      </Box>
+    </MenuProvider>
   );
 };
 

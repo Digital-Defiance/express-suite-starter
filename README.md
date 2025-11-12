@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.63
+
+- Update react components
+
 ### Version 2.1.62
 
 - Fix AuthProvider navigation
