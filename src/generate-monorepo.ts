@@ -443,11 +443,47 @@ async function main() {
         if (fs.existsSync(projectJsonPath)) {
           const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
           
-          // Add views directory to assets if not already present
-          if (projectJson.targets?.build?.options?.assets) {
-            const viewsPath = `${apiProject.name}/src/views`;
-            if (!projectJson.targets.build.options.assets.includes(viewsPath)) {
-              projectJson.targets.build.options.assets.push(viewsPath);
+          // Configure assets with proper object notation for esbuild executor
+          if (projectJson.targets?.build?.options) {
+            // Convert any existing string-format assets to object notation
+            const existingAssets = projectJson.targets.build.options.assets || [];
+            const newAssets = [];
+            
+            // Check if assets already contains object notation
+            const hasObjectAssets = existingAssets.some((asset: any) => 
+              typeof asset === 'object' && asset.input
+            );
+            
+            if (!hasObjectAssets) {
+              // Add assets directory with proper object notation
+              newAssets.push({
+                input: `${apiProject.name}/src/assets`,
+                glob: '**/*',
+                output: 'assets'
+              });
+              
+              // Add views directory with proper object notation
+              newAssets.push({
+                input: `${apiProject.name}/src/views`,
+                glob: '**/*',
+                output: 'views'
+              });
+              
+              projectJson.targets.build.options.assets = newAssets;
+            } else {
+              // Check if views is already configured
+              const hasViews = existingAssets.some((asset: any) => 
+                (typeof asset === 'string' && asset.includes('/views')) ||
+                (typeof asset === 'object' && asset.input?.includes('/views'))
+              );
+              
+              if (!hasViews) {
+                existingAssets.push({
+                  input: `${apiProject.name}/src/views`,
+                  glob: '**/*',
+                  output: 'views'
+                });
+              }
             }
           }
           
@@ -512,6 +548,75 @@ async function main() {
           }
           fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
           Logger.info(getStarterTranslation(StarterStringKey.PROJECT_ADDED_TARGETS, { name: initUserDbProject.name }));
+        }
+      }
+      
+      // Configure React project with explicit build configurations
+      const reactProject = projects.find(p => p.type === 'react' && p.enabled);
+      if (reactProject) {
+        const projectJsonPath = path.join(monorepoPath, reactProject.name, 'project.json');
+        if (fs.existsSync(projectJsonPath)) {
+          const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
+          
+          // Add explicit build target with development and production configurations
+          if (!projectJson.targets) {
+            projectJson.targets = {};
+          }
+          
+          projectJson.targets['build'] = {
+            executor: 'nx:run-commands',
+            dependsOn: ['^build'],
+            cache: true,
+            outputs: [`{workspaceRoot}/dist/${reactProject.name}`],
+            options: {
+              cwd: reactProject.name,
+              command: 'vite build --mode development'
+            },
+            configurations: {
+              development: {
+                command: 'vite build --mode development'
+              },
+              production: {
+                command: 'vite build --mode production'
+              }
+            }
+          };
+          
+          fs.writeFileSync(projectJsonPath, JSON.stringify(projectJson, null, 2) + '\n');
+          Logger.info(getStarterTranslation(StarterStringKey.PROJECT_ADDED_TARGETS, { name: reactProject.name }));
+        }
+        
+        // Update vite.config.ts to handle mode properly
+        const viteConfigPath = path.join(monorepoPath, reactProject.name, 'vite.config.ts');
+        if (fs.existsSync(viteConfigPath)) {
+          let viteConfig = fs.readFileSync(viteConfigPath, 'utf-8');
+          
+          // Replace the export default with one that accepts mode parameter
+          viteConfig = viteConfig.replace(
+            /export default defineConfig\(\{/,
+            'export default defineConfig(({ mode }) => ({'
+          );
+          
+          // Add mode to config if not already present
+          if (!viteConfig.includes('mode:')) {
+            viteConfig = viteConfig.replace(
+              /cacheDir: '[^']*',/,
+              `cacheDir: '../node_modules/.vite/${reactProject.name}',\n  mode: mode || process.env.NODE_ENV || 'production',`
+            );
+          }
+          
+          // Update build config to conditionally minify
+          if (!viteConfig.includes('minify:')) {
+            viteConfig = viteConfig.replace(
+              /commonjsOptions: \{[^}]*\},/,
+              `commonjsOptions: {\n      transformMixedEsModules: true,\n    },\n    minify: mode === 'production' ? 'esbuild' : false,`
+            );
+          }
+          
+          // Close the config function properly
+          viteConfig = viteConfig.replace(/\}\);$/, '}));');
+          
+          fs.writeFileSync(viteConfigPath, viteConfig);
         }
       }
     },

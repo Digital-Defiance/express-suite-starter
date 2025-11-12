@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.59
+
+- Fix views assets project.json config
+
 ### Version 2.1.58
 
 - EmailServiceRegistry improvements
