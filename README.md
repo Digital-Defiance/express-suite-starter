@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.58
+
+- EmailServiceRegistry improvements
+
 ### Version 2.1.57
 
 - Misc Improvements
