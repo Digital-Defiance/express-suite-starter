@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.61
+
+- Fix vite.config
+
 ### Version 2.1.60
 
 - CORS + mkcert tweaks

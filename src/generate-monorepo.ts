@@ -593,7 +593,7 @@ async function main() {
           
           // Replace the export default with one that accepts mode parameter
           viteConfig = viteConfig.replace(
-            /export default defineConfig\(\{/,
+            /export default defineConfig\(\(\) => \(\{/,
             'export default defineConfig(({ mode }) => ({'
           );
           
@@ -605,16 +605,16 @@ async function main() {
             );
           }
           
-          // Update build config to conditionally minify
+          // Update build config to conditionally minify with proper TypeScript type assertion
           if (!viteConfig.includes('minify:')) {
             viteConfig = viteConfig.replace(
               /commonjsOptions: \{[^}]*\},/,
-              `commonjsOptions: {\n      transformMixedEsModules: true,\n    },\n    minify: mode === 'production' ? 'esbuild' : false,`
+              `commonjsOptions: {\n      transformMixedEsModules: true,\n    },\n    minify: mode === 'production' ? ('esbuild' as const) : false,`
             );
           }
           
-          // Close the config function properly
-          viteConfig = viteConfig.replace(/\}\);$/, '}));');
+          // Close the config function properly - replace }); at end of file
+          viteConfig = viteConfig.replace(/\}\);(\s*)$/, '}));$1');
           
           fs.writeFileSync(viteConfigPath, viteConfig);
         }
