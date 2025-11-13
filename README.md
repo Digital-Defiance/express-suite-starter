@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.66
+
+- Add .env to simple devcontainer
+
 ### Version 2.1.65
 
 - Add multi-lingual support to strings

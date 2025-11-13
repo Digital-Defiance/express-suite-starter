@@ -879,6 +879,11 @@ async function main() {
           fs.writeFileSync(devcontainerEnvPath, envContent);
           Logger.warning(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL));
         }
+      } else if (devcontainerChoice === 'simple') {
+        const devcontainerEnvExamplePath = path.join(monorepoPath, '.devcontainer', '.env.example');
+        const devcontainerEnvPath = path.join(monorepoPath, '.devcontainer', '.env');
+        fs.copyFileSync(devcontainerEnvExamplePath, devcontainerEnvPath);
+        Logger.info(getStarterTranslation(StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE));
       }
     },
   });

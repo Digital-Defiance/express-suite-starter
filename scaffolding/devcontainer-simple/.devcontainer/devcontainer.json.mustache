@@ -26,6 +26,9 @@
     "--memory-swap=16g",
     "--cpus=4"
   ],
+  "mounts": [
+    "source=${localWorkspaceFolder}/.env,target=/workspaces/${localWorkspaceFolderBasename}/.env,type=bind,consistency=cached"
+  ],
   "forwardPorts": [3000],
-  "postCreateCommand": "yarn install"
+  "postCreateCommand": "set -a && [ -f .env ] && . ./.env && set +a && .devcontainer/post-create.sh"
 }
