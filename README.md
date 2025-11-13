@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.69
+
+- Update libs
+
 ### Version 2.1.68
 
 - Query for and template siteTitle/Desc/Tagline into constants/i18n
