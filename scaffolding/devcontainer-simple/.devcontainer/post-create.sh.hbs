@@ -24,7 +24,7 @@ cd ${WORKSPACE} && corepack yarn config set nodeLinker node-modules
 cd ${WORKSPACE} && ./npm-install-globals.sh
 
 echo "Checking for Verdaccio on host machine..."
-if curl -sS -o /dev/null --fail http://localhost:4873/; then
+if curl -sS -o /dev/null --fail --connect-timeout 2 --max-time 3 http://localhost:4873/; then
   echo 'Verdaccio is running. Setting NPM registry to http://localhost:4873/'; 
   npm config set registry http://localhost:4873/;
   yarn config set registry http://localhost:4873/;

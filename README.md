@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.65
+
+- Add multi-lingual support to strings
+
 ### Version 2.1.64
 
 - Update react components
