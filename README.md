@@ -337,6 +337,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.1.67
+
+- Verdaccio configs
+
 ### Version 2.1.66
 
 - Add .env to simple devcontainer

@@ -24,10 +24,13 @@
   "runArgs": [
     "--memory=16g",
     "--memory-swap=16g",
-    "--cpus=4"
+    "--cpus=4",
+    "--dns=1.1.1.1",
+    "--dns=8.8.8.8",
+    "--add-host=host.docker.internal:host-gateway"
   ],
   "mounts": [
-    "source=${localWorkspaceFolder}/.env,target=/workspaces/${localWorkspaceFolderBasename}/.env,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/.devcontainer/.env,target=/workspaces/${localWorkspaceFolderBasename}/.env,type=bind,consistency=cached"
   ],
   "forwardPorts": [3000],
   "postCreateCommand": "set -a && [ -f .env ] && . ./.env && set +a && .devcontainer/post-create.sh"

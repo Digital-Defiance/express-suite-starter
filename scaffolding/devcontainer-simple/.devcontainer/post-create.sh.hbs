@@ -21,21 +21,48 @@ cd ${WORKSPACE} && corepack prepare yarn@${DEFAULT_YARN_VERSION} --activate && c
 # Install dependencies
 echo "Installing dependencies..."
 cd ${WORKSPACE} && corepack yarn config set nodeLinker node-modules
+
+MAX_ATTEMPTS=5;
+WAIT_TIME=2;
+REGISTRY_URL=http://host.docker.internal:4873/;
+ATTEMPTS=0;
+echo 'Waiting for Verdaccio registry at $REGISTRY_URL (Max 10s total, 4s timeout per attempt)...';
+while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+  # Increased timeouts for cross-host networking stability: 2s connect, 4s total time.
+  if curl -sS -o /dev/null --fail --connect-timeout 2 --max-time 4 $REGISTRY_URL; then
+    echo 'Verdaccio detected. Configuring NPM and YARN.';
+      npm config set registry $REGISTRY_URL --location=project;
+      VERDACCIO=1;
+      break;
+  fi;
+  sleep $WAIT_TIME;
+  ATTEMPTS=$((ATTEMPTS + 1));
+done;
+[ -z "$VERDACCIO" ] && echo 'Verdaccio not detected after 5 attempts. Using default public registry.';
+
 cd ${WORKSPACE} && ./npm-install-globals.sh
-
-echo "Checking for Verdaccio on host machine..."
-if curl -sS -o /dev/null --fail --connect-timeout 2 --max-time 3 http://localhost:4873/; then
-  echo 'Verdaccio is running. Setting NPM registry to http://localhost:4873/'; 
-  npm config set registry http://localhost:4873/;
-  yarn config set registry http://localhost:4873/;
-else
-  echo 'Verdaccio not detected on host:4873. Using default NPM registry (https://registry.npmjs.org/).';
-fi
-
 cd ${WORKSPACE} && ./do-yarn.sh || echo "Dependency installation failed"
 
-
-cd ${WORKSPACE} && /usr/local/bin/mkcert -install
+# Install mkcert if not already present
+if ! command -v mkcert &> /dev/null; then
+  echo "Installing mkcert..."
+  sudo apt-get update -y && sudo apt-get install golang -y
+  
+  # Clean up any existing mkcert directory from failed attempts
+  [ -d "${WORKSPACE}/mkcert" ] && rm -rf "${WORKSPACE}/mkcert"
+  
+  cd ${WORKSPACE} && \
+    git clone https://github.com/FiloSottile/mkcert && \
+    cd mkcert && \
+    go build -ldflags "-X main.Version=$(git describe --tags)" && \
+    sudo cp mkcert /usr/local/bin/ && \
+    cd .. && \
+    rm -rf mkcert
+  
+  /usr/local/bin/mkcert -install
+else
+  echo "mkcert already installed"
+fi
 cd ${WORKSPACE} && /usr/local/bin/mkcert localhost 127.0.0.1 ::1 {{hostname}}
 
 echo ""

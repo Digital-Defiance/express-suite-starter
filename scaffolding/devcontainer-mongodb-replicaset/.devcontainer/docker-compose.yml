@@ -6,6 +6,9 @@ services:
     volumes:
       - ../..:/workspaces:cached
     command: ["sleep", "infinity"]
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     extra_hosts:
       - "host.docker.internal:host-gateway"
     # Add init system for better signal handling
