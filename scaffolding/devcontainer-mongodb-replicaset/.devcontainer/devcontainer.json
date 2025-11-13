@@ -49,8 +49,8 @@
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
-    443,
     3000,
+    3443,
     4200,
     27017
   ],

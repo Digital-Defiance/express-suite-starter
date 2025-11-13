@@ -27,11 +27,34 @@
     "--cpus=4",
     "--dns=1.1.1.1",
     "--dns=8.8.8.8",
-    "--add-host=host.docker.internal:host-gateway"
+    "--add-host=host.docker.internal:host-gateway",
+    "-p",
+    "3000:3000",
+    "-p",
+    "3443:3443",
+    "-p",
+    "4200:4200",
   ],
   "mounts": [
     "source=${localWorkspaceFolder}/.devcontainer/.env,target=/workspaces/${localWorkspaceFolderBasename}/.env,type=bind,consistency=cached"
   ],
-  "forwardPorts": [3000],
+  "forwardPorts": [3000, 3443, 4200],
+  "portsAttributes": {
+    "3443": {
+      "label": "HTTPS Server",
+      "protocol": "https",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "HTTP Server",
+      "protocol": "http",
+      "onAutoForward": "notify"
+    },
+    "4200": {
+      "label": "React Dev Server",
+      "protocol": "http",
+      "onAutoForward": "notify"
+    }
+  },
   "postCreateCommand": "set -a && [ -f .env ] && . ./.env && set +a && .devcontainer/post-create.sh"
 }
