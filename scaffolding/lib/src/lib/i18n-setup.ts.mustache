@@ -27,6 +27,11 @@ if (I18nEngine.hasInstance('default')) {
   i18nEngine = I18nBuilder.create()
     .withLanguages(getCoreLanguageDefinitions())
     .withDefaultLanguage(LanguageCodes.EN_US)
+    .withFallbackLanguage(LanguageCodes.EN_US)
+    .withValidation({
+      requireCompleteStrings: false,
+      allowPartialRegistration: true,
+    })
     .withConstants(AppConstants)
     .withInstanceKey('default')
     .build();

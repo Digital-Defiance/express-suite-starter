@@ -1521,9 +1521,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.1.54":
-  version: 2.1.55
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.1.55"
+"@digitaldefiance/express-suite-react-components@npm:^2.1.56":
+  version: 2.1.56
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.1.56"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:2.1.40"
     "@digitaldefiance/suite-core-lib": "npm:2.1.50"
@@ -1541,7 +1541,7 @@ __metadata:
     react: ^19.0.0
     react-dom: ^19.0.0
     react-router-dom: ^6.29.0
-  checksum: 10c0/035e0943711c0486022634ea8151044b31d16a692a71175f6a1212b3291a93f7520af682ce03bdcfb59644d5d37a738b7e41949cdc5217eeaaf44e1dad9936c9
+  checksum: 10c0/7211efee05a39baf813435523e3be93c959f2f4646b160c483e71314be047075c8d032335de8994fc38bb4aa5f4aa112727d0e07cd23b7887b133193420efd00
   languageName: node
   linkType: hard
 
@@ -1549,7 +1549,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.1.54"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.1.56"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.8"
     "@digitaldefiance/i18n-lib": "npm:2.1.40"
     "@inquirer/prompts": "npm:^7.5.0"
