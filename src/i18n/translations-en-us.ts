@@ -44,6 +44,9 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]: 'Create initial git commit?',
   [StarterStringKey.PROMPT_PUSH_TO_REMOTE]: 'Push to remote repository?',
   [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]: 'Install Playwright browsers? (Required for E2E tests)',
+  [StarterStringKey.PROMPT_SITE_TITLE]: 'Enter the site title:',
+  [StarterStringKey.PROMPT_SITE_DESCRIPTION]: 'Enter the site description:',
+  [StarterStringKey.PROMPT_SITE_TAGLINE]: 'Enter the site tagline:',
   
   // Validation Messages
   [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]: 'Invalid workspace name (letters, numbers, dashes only)',
@@ -181,6 +184,9 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]: 'IMPORTANT: Update .devcontainer/.env with your MongoDB configuration',
   [StarterStringKey.WARNING_VALIDATION_ERRORS]: 'Validation found errors, but continuing...',
   [StarterStringKey.WARNING_DRY_RUN_RERUN]: 'Dry-run complete. Re-run without dry-run to generate.',
+
+  // Notice Messages
+  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]: 'Generic default Site Title, Tagline, and Descriptions have been filled in for the other languages. Edit the i18n-setup.ts file to customize these values.',
   
   // Error Messages
   [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]: 'Directory {path} already exists and is not empty',

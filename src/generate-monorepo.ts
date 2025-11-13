@@ -117,6 +117,69 @@ async function main() {
       /^[a-z0-9-]+(\.[a-z0-9-]+)*$/.test(val) || getStarterTranslation(StarterStringKey.VALIDATION_INVALID_HOSTNAME),
   });
 
+  // Get default strings based on selected language
+  const defaultStrings = {
+    [LanguageCodes.EN_US]: {
+      siteTitle: 'Your Site Title',
+      siteDescription: 'Your description here',
+      siteTagline: 'Your tagline here',
+    },
+    [LanguageCodes.EN_GB]: {
+      siteTitle: 'Your Site Title',
+      siteDescription: 'Your description here',
+      siteTagline: 'Your tagline here',
+    },
+    [LanguageCodes.FR]: {
+      siteTitle: 'Titre de votre site',
+      siteDescription: 'Votre description ici',
+      siteTagline: 'Votre slogan ici',
+    },
+    [LanguageCodes.ES]: {
+      siteTitle: 'Título de su sitio',
+      siteDescription: 'Su descripción aquí',
+      siteTagline: 'Su eslogan aquí',
+    },
+    [LanguageCodes.DE]: {
+      siteTitle: 'Ihr Seitentitel',
+      siteDescription: 'Ihre Beschreibung hier',
+      siteTagline: 'Ihr Slogan hier',
+    },
+    [LanguageCodes.ZH_CN]: {
+      siteTitle: '您的网站标题',
+      siteDescription: '您的描述在这里',
+      siteTagline: '您的标语在这里',
+    },
+    [LanguageCodes.JA]: {
+      siteTitle: 'サイトのタイトル',
+      siteDescription: 'ここに説明を入力',
+      siteTagline: 'ここにキャッチフレーズを入力',
+    },
+    [LanguageCodes.UK]: {
+      siteTitle: 'Назва вашого сайту',
+      siteDescription: 'Ваш опис тут',
+      siteTagline: 'Ваш слоган тут',
+    },
+  };
+
+  const currentDefaults = defaultStrings[selectedLanguage as keyof typeof defaultStrings] || defaultStrings[LanguageCodes.EN_US];
+
+  const siteTitle = await input({
+    message: getStarterTranslation(StarterStringKey.PROMPT_SITE_TITLE),
+    default: currentDefaults.siteTitle,
+  });
+
+  const siteDescription = await input({
+    message: getStarterTranslation(StarterStringKey.PROMPT_SITE_DESCRIPTION),
+    default: currentDefaults.siteDescription,
+  });
+
+  const siteTagline = await input({
+    message: getStarterTranslation(StarterStringKey.PROMPT_SITE_TAGLINE),
+    default: currentDefaults.siteTagline,
+  });
+
+  Logger.info(getStarterTranslation(StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS));
+
   const dryRun = await confirm({
     message: getStarterTranslation(StarterStringKey.PROMPT_DRY_RUN),
     default: false,
@@ -649,6 +712,9 @@ async function main() {
         PROJECT_PREFIX: projectPrefix,
         NAMESPACE_ROOT: namespaceRoot,
         HOSTNAME: hostname,
+        SITE_TITLE: siteTitle,
+        SITE_DESCRIPTION: siteDescription,
+        SITE_TAGLINE: siteTagline,
         EXAMPLE_PASSWORD: obfuscatePassword(projectPrefix),
         EXAMPLE_JWT_SECRET: obfuscatePassword(`${workspaceName}Secret`),
         GIT_REPO: gitRepo,
@@ -677,6 +743,17 @@ async function main() {
     execute: () => {
       const scaffoldingDir = context.state.get('scaffoldingDir');
       
+      // Helper function to escape strings for TypeScript string literals
+      const escapeForTypeScript = (str: string): string => {
+        return str
+          .replace(/\\/g, '\\\\')  // Backslash
+          .replace(/'/g, "\\'")     // Single quote
+          .replace(/"/g, '\\"')     // Double quote
+          .replace(/\n/g, '\\n')    // Newline
+          .replace(/\r/g, '\\r')    // Carriage return
+          .replace(/\t/g, '\\t');   // Tab
+      };
+
       // Template variables for scaffolding
       const scaffoldingVars: Record<string, any> = {
         workspaceName,
@@ -684,6 +761,19 @@ async function main() {
         prefix: projectPrefix,
         namespace: namespaceRoot,
         hostname,
+        selectedLanguage,
+        siteTitle: escapeForTypeScript(siteTitle),
+        siteDescription: escapeForTypeScript(siteDescription),
+        siteTagline: escapeForTypeScript(siteTagline),
+        // Language-specific boolean flags for conditional rendering
+        isEnUs: selectedLanguage === LanguageCodes.EN_US,
+        isEnGb: selectedLanguage === LanguageCodes.EN_GB,
+        isFr: selectedLanguage === LanguageCodes.FR,
+        isEs: selectedLanguage === LanguageCodes.ES,
+        isDe: selectedLanguage === LanguageCodes.DE,
+        isZhCn: selectedLanguage === LanguageCodes.ZH_CN,
+        isJa: selectedLanguage === LanguageCodes.JA,
+        isUk: selectedLanguage === LanguageCodes.UK,
       };
       
       // Copy root scaffolding

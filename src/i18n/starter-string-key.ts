@@ -42,6 +42,9 @@ export enum StarterStringKey {
   PROMPT_CREATE_INITIAL_COMMIT = 'prompt_createInitialCommit',
   PROMPT_PUSH_TO_REMOTE = 'prompt_pushToRemote',
   PROMPT_INSTALL_PLAYWRIGHT = 'prompt_installPlaywright',
+  PROMPT_SITE_TITLE = 'prompt_siteTitle',
+  PROMPT_SITE_DESCRIPTION = 'prompt_siteDescription',
+  PROMPT_SITE_TAGLINE = 'prompt_siteTagline',
   
   // Validation Messages
   VALIDATION_INVALID_WORKSPACE_NAME = 'validation_invalidWorkspaceName',
@@ -178,6 +181,9 @@ export enum StarterStringKey {
   WARNING_UPDATE_DEVCONTAINER_ENV = 'warning_updateDevcontainerEnv',
   WARNING_VALIDATION_ERRORS = 'warning_validationErrors',
   WARNING_DRY_RUN_RERUN = 'warning_dryRunRerun',
+
+  // Notice Messages
+  NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS = 'notice_siteTitleTaglineDescriptions',
   
   // Error Messages
   ERROR_DIRECTORY_NOT_EMPTY = 'error_directoryNotEmpty',
