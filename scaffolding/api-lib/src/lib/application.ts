@@ -8,7 +8,7 @@ import { getSchemaMap } from './schemas/schema';
 import { initMiddleware } from './middlewares';
 import { EmailService } from './services/email';
 
-export class App<TInitResults = IServerInitResult, TConstants extends IConstants = IConstants> extends Application<TInitResults, any, Environment, TConstants, any> {
+export class App<TInitResults extends IServerInitResult = IServerInitResult, TConstants extends IConstants = IConstants> extends Application<TInitResults, any, Environment, TConstants, any> {
   constructor(
     environment: Environment,
     databaseInitFunction: (application: BaseApplication<any, TInitResults>) => Promise<IFailableResult<TInitResults>>,

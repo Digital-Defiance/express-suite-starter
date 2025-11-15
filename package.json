@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "2.1.69",
+  "version": "2.2.0",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -24,8 +24,8 @@
     "prepublishOnly": "yarn build && yarn test"
   },
   "dependencies": {
-    "@digitaldefiance/express-suite-react-components": "^2.1.57",
-    "@digitaldefiance/i18n-lib": "2.1.40",
+    "@digitaldefiance/express-suite-react-components": "^2.2.0",
+    "@digitaldefiance/i18n-lib": "3.6.0",
     "@inquirer/prompts": "^7.5.0",
     "chalk": "^4.1.2",
     "mustache": "^4.2.0",
@@ -48,5 +48,5 @@
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.11.0"
 }

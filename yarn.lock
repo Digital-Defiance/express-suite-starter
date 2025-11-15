@@ -1506,27 +1506,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:2.1.42":
-  version: 2.1.42
-  resolution: "@digitaldefiance/ecies-lib@npm:2.1.42"
+"@digitaldefiance/ecies-lib@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@digitaldefiance/ecies-lib@npm:3.0.2"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:2.1.40"
+    "@digitaldefiance/i18n-lib": "npm:3.6.0"
     "@ethereumjs/wallet": "npm:^10.0.0"
     "@noble/curves": "npm:^2.0.1"
     "@noble/hashes": "npm:^2.0.1"
     "@scure/bip32": "npm:^2.0.0"
     bson: "npm:^6.10.4"
     ts-brand: "npm:^0.2.0"
-  checksum: 10c0/11f9c22bb28db5963831039506fe74aa9f788652c7642c1e61c2bcc8e7ad68213eef31a494a38b9b5db6d46e1e7facb52c4a6d39635a2af90c3b99717f07a8ed
+  checksum: 10c0/e21d945da1497c66a0dd79b112370386e818e79cd6e09670e6ef58a3ca2e7b5d5ae0225b60af4edf551fb24bdba3b3d880c2654241c426150e9b00251233edd4
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.1.56":
-  version: 2.1.56
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.1.56"
+"@digitaldefiance/express-suite-react-components@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.2.0"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:2.1.40"
-    "@digitaldefiance/suite-core-lib": "npm:2.1.50"
+    "@digitaldefiance/i18n-lib": "npm:3.6.0"
+    "@digitaldefiance/suite-core-lib": "npm:2.2.1"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1538,10 +1538,8 @@ __metadata:
     react-number-format: "npm:^5.4.4"
     yup: "npm:^1.6.1"
   peerDependencies:
-    react: ^19.0.0
-    react-dom: ^19.0.0
-    react-router-dom: ^6.29.0
-  checksum: 10c0/7211efee05a39baf813435523e3be93c959f2f4646b160c483e71314be047075c8d032335de8994fc38bb4aa5f4aa112727d0e07cd23b7887b133193420efd00
+    react-router-dom: 6.29.0
+  checksum: 10c0/ddbbd462928330ca9cc4a053078bb5bace8d55903f7ed09a3ddd5a9a02b52e9456ac8666a5a062c6bcdabd54588adda98c238f7c87b4926ce1da3342621b3210
   languageName: node
   linkType: hard
 
@@ -1549,9 +1547,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.1.56"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.2.0"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.8"
-    "@digitaldefiance/i18n-lib": "npm:2.1.40"
+    "@digitaldefiance/i18n-lib": "npm:3.6.0"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
     "@nx/workspace": "npm:22.0.2"
@@ -1586,23 +1584,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/i18n-lib@npm:2.1.40":
-  version: 2.1.40
-  resolution: "@digitaldefiance/i18n-lib@npm:2.1.40"
+"@digitaldefiance/i18n-lib@npm:3.6.0":
+  version: 3.6.0
+  resolution: "@digitaldefiance/i18n-lib@npm:3.6.0"
   dependencies:
     moment: "npm:^2.30.1"
     moment-timezone: "npm:^0.6.0"
-  checksum: 10c0/e3e1cf658023063a3ed592e48ca09f728f5d6d2c2cd479bf4daa3ce59431f562c386dc5b9374f0aff32625bbd07effe1d502e49fb3a24c19b0cad16b60cffdff
+  checksum: 10c0/204712b6daca1c952945ed1b4db021dc99a3b91a35c94333cf7cb03a10358ca603d4225047172f901c08a30de4799894f5b7fdbed9a5a01e49b4b9b3f7e3c225
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:2.1.50":
-  version: 2.1.50
-  resolution: "@digitaldefiance/suite-core-lib@npm:2.1.50"
+"@digitaldefiance/suite-core-lib@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@digitaldefiance/suite-core-lib@npm:2.2.1"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:2.1.42"
-    "@digitaldefiance/i18n-lib": "npm:2.1.40"
-  checksum: 10c0/3e5ca03c9a8201c735f8c28bc8837bf785ab0cab1f52447af26417d0269a0331b1bc68fd6d74d148cd42aedabae63f3770df7265e8dbb34ec3d7d28f30c5ff61
+    "@digitaldefiance/ecies-lib": "npm:3.0.2"
+    "@digitaldefiance/i18n-lib": "npm:3.6.0"
+  checksum: 10c0/58ad7b986783464e978b1fb9526ac686dd4ae192f227dcf614b0ee04c7d2a89f81c60defe3f47777661d527fb5cb485f9dedfba950338b453fc912f97bc22007
   languageName: node
   linkType: hard
 
