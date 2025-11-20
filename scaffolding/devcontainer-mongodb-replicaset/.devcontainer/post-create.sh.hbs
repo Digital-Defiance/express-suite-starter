@@ -34,6 +34,7 @@ while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
   if curl -sS -o /dev/null --fail --connect-timeout 2 --max-time 4 $REGISTRY_URL; then
     echo 'Verdaccio detected. Configuring NPM and YARN.';
       npm config set registry $REGISTRY_URL --location=project;
+      yarn config set npmRegistryServer $REGISTRY_URL;
       VERDACCIO=1;
       break;
   fi;

@@ -1,0 +1,91 @@
+// src/app/theme.tsx
+
+import { AppConstants } from '{{namespace}}/lib';
+import { createTheme, PaletteMode } from '@mui/material/styles';
+
+export const createAppTheme = (mode: PaletteMode) => createTheme({
+  palette: {
+    mode,
+    primary: {
+      main: AppConstants.logo_primary_color,
+      light: AppConstants.primary_text_light,
+      dark: AppConstants.primary_text_dark,
+      contrastText: '#ffffff',
+    },
+    secondary: {
+      main: AppConstants.logo_secondary_text,
+      light: AppConstants.secondary_text_light,
+      dark: AppConstants.secondary_text_dark,
+      contrastText: '#000000',
+    },
+    background: mode === 'light' ? {
+      default: '#f8f9fa',
+      paper: '#ffffff',
+    } : {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
+    text: {
+      primary: AppConstants.logo_primary_text,
+    },
+    error: {
+      main: AppConstants.failure_color,
+    },
+    warning: {
+      main: AppConstants.warning_color,
+    },
+    success: {
+      main: AppConstants.success_color,
+    },
+  },
+  typography: {
+    fontFamily: "'Roboto', sans-serif",
+    h1: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    h2: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    h3: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    h4: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    h5: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    h6: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+    },
+    subtitle1: {
+      fontFamily: "'ConneqtRegular', sans-serif",
+      fontWeight: 400,
+      textTransform: 'uppercase',
+    },
+    body1: {
+      fontFamily: "'Roboto', sans-serif",
+      fontWeight: 400,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '4px',
+          textTransform: 'none',
+        },
+      },
+    },
+  },
+});
+
+// Export a light theme as default for backward compatibility
+const theme = createAppTheme('light');
+export default theme;

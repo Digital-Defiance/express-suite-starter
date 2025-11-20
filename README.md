@@ -337,6 +337,32 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.2.0
+
+#### Dependencies
+- Updated `@digitaldefiance/express-suite-react-components` ^2.2.0 → ^2.5.12
+- Updated `@digitaldefiance/i18n-lib` 3.6.0 → 3.6.4
+- Updated `@digitaldefiance/express-suite-test-utils` 1.0.8 → 1.0.10
+
+#### Features
+- Added Yarn registry configuration to devcontainer post-create scripts
+- Added `siteUrl` field to environment interface
+- Added runtime configuration support via `window.APP_CONFIG`
+
+#### Breaking Changes
+- Renamed `window.__RUNTIME_CONFIG__` to `window.APP_CONFIG`
+- Converted `environment.prod.ts` to template format (`environment.prod.ts.mustache`)
+- Removed automatic `/api` suffix stripping from API URL handling
+
+#### Improvements
+- Refactored environment files to support dynamic runtime configuration
+- Updated TypeScript target from ES2020 to ES2022
+- Improved API URL resolution logic with better null checking
+- Updated deployment documentation to reflect new config naming
+
+#### Bug Fixes
+- Fixed Yarn registry configuration in Verdaccio detection for all devcontainer variants
+
 ### Version 2.1.69
 
 - Update libs

@@ -27,14 +27,18 @@ export function renderTemplates(
       if (entry.isDirectory()) {
         renderDir(srcPath, destPath);
       } else if (entry.isFile() && isMustache) {
-        const template = fs.readFileSync(srcPath, 'utf8');
-        const rendered = engine.render(template, variables);
-        if (!dryRun) {
-          fs.mkdirSync(path.dirname(destPath), { recursive: true });
-          fs.writeFileSync(destPath, rendered, 'utf8');
-          setPerms(destPath);
+        try {
+          const template = fs.readFileSync(srcPath, 'utf8');
+          const rendered = engine.render(template, variables);
+          if (!dryRun) {
+            fs.mkdirSync(path.dirname(destPath), { recursive: true });
+            fs.writeFileSync(destPath, rendered, 'utf8');
+            setPerms(destPath);
+          }
+          Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
+        } catch (error) {
+          throw new Error(`Failed to render template ${path.relative(destDir, srcPath)}: ${error instanceof Error ? error.message : String(error)}`);
         }
-        Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
       }
     }
   }
@@ -91,12 +95,16 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
       
       if (isTemplate && engine && variables) {
         // Render template (mustache or handlebars)
-        const template = fs.readFileSync(srcPath, 'utf8');
-        const rendered = engine.render(template, variables);
-        if (!dryRun) {
-          fs.writeFileSync(destPath, rendered, 'utf8');
+        try {
+          const template = fs.readFileSync(srcPath, 'utf8');
+          const rendered = engine.render(template, variables);
+          if (!dryRun) {
+            fs.writeFileSync(destPath, rendered, 'utf8');
+          }
+          Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
+        } catch (error) {
+          throw new Error(`Failed to render template ${path.relative(destDir, srcPath)}: ${error instanceof Error ? error.message : String(error)}`);
         }
-        Logger.dim(`  ${dryRun ? '[DRY RUN] Would render' : 'Rendered'}: ${path.relative(destDir, destPath)}`);
       } else {
         // Direct copy with simple placeholder replacement
         let content = fs.readFileSync(srcPath, 'utf8');
