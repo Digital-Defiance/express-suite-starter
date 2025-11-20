@@ -33,6 +33,18 @@ Part of [Express Suite](https://github.com/Digital-Defiance/express-suite)
 npx @digitaldefiance/express-suite-starter
 ```
 
+The generator will guide you through an interactive setup process with the following prompts:
+
+1. **Language Selection** - Choose your preferred language from 8 options
+2. **Workspace Configuration** - Name, prefix, namespace, parent directory, git repository
+3. **Site Configuration** - Hostname, site title, description, and tagline
+4. **Optional Projects** - Choose which projects to include (E2E tests, etc.)
+5. **Package Groups** - Select optional package groups (authentication, validation, documentation)
+6. **DevContainer** - Configure development container (None, Simple, MongoDB, Replica Set)
+7. **Database** - Choose between in-memory database or MongoDB
+8. **Security** - Auto-generate secrets (JWT, encryption keys, HMAC)
+9. **Final Options** - Documentation generation, git commit, Playwright installation
+
 ### Local Development
 
 ```bash
@@ -41,7 +53,153 @@ yarn build
 yarn start
 ```
 
-Follow the interactive prompts to generate your monorepo.
+## Interactive Generation Process
+
+When you run `npx @digitaldefiance/express-suite-starter`, you'll see a branded ASCII art logo and be guided through a comprehensive setup wizard:
+
+<details>
+<summary>View example generation session</summary>
+
+```text
+➜  express-suite npx @digitaldefiance/express-suite-starter        
+
+...
+
+v22.21.1 is already installed.
+Now using node v22.21.1 (npm v10.9.4)
+
+✔ Select language: English (US)
+
+╔═════════════════════════════════════════════════════════════════════════════╗
+║ Node Express Suite Starter v2.2.1                                           ║
+║ Formerly Project Albatross                                                  ║
+╠═════════════════════════════════════════════════════════════════════════════╣
+║ Node Express Suite Starter generates an NX monorepo MERN stack with React   ║
+║ app, Express API, shared libraries, @digitaldefiance/node-express-suite,    ║
+║ and @digitaldefiance/express-suite-react-components integration.            ║
+╚═════════════════════════════════════════════════════════════════════════════╝
+
+System Check
+────────────
+✓ System check passed
+
+Workspace Configuration
+───────────────────────
+✔ Enter the workspace name: my-awesome-app
+✔ Enter the project prefix: awesome
+✔ Enter the npm namespace: @awesome
+✔ Enter the parent directory: /home/user/projects
+✔ Enter the git repository URL (optional): 
+✔ Enter the hostname: awesome.example.com
+✔ Enter the site title: My Awesome App
+✔ Enter the site description: A comprehensive web application...
+✔ Enter the site tagline: Built with Express Suite
+✔ Run in dry-run mode? No
+
+Optional Projects
+✔ Include E2E tests? Yes
+
+Package Groups
+✔ Select optional package groups: authentication, validation, documentation
+
+DevContainer Configuration
+✔ Set up DevContainer configuration? Yes
+✔ DevContainer configuration: MongoDB
+
+Database Configuration
+✔ Use in-memory database for development? No
+✔ Enter MongoDB database name: awesome_db
+
+Security Configuration
+✔ Generate JWT_SECRET? Yes
+ℹ Generated JWT_SECRET
+✔ Generate MNEMONIC_ENCRYPTION_KEY? Yes
+ℹ Generated MNEMONIC_ENCRYPTION_KEY
+✔ Generate MNEMONIC_HMAC_SECRET? Yes
+ℹ Generated MNEMONIC_HMAC_SECRET
+
+Starting generation (19 steps)
+──────────────────────────────
+[1/19] Checking target directory
+✓ Completed: Checking target directory
+
+[2/19] Creating Nx workspace
+$ npx create-nx-workspace@latest "my-awesome-app" --package-manager=yarn...
+✓ Completed: Creating Nx workspace
+
+[3/19] Updating TypeScript base configuration
+✓ Completed: Updating TypeScript base configuration
+
+[5/19] Setting up Yarn Berry
+✓ Completed: Setting up Yarn Berry
+
+[6/19] Adding Nx plugins
+✓ Completed: Adding Nx plugins
+
+[7/19] Installing dependencies
+✓ Completed: Installing dependencies
+
+[8/19] Generating project structure
+ℹ Generating lib: awesome-lib
+ℹ Generating react: awesome-react
+ℹ Generating api: awesome-api
+✓ Completed: Generating project structure
+
+[9/19] Installing React components package
+✓ Completed: Installing React components package
+
+[10/19] Rendering configuration templates
+✓ Completed: Rendering configuration templates
+
+[11/19] Copying scaffolding files
+✓ Completed: Copying scaffolding files
+
+[12/19] Generating LICENSE file
+✓ Completed: Generating LICENSE file
+
+[13/19] Adding package.json scripts
+✓ Completed: Adding package.json scripts
+
+[14/19] Generating documentation
+✓ Completed: Generating documentation
+
+[15/19] Setting up environment files
+✓ Completed: Setting up environment files
+
+[16/19] Building native modules
+✓ Completed: Building native modules
+
+[17/19] Validating generated project
+✓ Completed: Validating generated project
+
+[18/19] Creating initial commit
+✓ Completed: Creating initial commit
+
+[19/19] Installing Playwright browsers
+✓ Completed: Installing Playwright browsers
+
+Generation Complete!
+────────────────────
+✓ Monorepo created at: /home/user/projects/my-awesome-app
+
+Next steps:
+  cd my-awesome-app
+  yarn build:dev
+  yarn serve:dev
+```
+
+</details>
+
+The generator performs 19 automated steps including:
+
+- System validation (build tools, Node.js version)
+- Nx workspace creation with Yarn Berry
+- Project scaffolding (lib, api, react, etc.)
+- Dependency installation and configuration
+- Secret generation and environment setup
+- Documentation generation
+- Git initialization and commit
+- Post-generation validation
 
 ## What Gets Generated
 
@@ -142,11 +300,13 @@ All devcontainers include VS Code extensions and run on Linux regardless of host
 ### Template Processing
 
 **Scaffolding files** with `.mustache` extension are automatically processed:
+
 - Variables replaced: `{{workspaceName}}`, `{{WorkspaceName}}`, `{{prefix}}`, `{{namespace}}`, `{{hostname}}`
 - Extension stripped: `app.tsx.mustache` → `app.tsx`
 - Non-mustache files copied directly without modification
 
 **Example:**
+
 ```typescript
 // scaffolding/lib/src/lib/i18n-setup.ts.mustache
 export const ComponentId = '{{WorkspaceName}}';
@@ -174,6 +334,7 @@ yarn test:coverage     # Coverage report
 ### System Requirements
 
 Automatically checked before generation:
+
 - **C++ compiler** (g++, clang++, or Visual Studio Build Tools)
 - **Python 3** (for node-gyp)
 - **make** (Unix) or **MSBuild** (Windows)
@@ -188,6 +349,7 @@ Automatically checked before generation:
 ## Packages Installed
 
 ### Express Suite (Core)
+
 - `@digitaldefiance/node-express-suite` - Backend framework with BaseApplication, BaseRouter
 - `@digitaldefiance/suite-core-lib` - Core utilities and constants
 - `@digitaldefiance/ecies-lib` - Browser ECIES encryption
@@ -195,10 +357,12 @@ Automatically checked before generation:
 - `@digitaldefiance/i18n-lib` - Multi-language support with I18nEngine
 
 ### Express Suite (Optional)
+
 - `@digitaldefiance/express-suite-react-components` - Pre-built React components (useAuth, etc.)
 - `@digitaldefiance/express-suite-test-utils` - Testing utilities (always included)
 
 ### Core Stack
+
 - **Backend**: Express 5, MongoDB, Mongoose
 - **Frontend**: React 19, Vite, Material-UI
 - **Testing**: Jest, Playwright
@@ -236,6 +400,7 @@ npx @digitaldefiance/express-suite-starter --dry-run
 ### Post-Generation Validation
 
 Automatic checks after generation:
+
 - ✅ package.json validation
 - ✅ Dependency conflict detection
 - ✅ Best practices checking
@@ -244,6 +409,7 @@ Automatic checks after generation:
 ### Package Groups
 
 Optional feature sets in `config/package-groups.json`:
+
 - **testing**: Additional test utilities
 - **linting**: Enhanced linting rules
 - **ui-components**: Extra UI libraries
@@ -255,6 +421,7 @@ Optional feature sets in `config/package-groups.json`:
 ## CLI Features
 
 ### Progress Tracking
+
 ```
 [1/15] Checking target directory ✓
 [2/15] Creating Nx monorepo ✓
@@ -264,6 +431,7 @@ Optional feature sets in `config/package-groups.json`:
 ```
 
 ### Color-Coded Output
+
 - ✓ Green: Success
 - ✗ Red: Errors  
 - ⚠ Yellow: Warnings
@@ -271,6 +439,7 @@ Optional feature sets in `config/package-groups.json`:
 - $ Gray: Commands
 
 ### Semantic Logging
+
 ```typescript
 Logger.success('message')    // ✓ Green
 Logger.error('message')      // ✗ Red
@@ -345,27 +514,32 @@ MIT © Digital Defiance
 ### Version 2.2.0
 
 #### Dependencies
+
 - Updated `@digitaldefiance/express-suite-react-components` ^2.2.0 → ^2.5.12
 - Updated `@digitaldefiance/i18n-lib` 3.6.0 → 3.6.4
 - Updated `@digitaldefiance/express-suite-test-utils` 1.0.8 → 1.0.10
 
 #### Features
+
 - Added Yarn registry configuration to devcontainer post-create scripts
 - Added `siteUrl` field to environment interface
 - Added runtime configuration support via `window.APP_CONFIG`
 
 #### Breaking Changes
+
 - Renamed `window.__RUNTIME_CONFIG__` to `window.APP_CONFIG`
 - Converted `environment.prod.ts` to template format (`environment.prod.ts.mustache`)
 - Removed automatic `/api` suffix stripping from API URL handling
 
 #### Improvements
+
 - Refactored environment files to support dynamic runtime configuration
 - Updated TypeScript target from ES2020 to ES2022
 - Improved API URL resolution logic with better null checking
 - Updated deployment documentation to reflect new config naming
 
 #### Bug Fixes
+
 - Fixed Yarn registry configuration in Verdaccio detection for all devcontainer variants
 
 ### Version 2.1.69
@@ -442,19 +616,19 @@ MIT © Digital Defiance
 
 ### Version 2.1.50
 
-#### Added:
+#### Added
 
 - Complete user guide and deployment documentation
 
 - Runtime configuration support for multi-domain deployments
 
-#### Changed:
+#### Changed
 
 - inituserdb now always included (breaking change)
 
 - React app uses environment-based API URLs
 
-#### Fixed:
+#### Fixed
 
 - Template renderer no longer copies .mustache source files
 
@@ -467,21 +641,25 @@ MIT © Digital Defiance
 ### Version 2.1.43
 
 #### Added
+
 - Interactive database configuration prompts (in-memory vs MongoDB)
 - Automated secret generation (JWT_SECRET, MNEMONIC_ENCRYPTION_KEY, MNEMONIC_HMAC_SECRET)
 - MongoDB password configuration for DevContainers
 - Automatic .env population with generated secrets
 
 #### Changed
+
 - `.env.example` includes detailed comments
 - DEV_DATABASE now optional (empty = use MONGO_URI)
 - `.env` files populated with values instead of copied from example
 - MONGO_URI dynamically built with workspace name and optional auth
 
 #### Fixed
+
 - DevContainer MongoDB URI uses workspace name instead of "example-project"
 
 #### Documentation
+
 - JWT_SECRET validation string keys and translations (8 languages)
 
 ### Version 2.1.41
