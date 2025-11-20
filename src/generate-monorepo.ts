@@ -400,10 +400,11 @@ async function main() {
       if (fs.existsSync(tsconfigBasePath)) {
         const tsconfigBase = JSON.parse(fs.readFileSync(tsconfigBasePath, 'utf-8'));
         
-        // Add esModuleInterop and allowSyntheticDefaultImports to compilerOptions
+        // Add esModuleInterop, allowSyntheticDefaultImports, and allowImportingTsExtensions to compilerOptions
         tsconfigBase.compilerOptions = tsconfigBase.compilerOptions || {};
         tsconfigBase.compilerOptions.esModuleInterop = true;
         tsconfigBase.compilerOptions.allowSyntheticDefaultImports = true;
+        tsconfigBase.compilerOptions.allowImportingTsExtensions = true;
         
         fs.writeFileSync(tsconfigBasePath, JSON.stringify(tsconfigBase, null, 2) + '\n');
         Logger.info(getStarterTranslation(StarterStringKey.TSCONFIG_BASE_UPDATED));

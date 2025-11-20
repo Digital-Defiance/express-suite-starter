@@ -31,7 +31,7 @@ For deploying the same build to multiple domains, inject runtime config in your 
 
 ```html
 <script>
-  window.__RUNTIME_CONFIG__ = {
+  window.APP_CONFIG = {
     apiUrl: 'https://api.example.com/api'
   };
 </script>
@@ -42,6 +42,7 @@ This overrides the environment file without rebuilding.
 ## Environment Files
 
 ### Development (`environment.ts`)
+
 ```typescript
 export const environment = {
   production: false,
@@ -50,6 +51,7 @@ export const environment = {
 ```
 
 ### Production (`environment.prod.ts`)
+
 ```typescript
 export const environment = {
   production: true,

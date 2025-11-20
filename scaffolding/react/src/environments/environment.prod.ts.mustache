@@ -10,6 +10,7 @@ const server = appConfig?.server;
 
 export const environment: IEnvironment = {
   production: false,
-  siteUrl: server ?? 'http://localhost:3000',
-  apiUrl: server !== undefined ? `${server}/api` : 'http://localhost:3000/api',
+  siteUrl: server ?? 'https://{{hostname}}',
+  apiUrl:
+    server !== undefined ? `${server}/api` : 'https://{{hostname}}/api',
 };
