@@ -1,7 +1,8 @@
-import { StarterStringKey } from './starter-string-key';
+import { StarterStringKey } from '../starter-string-key';
 
 export const ukTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STARTER_TITLE]: 'Стартер Node Express Suite',
+  [StarterStringKey.STARTER_SUBTITLE]: 'Раніше Проєкт Альбатрос',
   [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter генерує NX monorepo MERN стек з React додатком, Express API, спільними бібліотеками, інтеграцією @digitaldefiance/node-express-suite та @digitaldefiance/express-suite-react-components.',
   [StarterStringKey.CLI_BANNER]: 'Стартер Express Suite',
   [StarterStringKey.CLI_FATAL_ERROR]: 'Фатальна помилка',

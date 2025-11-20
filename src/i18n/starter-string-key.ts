@@ -1,6 +1,7 @@
 export enum StarterStringKey {
   // Titles
   STARTER_TITLE = 'starter_title',
+  STARTER_SUBTITLE = 'starter_subtitle',
   STARTER_DESCRIPTION = 'starter_description',
 
   // CLI Messages

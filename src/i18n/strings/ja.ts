@@ -1,7 +1,8 @@
-import { StarterStringKey } from './starter-string-key';
+import { StarterStringKey } from '../starter-string-key';
 
 export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STARTER_TITLE]: 'Node Express Suite スターター',
+  [StarterStringKey.STARTER_SUBTITLE]: '旧プロジェクトアルバトロス',
   [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter は、React アプリ、Express API、共有ライブラリ、@digitaldefiance/node-express-suite、@digitaldefiance/express-suite-react-components 統合を含む NX monorepo MERN スタックを生成します。',
   [StarterStringKey.CLI_BANNER]: 'Express Suite スターター',
   [StarterStringKey.CLI_FATAL_ERROR]: '致命的なエラー',

@@ -1,11 +1,11 @@
-import { enUsTranslations } from './translations-en-us';
-import { enGbTranslations } from './translations-en-gb';
-import { esTranslations } from './translations-es';
-import { frTranslations } from './translations-fr';
-import { deTranslations } from './translations-de';
-import { zhCnTranslations } from './translations-zh-cn';
-import { jaTranslations } from './translations-ja';
-import { ukTranslations } from './translations-uk';
+import { enUsTranslations } from './strings/en-us';
+import { enGbTranslations } from './strings/en-gb';
+import { esTranslations } from './strings/es';
+import { frTranslations } from './strings/fr';
+import { deTranslations } from './strings/de';
+import { zhCnTranslations } from './strings/zh-cn';
+import { jaTranslations } from './strings/ja';
+import { ukTranslations } from './strings/uk';
 
 export const allTranslations = {
   'en-US': enUsTranslations,

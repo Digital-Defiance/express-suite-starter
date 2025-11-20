@@ -38,11 +38,13 @@ export function printBanner(): void {
 }
 export function printIntro(): void {
     const title = getStarterTranslation(StarterStringKey.STARTER_TITLE);
+    const subTitle = getStarterTranslation(StarterStringKey.STARTER_SUBTITLE);
     const description = getStarterTranslation(StarterStringKey.STARTER_DESCRIPTION);
     const boxWidth = 79;
     const contentWidth = boxWidth - 4; // Account for '║ ' and ' ║'
     const titleLine = `${title} v${STARTER_VERSION}`;
     const titlePadding = ' '.repeat(Math.max(0, contentWidth - titleLine.length));
+    const subTitlePadding = ' '.repeat(Math.max(0, contentWidth - subTitle.length));
     
     const wrappedLines = wrapText(description, contentWidth);
     const descriptionLines = wrappedLines.map(line => 
@@ -53,6 +55,7 @@ export function printIntro(): void {
         '\n' +
         chalk.bold.cyan('╔' + '═'.repeat(boxWidth - 2) + '╗') + '\n' +
         chalk.bold.cyan('║ ') + chalk.bold.white(title) + chalk.bold.yellow(` v${STARTER_VERSION}`) + titlePadding + chalk.bold.cyan(' ║') + '\n' +
+        chalk.bold.cyan('║ ') + chalk.italic.gray(subTitle) + subTitlePadding + chalk.bold.cyan(' ║') + '\n' +
         chalk.bold.cyan('╠' + '═'.repeat(boxWidth - 2) + '╣') + '\n' +
         descriptionLines + '\n' +
         chalk.bold.cyan('╚' + '═'.repeat(boxWidth - 2) + '╝') + '\n'

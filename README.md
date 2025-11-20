@@ -337,6 +337,11 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.2.2
+
+- Add Formerly project albatross subtitle
+- Reorganize strings into subdir
+
 ### Version 2.2.0
 
 #### Dependencies
