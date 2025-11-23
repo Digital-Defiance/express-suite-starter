@@ -506,6 +506,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.3.0
+
+- Minor version updates
+
 ### Version 2.2.2
 
 - Add Formerly project albatross subtitle

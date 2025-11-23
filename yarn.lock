@@ -1506,27 +1506,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@digitaldefiance/ecies-lib@npm:3.0.8"
+"@digitaldefiance/ecies-lib@npm:4.2.7":
+  version: 4.2.7
+  resolution: "@digitaldefiance/ecies-lib@npm:4.2.7"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.6.4"
+    "@digitaldefiance/i18n-lib": "npm:3.7.5"
     "@ethereumjs/wallet": "npm:^10.0.0"
     "@noble/curves": "npm:^2.0.1"
     "@noble/hashes": "npm:^2.0.1"
     "@scure/bip32": "npm:^2.0.0"
     bson: "npm:^6.10.4"
     ts-brand: "npm:^0.2.0"
-  checksum: 10c0/ab11d6833e371549bcdc696b786371b3cd8fb87dcd5d704d91f6bc08ca8f870ed84d1ed9489af10515ac6f57acef7086f492c8d4aea49eca32ab746b32d2f4e1
+  checksum: 10c0/41e9f0675b7df603f79bc4a9692eb9d6a1d682774648bc48a833208ab8f2d32bfff2d77f128d92857f488d074a8617f6210f811d848aca66b019da161b2b3a58
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.5.12":
-  version: 2.5.14
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.5.14"
+"@digitaldefiance/express-suite-react-components@npm:^2.8.5":
+  version: 2.8.5
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.8.5"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.6.4"
-    "@digitaldefiance/suite-core-lib": "npm:^2.2.23"
+    "@digitaldefiance/i18n-lib": "npm:3.7.5"
+    "@digitaldefiance/suite-core-lib": "npm:3.5.7"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1541,7 +1541,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/2ec41987968f00ce7147a0237f63f0b94c4a3ae49a2a6b598ae984fd0aa3fc82669cfb303b3bd26f5684b0a661867b87d7199e9b6d34242987180841fc87a301
+  checksum: 10c0/6964a8e1ce7048c4bbc651450ae7589e070c634c5cf9175e51fad6473d7bdf312c8ca4b227a066029b36fe5d163f2ecf3ab81e26901cdc778677bfed5dd17e22
   languageName: node
   linkType: hard
 
@@ -1549,9 +1549,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.5.12"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.8.5"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.10"
-    "@digitaldefiance/i18n-lib": "npm:3.6.4"
+    "@digitaldefiance/i18n-lib": "npm:3.7.5"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
     "@nx/workspace": "npm:22.0.2"
@@ -1589,24 +1589,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/i18n-lib@npm:3.6.4":
-  version: 3.6.4
-  resolution: "@digitaldefiance/i18n-lib@npm:3.6.4"
+"@digitaldefiance/i18n-lib@npm:3.7.5":
+  version: 3.7.5
+  resolution: "@digitaldefiance/i18n-lib@npm:3.7.5"
   dependencies:
     currency-codes: "npm:^2.2.0"
     moment: "npm:^2.30.1"
     moment-timezone: "npm:^0.6.0"
-  checksum: 10c0/8176aa4489373d35d4326af16c618164a7e1f31b6d7502365cb2e7982f85bc2b4d5501e75dc563bc4fb316fe348ca6243491f46685da970482809277dd64f144
+  checksum: 10c0/df6bad625f7cfc10859ab92987cb3ebb5a9db84bc874579aa7c6e58d04935eec5ffe05dd6fb3d35f4ec5f399ca9075397759fdea053fae48093a1c1e7fa80b4a
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:^2.2.23":
-  version: 2.2.26
-  resolution: "@digitaldefiance/suite-core-lib@npm:2.2.26"
+"@digitaldefiance/suite-core-lib@npm:3.5.7":
+  version: 3.5.7
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.5.7"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:3.0.8"
-    "@digitaldefiance/i18n-lib": "npm:3.6.4"
-  checksum: 10c0/64c6ba6a7906a1140724074c13d8a5dedd9df29b03cb269bc66da605b97dcc217a4d0ad85cab125ba8227593177ec4d21dc3a28ddff441918c9c3630f925215a
+    "@digitaldefiance/ecies-lib": "npm:4.2.7"
+    "@digitaldefiance/i18n-lib": "npm:3.7.5"
+  checksum: 10c0/c9f10ebe1e8a2127bc5b180bdb0d27295a6531595bb9533d3e57a4a3011bbc21f5ec12f896be5e15be085037f0dc053197c1737fba2922457a95e9852a17c9bc
   languageName: node
   linkType: hard
 
