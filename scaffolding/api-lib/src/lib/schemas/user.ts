@@ -1,6 +1,6 @@
 import { createUserSchema, IConstants } from '@digitaldefiance/node-express-suite';
 import { Constants } from '../constants';
-import { Schema } from 'mongoose';
+import { Schema } from '@digitaldefiance/mongoose-types';
 import { IUserDocument } from '../documents';
 
 // Clone base schema and extend

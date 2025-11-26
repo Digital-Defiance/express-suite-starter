@@ -1,4 +1,4 @@
-import { Connection } from 'mongoose';
+import { Connection } from '@digitaldefiance/mongoose-types';
 import { BaseModelName, createEmailTokenSchema, createMnemonicSchema, createRoleSchema, createUsedDirectLoginTokenSchema, createUserRoleSchema, MnemonicSchema, RoleSchema, SchemaCollection, SchemaMap, UsedDirectLoginTokenSchema, UserRoleSchema } from '@digitaldefiance/node-express-suite';
 import EmailTokenModel from '../models/email-token';
 import MnemonicModel from '../models/mnemonic';

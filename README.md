@@ -506,6 +506,12 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 2.3.1
+
+- Update react-components, test-utils
+- Add new @digitaldefiance/mongoose-types dep
+- Make scaffolded app use mongoose-types
+
 ### Version 2.3.0
 
 - Minor version updates

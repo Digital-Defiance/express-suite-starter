@@ -7,7 +7,7 @@ function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]
     console[type](...args);
   }
 }
-import { Types } from 'mongoose';
+import { Types } from '@digitaldefiance/mongoose-types';
 import { Environment } from '../environment';
 import { IConstants } from '../interfaces/constants';
 

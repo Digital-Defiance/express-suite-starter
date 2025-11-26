@@ -44,6 +44,7 @@
       "@digitaldefiance/node-ecies-lib",
       "@digitaldefiance/i18n-lib",
       "@digitaldefiance/suite-core-lib",
+      "@digitaldefiance/mongoose-types",
       "@digitaldefiance/express-suite-react-components",
       "@emotion/react",
       "@emotion/styled",

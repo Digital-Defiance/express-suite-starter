@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ValidationChain } from 'express-validator';
-import { ClientSession, Document, Model, Types } from 'mongoose';
+import { ClientSession, Document, Model, Types } from '@digitaldefiance/mongoose-types';
 import { Brand } from 'ts-brand';
 import type { IUserDocument } from './documents/user';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';

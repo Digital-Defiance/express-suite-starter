@@ -1,6 +1,6 @@
 import { ApiRouter as BaseApiRouter, IApplication, IBaseDocument } from '@digitaldefiance/node-express-suite';
 import { ITokenRole, ITokenUser, IUserBase } from '@digitaldefiance/suite-core-lib';
-import { Types } from 'mongoose';
+import { Types } from '@digitaldefiance/mongoose-types';
 import { Environment } from '../environment';
 import { IConstants } from '../interfaces/constants';
 
