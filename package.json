@@ -21,7 +21,8 @@
     "test:coverage": "npx jest --coverage",
     "test:logged": "npx jest 2>&1 | ansifilter -o test.log",
     "sync-templates": "npx ts-node tools/sync-templates.ts",
-    "prepublishOnly": "yarn build && yarn test"
+    "prepublishOnly": "yarn build && yarn test",
+    "publish:public": "npm publish --access public"
   },
   "dependencies": {
     "@digitaldefiance/express-suite-react-components": "^2.9.3",
