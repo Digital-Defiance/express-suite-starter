@@ -16,7 +16,7 @@
   },
   "packages": {
     "dev": [
-      "@digitaldefiance/express-suite-test-utils@1.0.10",
+      "@digitaldefiance/express-suite-test-utils@workspace:*",
       "@typescript-eslint/eslint-plugin",
       "@typescript-eslint/parser",
       "eslint-config-prettier",

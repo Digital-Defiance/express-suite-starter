@@ -16,7 +16,8 @@ export function runCommand(command: string, options: CommandOptions = {}): void 
   try {
     execSync(command, { 
       stdio: options.silent ? 'pipe' : 'inherit', 
-      cwd: options.cwd
+      cwd: options.cwd,
+      env: options.env ? { ...process.env, ...options.env } : process.env
     });
   } catch (err: any) {
     Logger.error(`Command failed: ${command}`);

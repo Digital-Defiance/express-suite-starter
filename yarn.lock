@@ -1506,27 +1506,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:4.4.7":
-  version: 4.4.7
-  resolution: "@digitaldefiance/ecies-lib@npm:4.4.7"
+"@digitaldefiance/ecies-lib@npm:4.4.10":
+  version: 4.4.10
+  resolution: "@digitaldefiance/ecies-lib@npm:4.4.10"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.8.2"
+    "@digitaldefiance/i18n-lib": "npm:3.8.5"
     "@ethereumjs/wallet": "npm:^10.0.0"
     "@noble/curves": "npm:^2.0.1"
     "@noble/hashes": "npm:^2.0.1"
     "@scure/bip32": "npm:^2.0.0"
     bson: "npm:^6.10.4"
     ts-brand: "npm:^0.2.0"
-  checksum: 10c0/b0c5da50f29ee07d52dcb820f57bf4ca6b62d3623dc1fd4044d4d352f8405f7163832084da82c884b8242bdf60933c101106b59327307fe15488c30f2a3ee9a0
+  checksum: 10c0/58e1f33496b9ee120ceb2d0aafc1baefc1ec3258c286052e51b38bca23f2730a792051ec378c327f3f6a87364b2eed62619a8ade98db80c7f370890cf06da5bb
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.9.3":
-  version: 2.9.3
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.3"
+"@digitaldefiance/express-suite-react-components@npm:^2.9.5":
+  version: 2.9.5
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.5"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.8.2"
-    "@digitaldefiance/suite-core-lib": "npm:3.6.8"
+    "@digitaldefiance/i18n-lib": "npm:3.8.5"
+    "@digitaldefiance/suite-core-lib": "npm:3.6.10"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1541,7 +1541,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/474b1de93279958c2e72fc920ca5ec36fc02bd924672a4cabad0c136d993417611bcc5a7ca61168d3eb9927c6da298c991399e3c1beb7326e32070f0330316f5
+  checksum: 10c0/20d7babad830f1d146f5c260ec67ffaf3b921746179e3f0c8cac74d0faac9d694929b9b48ca4dd9891132e1674457bb60d06edf57383430d04fc00bc21875eb5
   languageName: node
   linkType: hard
 
@@ -1549,9 +1549,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.9.3"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.9.5"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.12"
-    "@digitaldefiance/i18n-lib": "npm:3.8.2"
+    "@digitaldefiance/i18n-lib": "npm:3.8.5"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
     "@nx/workspace": "npm:22.0.2"
@@ -1589,24 +1589,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/i18n-lib@npm:3.8.2":
-  version: 3.8.2
-  resolution: "@digitaldefiance/i18n-lib@npm:3.8.2"
+"@digitaldefiance/i18n-lib@npm:3.8.5":
+  version: 3.8.5
+  resolution: "@digitaldefiance/i18n-lib@npm:3.8.5"
   dependencies:
     currency-codes: "npm:^2.2.0"
     moment: "npm:^2.30.1"
     moment-timezone: "npm:^0.6.0"
-  checksum: 10c0/ed9dd8a5f2394b640abbbc75ea866b4e4e82f8f3ed593ff590eec6d5cd018d7bdef432818da87ee1664226f2cadedf60ca50eb4b96d9af3d247ba3c75fb36a68
+  checksum: 10c0/8757dcb299ad3ebd7ce05c456544989416ae373fa4c1082c6dbf9342e7de5234a747bd609ec1abe7e5189d03ae516ea451d226e6fd9bfd1d40d38179d1c317b4
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:3.6.8":
-  version: 3.6.8
-  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.8"
+"@digitaldefiance/suite-core-lib@npm:3.6.10":
+  version: 3.6.10
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.10"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:4.4.7"
-    "@digitaldefiance/i18n-lib": "npm:3.8.2"
-  checksum: 10c0/94225166a9db4510f7e6f1e83424dd5a976cfb0802f6dbe5566c929dd16416459f5284fdba477c787a427a9a314b97f065f40da8b0ee0f5f2e0ed9f7d64b062a
+    "@digitaldefiance/ecies-lib": "npm:4.4.10"
+    "@digitaldefiance/i18n-lib": "npm:3.8.5"
+  checksum: 10c0/202a7b2fd73c997bccae3c5c7998dc1a9d939efd1189eb2fc1293bf17673c9fcfb90e87880892b3eb4ed1171c1c812c0a9acf8cb9c1f23f640a7399992c381aa
   languageName: node
   linkType: hard
 

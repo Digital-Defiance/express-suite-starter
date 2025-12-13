@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -25,8 +25,8 @@
     "publish:public": "npm publish --access public"
   },
   "dependencies": {
-    "@digitaldefiance/express-suite-react-components": "^2.9.3",
-    "@digitaldefiance/i18n-lib": "3.8.2",
+    "@digitaldefiance/express-suite-react-components": "^2.9.5",
+    "@digitaldefiance/i18n-lib": "3.8.5",
     "@inquirer/prompts": "^7.5.0",
     "chalk": "^4.1.2",
     "mustache": "^4.2.0",
