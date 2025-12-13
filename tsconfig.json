@@ -9,6 +9,10 @@
       "node",
       "jest"
     ],
+    "typeRoots": [
+      "../../types",
+      "../../node_modules/@types"
+    ],
     "outDir": "./dist",
     "rootDir": "./",
     "strict": false,
@@ -19,11 +23,13 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noImplicitOverride": false
   },
   "include": [
     "src/**/*",
-    "scripts/**/*"
+    "scripts/**/*",
+    "../../types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
