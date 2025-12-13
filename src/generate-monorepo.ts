@@ -826,6 +826,15 @@ async function main() {
 
             // Set bundle to true to properly resolve dependencies
             projectJson.targets.build.options.bundle = true;
+
+            // Mark workspace packages as external so they're not bundled
+            // This allows them to be properly resolved from node_modules after yarn install
+            if (!projectJson.targets.build.options.esbuildOptions) {
+              projectJson.targets.build.options.esbuildOptions = {};
+            }
+            projectJson.targets.build.options.esbuildOptions.external = [
+              '@digitaldefiance/*',
+            ];
           }
 
           projectJson.targets['copy-env'] = {
@@ -836,28 +845,35 @@ async function main() {
           };
           projectJson.targets['post-build'] = {
             executor: 'nx:run-commands',
-            dependsOn: ['build'],
+            dependsOn: ['build', 'prune-lockfile', 'copy-workspace-modules'],
             options: {
               commands: [
                 `cp ${initUserDbProject.name}/.env dist/${initUserDbProject.name}/.env`,
-                `cd dist/${initUserDbProject.name} && yarn install`,
+                `cd dist/${initUserDbProject.name} && yarn install --production`,
               ],
               parallel: false,
             },
           };
-          // Update serve to depend on post-build instead of build
-          if (projectJson.targets.serve) {
-            projectJson.targets.serve.dependsOn = ['post-build'];
-            projectJson.targets.serve.options.buildTarget = `${initUserDbProject.name}:post-build`;
-            if (projectJson.targets.serve.configurations) {
-              Object.keys(projectJson.targets.serve.configurations).forEach(
-                (config) => {
-                  projectJson.targets.serve.configurations[config].buildTarget =
-                    `${initUserDbProject.name}:post-build`;
-                },
-              );
-            }
-          }
+          // Replace serve target to use nx:run-commands instead of @nx/js:node
+          // This avoids the issue where @nx/js:node tries to resolve 'nx' module
+          // from within the dist directory after yarn install
+          projectJson.targets.serve = {
+            executor: 'nx:run-commands',
+            defaultConfiguration: 'development',
+            dependsOn: ['post-build'],
+            options: {
+              command: `node dist/${initUserDbProject.name}/main.js`,
+              cwd: '{workspaceRoot}',
+            },
+            configurations: {
+              development: {
+                command: `node dist/${initUserDbProject.name}/main.js`,
+              },
+              production: {
+                command: `node dist/${initUserDbProject.name}/main.js`,
+              },
+            },
+          };
           fs.writeFileSync(
             projectJsonPath,
             JSON.stringify(projectJson, null, 2) + '\n',
@@ -1566,12 +1582,19 @@ export {};
           '.devcontainer',
           '.env',
         );
-        fs.copyFileSync(devcontainerEnvExamplePath, devcontainerEnvPath);
-        Logger.info(
-          getStarterTranslation(
-            StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE,
-          ),
-        );
+
+        if (fs.existsSync(devcontainerEnvExamplePath)) {
+          fs.copyFileSync(devcontainerEnvExamplePath, devcontainerEnvPath);
+          Logger.info(
+            getStarterTranslation(
+              StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE,
+            ),
+          );
+        } else {
+          Logger.warning(
+            `Devcontainer .env.example not found, skipping .env creation for simple devcontainer`,
+          );
+        }
       }
     },
   });
