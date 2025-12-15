@@ -1787,8 +1787,30 @@ export {};
         `  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV, { name: apiProject.name })}`,
       );
     }
-    Logger.dim(`  yarn build:dev`);
-    Logger.dim(`  yarn serve:dev`);
+
+    // Add database initialization instructions for non-memory DB setups
+    if (
+      !useInMemoryDb &&
+      (devcontainerChoice === 'mongodb' ||
+        devcontainerChoice === 'mongodb-replicaset')
+    ) {
+      Logger.dim(`  yarn build:dev`);
+      Logger.dim(
+        `  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_INIT_DB)}`,
+      );
+      Logger.warning(
+        `\n  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_COPY_CREDENTIALS, { name: apiProject?.name || 'api' })}\n`,
+      );
+      Logger.dim(`  yarn serve:dev`);
+    } else {
+      Logger.dim(`  yarn build:dev`);
+      Logger.dim(`  yarn serve:dev`);
+      if (useInMemoryDb) {
+        Logger.info(
+          `\n  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_MEMORY_DB_INFO)}\n`,
+        );
+      }
+    }
 
     Logger.section(
       getStarterTranslation(StarterStringKey.SECTION_GENERATED_PROJECTS),

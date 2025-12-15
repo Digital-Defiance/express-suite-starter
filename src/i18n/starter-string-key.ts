@@ -9,7 +9,7 @@ export enum StarterStringKey {
   CLI_FATAL_ERROR = 'cli_fatalError',
   CLI_CANCELLED = 'cli_cancelled',
   CLI_INSTALL_REQUIRED_TOOLS = 'cli_installRequiredTools',
-  
+
   // System Check
   SYSTEM_CHECK_HEADER = 'systemCheck_header',
   SYSTEM_CHECK_PASSED = 'systemCheck_passed',
@@ -21,7 +21,7 @@ export enum StarterStringKey {
   SYSTEM_CHECK_FEDORA_RHEL = 'systemCheck_fedoraRhel',
   SYSTEM_CHECK_MACOS = 'systemCheck_macos',
   SYSTEM_CHECK_WINDOWS = 'systemCheck_windows',
-  
+
   // Prompts
   PROMPT_WORKSPACE_NAME = 'prompt_workspaceName',
   PROMPT_PROJECT_PREFIX = 'prompt_projectPrefix',
@@ -46,7 +46,7 @@ export enum StarterStringKey {
   PROMPT_SITE_TITLE = 'prompt_siteTitle',
   PROMPT_SITE_DESCRIPTION = 'prompt_siteDescription',
   PROMPT_SITE_TAGLINE = 'prompt_siteTagline',
-  
+
   // Validation Messages
   VALIDATION_INVALID_WORKSPACE_NAME = 'validation_invalidWorkspaceName',
   VALIDATION_INVALID_PREFIX = 'validation_invalidPrefix',
@@ -74,7 +74,7 @@ export enum StarterStringKey {
   VALIDATION_WARNINGS = 'validation_warnings',
   VALIDATION_INFO = 'validation_info',
   VALIDATION_FIX = 'validation_fix',
-  
+
   // Step Descriptions
   STEP_CHECK_TARGET_DIR = 'step_checkTargetDir',
   STEP_CREATE_MONOREPO = 'step_createMonorepo',
@@ -98,7 +98,7 @@ export enum StarterStringKey {
   STEP_SKIPPING = 'step_skipping',
   STEP_COMPLETED = 'step_completed',
   STEP_FAILED = 'step_failed',
-  
+
   // Generation Messages
   GENERATION_STARTING = 'generation_starting',
   GENERATION_COMPLETE = 'generation_complete',
@@ -107,16 +107,16 @@ export enum StarterStringKey {
   GENERATION_DRY_RUN_COMPLETE = 'generation_dryRunComplete',
   GENERATION_ROLLBACK = 'generation_rollback',
   GENERATION_ROLLBACK_FAILED = 'generation_rollbackFailed',
-  
+
   // Project Generation
   PROJECT_GENERATING = 'project_generating',
   PROJECT_ADDED_TARGETS = 'project_addedTargets',
   PROJECT_INSTALLING_PACKAGE = 'project_installingPackage',
   PROJECT_COPYING_DEVCONTAINER = 'project_copyingDevcontainer',
-  
+
   // TypeScript Configuration
   TSCONFIG_BASE_UPDATED = 'tsconfig_baseUpdated',
-  
+
   // Environment Setup
   ENV_CREATED_WITH_SECRETS = 'env_createdWithSecrets',
   ENV_CREATED_FROM_API = 'env_createdFromApi',
@@ -124,16 +124,16 @@ export enum StarterStringKey {
   ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE = 'env_createdDevcontainerFromExample',
   ENV_CREATED_DEVCONTAINER_MINIMAL = 'env_createdDevcontainerMinimal',
   ENV_GENERATED_SECRET = 'env_generatedSecret',
-  
+
   // Documentation
   DOC_GENERATED_README = 'doc_generatedReadme',
   DOC_GENERATED_ARCHITECTURE = 'doc_generatedArchitecture',
   DOC_GENERATED_API = 'doc_generatedApi',
-  
+
   // Template Rendering
   TEMPLATE_RENDERED = 'template_rendered',
   TEMPLATE_COPIED = 'template_copied',
-  
+
   // Package Management
   PACKAGE_INSTALLATION_FAILED = 'package_installationFailed',
   PACKAGE_INSTALL_BUILD_TOOLS = 'package_installBuildTools',
@@ -141,11 +141,11 @@ export enum StarterStringKey {
   PACKAGE_RESOLVING_VERSION = 'package_resolvingVersion',
   PACKAGE_FAILED_RESOLVE_LATEST = 'package_failedResolveLatest',
   PACKAGE_FAILED_RESOLVE_STABLE = 'package_failedResolveStable',
-  
+
   // Plugin System
   PLUGIN_REGISTERING = 'plugin_registering',
   PLUGIN_HOOK_FAILED = 'plugin_hookFailed',
-  
+
   // Dry Run
   DRY_RUN_HEADER = 'dryRun_header',
   DRY_RUN_SUMMARY = 'dryRun_summary',
@@ -155,7 +155,7 @@ export enum StarterStringKey {
   DRY_RUN_COMMANDS_TO_RUN = 'dryRun_commandsToRun',
   DRY_RUN_ENCOUNTERED_ERROR = 'dryRun_encounteredError',
   DRY_RUN_ACTIONS = 'dryRun_actions',
-  
+
   // Diff Viewer
   DIFF_CHANGES_SUMMARY = 'diff_changesSummary',
   DIFF_FILES_ADDED = 'diff_filesAdded',
@@ -164,18 +164,18 @@ export enum StarterStringKey {
   DIFF_TRUNCATED = 'diff_truncated',
   DIFF_BEFORE = 'diff_before',
   DIFF_AFTER = 'diff_after',
-  
+
   // Command Execution
   COMMAND_FAILED = 'command_failed',
   COMMAND_REBUILDING_NATIVE = 'command_rebuildingNative',
   COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS = 'command_installingPlaywrightBrowsers',
   COMMAND_SKIPPED_PLAYWRIGHT = 'command_skippedPlaywright',
-  
+
   // Success Messages
   SUCCESS_GENERATION_COMPLETE = 'success_generationComplete',
   SUCCESS_MONOREPO_CREATED = 'success_monorepoCreated',
   SUCCESS_VALIDATION_NO_ISSUES = 'success_validationNoIssues',
-  
+
   // Warning Messages
   WARNING_DIRECTORY_EXISTS = 'warning_directoryExists',
   WARNING_UPDATE_ENV_FILE = 'warning_updateEnvFile',
@@ -185,12 +185,12 @@ export enum StarterStringKey {
 
   // Notice Messages
   NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS = 'notice_siteTitleTaglineDescriptions',
-  
+
   // Error Messages
   ERROR_DIRECTORY_NOT_EMPTY = 'error_directoryNotEmpty',
   ERROR_INVALID_START_STEP = 'error_invalidStartStep',
   ERROR_FATAL = 'error_fatal',
-  
+
   // Section Headers
   SECTION_WORKSPACE_CONFIG = 'section_workspaceConfig',
   SECTION_OPTIONAL_PROJECTS = 'section_optionalProjects',
@@ -201,10 +201,13 @@ export enum StarterStringKey {
   SECTION_EXPRESS_SUITE_PACKAGES = 'section_expressSuitePackages',
   SECTION_NEXT_STEPS = 'section_nextSteps',
   SECTION_NEXT_STEPS_UPDATE_ENV = 'section_nextStepsUpdateEnv',
+  SECTION_NEXT_STEPS_INIT_DB = 'section_nextStepsInitDb',
+  SECTION_NEXT_STEPS_COPY_CREDENTIALS = 'section_nextStepsCopyCredentials',
+  SECTION_NEXT_STEPS_MEMORY_DB_INFO = 'section_nextStepsMemoryDbInfo',
   SECTION_GENERATED_PROJECTS = 'section_generatedProjects',
   SECTION_ISSUES = 'section_issues',
   SECTION_RUNNING_VALIDATION = 'section_runningValidation',
-  
+
   // DevContainer Options
   DEVCONTAINER_SIMPLE = 'devcontainer_simple',
   DEVCONTAINER_MONGODB = 'devcontainer_mongodb',
