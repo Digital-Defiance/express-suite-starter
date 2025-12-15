@@ -3,7 +3,8 @@ import { StarterStringKey } from '../starter-string-key';
 export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STARTER_TITLE]: 'Node Express Suite 启动器',
   [StarterStringKey.STARTER_SUBTITLE]: '原项目信天翁',
-  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter 生成一个 NX monorepo MERN 技术栈，包含 React 应用、Express API、共享库、@digitaldefiance/node-express-suite 和 @digitaldefiance/express-suite-react-components 集成。',
+  [StarterStringKey.STARTER_DESCRIPTION]:
+    'Node Express Suite Starter 生成一个 NX monorepo MERN 技术栈，包含 React 应用、Express API、共享库、@digitaldefiance/node-express-suite 和 @digitaldefiance/express-suite-react-components 集成。',
   [StarterStringKey.CLI_BANNER]: 'Express Suite 启动器',
   [StarterStringKey.CLI_FATAL_ERROR]: '致命错误',
   [StarterStringKey.CLI_CANCELLED]: '已取消。请安装所需工具后重试。',
@@ -14,10 +15,13 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS]: '缺少必需的构建工具：',
   [StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS]: '未找到可选工具：',
   [StarterStringKey.SYSTEM_CHECK_INSTALL_INSTRUCTIONS]: '安装说明：',
-  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]: 'Ubuntu/Debian: sudo apt-get install build-essential python3',
-  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]: 'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
+  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
+    'Ubuntu/Debian: sudo apt-get install build-essential python3',
+  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:
+    'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
-  [StarterStringKey.SYSTEM_CHECK_WINDOWS]: 'Windows: 安装 Visual Studio Build Tools',
+  [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
+    'Windows: 安装 Visual Studio Build Tools',
   [StarterStringKey.PROMPT_WORKSPACE_NAME]: '输入工作空间名称：',
   [StarterStringKey.PROMPT_PROJECT_PREFIX]: '输入项目前缀：',
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: '输入 npm 命名空间：',
@@ -27,23 +31,29 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.PROMPT_DRY_RUN]: '以试运行模式运行（预览而不创建文件）？',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: '包含 E2E 测试？',
   [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: '选择可选包组：',
-  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]: '生成文档（README、ARCHITECTURE、API 文档）？',
+  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]:
+    '生成文档（README、ARCHITECTURE、API 文档）？',
   [StarterStringKey.PROMPT_SETUP_DEVCONTAINER]: '设置 DevContainer 配置？',
   [StarterStringKey.PROMPT_DEVCONTAINER_CONFIG]: 'DevContainer 配置：',
   [StarterStringKey.PROMPT_MONGO_PASSWORD]: '输入 MongoDB root 密码：',
   [StarterStringKey.PROMPT_USE_IN_MEMORY_DB]: '使用内存数据库进行开发？',
   [StarterStringKey.PROMPT_DEV_DATABASE_NAME]: '输入内存数据库名称：',
   [StarterStringKey.PROMPT_GENERATE_SECRET]: '生成 {name}？',
-  [StarterStringKey.PROMPT_ENTER_SECRET]: '输入 {name}（64 字符十六进制字符串）：',
+  [StarterStringKey.PROMPT_ENTER_SECRET]:
+    '输入 {name}（64 字符十六进制字符串）：',
   [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]: '创建初始 git 提交？',
   [StarterStringKey.PROMPT_PUSH_TO_REMOTE]: '推送到远程仓库？',
-  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]: '安装 Playwright 浏览器？（E2E 测试所需）',
+  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]:
+    '安装 Playwright 浏览器？（E2E 测试所需）',
   [StarterStringKey.PROMPT_SITE_TITLE]: '输入网站标题：',
   [StarterStringKey.PROMPT_SITE_DESCRIPTION]: '输入网站描述：',
   [StarterStringKey.PROMPT_SITE_TAGLINE]: '输入网站标语：',
-  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]: '无效的工作空间名称（仅限字母、数字、破折号）',
-  [StarterStringKey.VALIDATION_INVALID_PREFIX]: '无效的前缀（仅限小写字母、数字、破折号）',
-  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]: '无效的命名空间（必须以 @ 开头）',
+  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]:
+    '无效的工作空间名称（仅限字母、数字、破折号）',
+  [StarterStringKey.VALIDATION_INVALID_PREFIX]:
+    '无效的前缀（仅限小写字母、数字、破折号）',
+  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]:
+    '无效的命名空间（必须以 @ 开头）',
   [StarterStringKey.VALIDATION_INVALID_GIT_REPO]: '无效的 git 仓库 URL',
   [StarterStringKey.VALIDATION_INVALID_HOSTNAME]: '无效的主机名格式',
   [StarterStringKey.VALIDATION_PASSWORD_REQUIRED]: '需要密码',
@@ -51,11 +61,16 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.VALIDATION_MUST_BE_HEX_64]: '必须是 64 字符十六进制字符串',
   [StarterStringKey.VALIDATION_PACKAGE_JSON_NOT_FOUND]: '未找到 package.json',
   [StarterStringKey.VALIDATION_PACKAGE_JSON_INVALID]: '无效的 package.json',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]: 'package.json 缺少 name 字段',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]: 'package.json 缺少 version 字段',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]: 'package.json 没有定义脚本',
-  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]: 'React 版本与 @types/react 不匹配',
-  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]: '使用 react 时需要 react-dom',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]:
+    'package.json 缺少 name 字段',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]:
+    'package.json 缺少 version 字段',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]:
+    'package.json 没有定义脚本',
+  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]:
+    'React 版本与 @types/react 不匹配',
+  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]:
+    '使用 react 时需要 react-dom',
   [StarterStringKey.VALIDATION_GITIGNORE_NOT_FOUND]: '未找到 .gitignore 文件',
   [StarterStringKey.VALIDATION_README_NOT_FOUND]: '未找到 README.md',
   [StarterStringKey.VALIDATION_LICENSE_NOT_FOUND]: '未找到 LICENSE 文件',
@@ -93,19 +108,28 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.GENERATION_COMPLETE]: '生成完成！',
   [StarterStringKey.GENERATION_FAILED]: '生成失败',
   [StarterStringKey.GENERATION_DRY_RUN_MODE]: '试运行模式 - 不会创建文件',
-  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]: '试运行完成。不使用试运行模式重新运行以生成。',
+  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]:
+    '试运行完成。不使用试运行模式重新运行以生成。',
   [StarterStringKey.GENERATION_ROLLBACK]: '正在回滚更改...',
   [StarterStringKey.GENERATION_ROLLBACK_FAILED]: '回滚失败：{description}',
   [StarterStringKey.PROJECT_GENERATING]: '正在生成 {type}：{name}',
-  [StarterStringKey.PROJECT_ADDED_TARGETS]: '已将 copy-env 和 post-build 目标添加到 {name}/project.json',
-  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]: '正在 {project} 中安装 {package}',
-  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]: '正在复制 devcontainer 配置：{type}',
-  [StarterStringKey.TSCONFIG_BASE_UPDATED]: '已更新 tsconfig.base.json，添加了 esModuleInterop 和 allowSyntheticDefaultImports',
+  [StarterStringKey.PROJECT_ADDED_TARGETS]:
+    '已将 copy-env 和 post-build 目标添加到 {name}/project.json',
+  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]:
+    '正在 {project} 中安装 {package}',
+  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]:
+    '正在复制 devcontainer 配置：{type}',
+  [StarterStringKey.TSCONFIG_BASE_UPDATED]:
+    '已更新 tsconfig.base.json，添加了 esModuleInterop 和 allowSyntheticDefaultImports',
   [StarterStringKey.ENV_CREATED_WITH_SECRETS]: '已创建 {name}/.env 及密钥',
-  [StarterStringKey.ENV_CREATED_FROM_API]: '已从 {apiName}/.env 创建 {name}/.env',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER]: '已创建 .devcontainer/.env 及 MongoDB 配置',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]: '已从 .env.example 创建 .devcontainer/.env 及 MongoDB 配置',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]: '已创建最小 .devcontainer/.env（未找到 .env.example）',
+  [StarterStringKey.ENV_CREATED_FROM_API]:
+    '已从 {apiName}/.env 创建 {name}/.env',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER]:
+    '已创建 .devcontainer/.env 及 MongoDB 配置',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]:
+    '已从 .env.example 创建 .devcontainer/.env 及 MongoDB 配置',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]:
+    '已创建最小 .devcontainer/.env（未找到 .env.example）',
   [StarterStringKey.ENV_GENERATED_SECRET]: '已生成 {name}',
   [StarterStringKey.DOC_GENERATED_README]: '已生成：README.md',
   [StarterStringKey.DOC_GENERATED_ARCHITECTURE]: '已生成：ARCHITECTURE.md',
@@ -113,13 +137,18 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.TEMPLATE_RENDERED]: '已渲染：{path}',
   [StarterStringKey.TEMPLATE_COPIED]: '已复制：{path}',
   [StarterStringKey.PACKAGE_INSTALLATION_FAILED]: '包安装失败。',
-  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]: '如果您在上面看到"exit code 127"，请安装构建工具：',
-  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]: '然后重试或跳过：yarn start --start-at=addYarnPackages',
+  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]:
+    '如果您在上面看到"exit code 127"，请安装构建工具：',
+  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]:
+    '然后重试或跳过：yarn start --start-at=addYarnPackages',
   [StarterStringKey.PACKAGE_RESOLVING_VERSION]: '正在解析 {package} 的版本',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]: '无法解析 {package} 的最新版本，使用 \'latest\'',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]: '无法解析 {package} 的稳定版本，使用 \'latest\'',
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]:
+    "无法解析 {package} 的最新版本，使用 'latest'",
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]:
+    "无法解析 {package} 的稳定版本，使用 'latest'",
   [StarterStringKey.PLUGIN_REGISTERING]: '正在注册插件：{name} v{version}',
-  [StarterStringKey.PLUGIN_HOOK_FAILED]: '插件 {name} 钩子 {hook} 失败：{error}',
+  [StarterStringKey.PLUGIN_HOOK_FAILED]:
+    '插件 {name} 钩子 {hook} 失败：{error}',
   [StarterStringKey.DRY_RUN_HEADER]: '试运行模式 - 不会创建文件',
   [StarterStringKey.DRY_RUN_SUMMARY]: '试运行摘要',
   [StarterStringKey.DRY_RUN_FILES_TO_CREATE]: '要创建的文件：{count}',
@@ -136,18 +165,25 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DIFF_BEFORE]: '之前：',
   [StarterStringKey.DIFF_AFTER]: '之后：',
   [StarterStringKey.COMMAND_FAILED]: '命令失败：{command}',
-  [StarterStringKey.COMMAND_REBUILDING_NATIVE]: '正在重新启用构建脚本并构建原生模块...',
-  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]: '正在安装 Playwright 浏览器（这可能需要几分钟）...',
-  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]: '已跳过。稍后手动运行：yarn playwright install --with-deps',
+  [StarterStringKey.COMMAND_REBUILDING_NATIVE]:
+    '正在重新启用构建脚本并构建原生模块...',
+  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]:
+    '正在安装 Playwright 浏览器（这可能需要几分钟）...',
+  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]:
+    '已跳过。稍后手动运行：yarn playwright install --with-deps',
   [StarterStringKey.SUCCESS_GENERATION_COMPLETE]: '生成完成！',
   [StarterStringKey.SUCCESS_MONOREPO_CREATED]: 'Monorepo 已创建于：{path}',
   [StarterStringKey.SUCCESS_VALIDATION_NO_ISSUES]: '验证通过，无问题',
   [StarterStringKey.WARNING_DIRECTORY_EXISTS]: '目录 {path} 已存在且不为空',
-  [StarterStringKey.WARNING_UPDATE_ENV_FILE]: '重要：使用您的配置更新 {name}/.env',
-  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]: '重要：使用您的 MongoDB 配置更新 .devcontainer/.env',
+  [StarterStringKey.WARNING_UPDATE_ENV_FILE]:
+    '重要：使用您的配置更新 {name}/.env',
+  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]:
+    '重要：使用您的 MongoDB 配置更新 .devcontainer/.env',
   [StarterStringKey.WARNING_VALIDATION_ERRORS]: '验证发现错误，但继续...',
-  [StarterStringKey.WARNING_DRY_RUN_RERUN]: '试运行完成。不使用试运行模式重新运行以生成。',
-  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]: '已为其他语言填充了通用默认的网站标题、标语和描述。请编辑 i18n-setup.ts 文件以自定义这些值。',
+  [StarterStringKey.WARNING_DRY_RUN_RERUN]:
+    '试运行完成。不使用试运行模式重新运行以生成。',
+  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]:
+    '已为其他语言填充了通用默认的网站标题、标语和描述。请编辑 i18n-setup.ts 文件以自定义这些值。',
   [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]: '目录 {path} 已存在且不为空',
   [StarterStringKey.ERROR_INVALID_START_STEP]: '无效的起始步骤：{step}',
   [StarterStringKey.ERROR_FATAL]: '致命错误',
@@ -159,7 +195,13 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SECTION_SECURITY_CONFIG]: '安全配置',
   [StarterStringKey.SECTION_EXPRESS_SUITE_PACKAGES]: 'Express Suite 包',
   [StarterStringKey.SECTION_NEXT_STEPS]: '下一步：',
-  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]: '# 使用您的设置更新 {name}/.env',
+  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]:
+    '# 使用您的设置更新 {name}/.env',
+  [StarterStringKey.SECTION_NEXT_STEPS_INIT_DB]: 'yarn inituserdb',
+  [StarterStringKey.SECTION_NEXT_STEPS_COPY_CREDENTIALS]:
+    '⚠️  将上面输出的凭据块复制到 {name}/.env\n      凭据包括 ADMIN_ID、ADMIN_MNEMONIC、ADMIN_PASSWORD 等',
+  [StarterStringKey.SECTION_NEXT_STEPS_MEMORY_DB_INFO]:
+    'ℹ️  使用内存数据库 - 用户凭据将在运行时自动生成',
   [StarterStringKey.SECTION_GENERATED_PROJECTS]: '生成的项目：',
   [StarterStringKey.SECTION_ISSUES]: '问题：',
   [StarterStringKey.SECTION_RUNNING_VALIDATION]: '正在运行生成后验证',

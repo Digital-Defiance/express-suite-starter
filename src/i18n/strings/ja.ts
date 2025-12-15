@@ -3,60 +3,98 @@ import { StarterStringKey } from '../starter-string-key';
 export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STARTER_TITLE]: 'Node Express Suite スターター',
   [StarterStringKey.STARTER_SUBTITLE]: '旧プロジェクトアルバトロス',
-  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter は、React アプリ、Express API、共有ライブラリ、@digitaldefiance/node-express-suite、@digitaldefiance/express-suite-react-components 統合を含む NX monorepo MERN スタックを生成します。',
+  [StarterStringKey.STARTER_DESCRIPTION]:
+    'Node Express Suite Starter は、React アプリ、Express API、共有ライブラリ、@digitaldefiance/node-express-suite、@digitaldefiance/express-suite-react-components 統合を含む NX monorepo MERN スタックを生成します。',
   [StarterStringKey.CLI_BANNER]: 'Express Suite スターター',
   [StarterStringKey.CLI_FATAL_ERROR]: '致命的なエラー',
-  [StarterStringKey.CLI_CANCELLED]: 'キャンセルされました。必要なツールをインストールして再試行してください。',
-  [StarterStringKey.CLI_INSTALL_REQUIRED_TOOLS]: '必要なツールをインストールして再試行してください',
+  [StarterStringKey.CLI_CANCELLED]:
+    'キャンセルされました。必要なツールをインストールして再試行してください。',
+  [StarterStringKey.CLI_INSTALL_REQUIRED_TOOLS]:
+    '必要なツールをインストールして再試行してください',
   [StarterStringKey.SYSTEM_CHECK_HEADER]: 'システムチェック',
   [StarterStringKey.SYSTEM_CHECK_PASSED]: 'システムチェック合格',
-  [StarterStringKey.SYSTEM_CHECK_CONTINUE_ANYWAY]: 'とにかく続行しますか？（インストールが失敗する可能性があります）',
-  [StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS]: '必要なビルドツールが不足しています：',
-  [StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS]: 'オプションのツールが見つかりません：',
+  [StarterStringKey.SYSTEM_CHECK_CONTINUE_ANYWAY]:
+    'とにかく続行しますか？（インストールが失敗する可能性があります）',
+  [StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS]:
+    '必要なビルドツールが不足しています：',
+  [StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS]:
+    'オプションのツールが見つかりません：',
   [StarterStringKey.SYSTEM_CHECK_INSTALL_INSTRUCTIONS]: 'インストール手順：',
-  [StarterStringKey.PROMPT_WORKSPACE_NAME]: 'ワークスペース名を入力してください：',
-  [StarterStringKey.PROMPT_PROJECT_PREFIX]: 'プロジェクトプレフィックスを入力してください：',
+  [StarterStringKey.PROMPT_WORKSPACE_NAME]:
+    'ワークスペース名を入力してください：',
+  [StarterStringKey.PROMPT_PROJECT_PREFIX]:
+    'プロジェクトプレフィックスを入力してください：',
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'npm 名前空間を入力してください：',
-  [StarterStringKey.PROMPT_PARENT_DIRECTORY]: '親ディレクトリを入力してください：',
-  [StarterStringKey.PROMPT_GIT_REPO]: 'git リポジトリ URL を入力してください（オプション）：',
-  [StarterStringKey.PROMPT_HOSTNAME]: '本番環境で使用されるホスト名を入力してください：',
-  [StarterStringKey.PROMPT_DRY_RUN]: 'ドライランモードで実行しますか（ファイルを作成せずにプレビュー）？',
+  [StarterStringKey.PROMPT_PARENT_DIRECTORY]:
+    '親ディレクトリを入力してください：',
+  [StarterStringKey.PROMPT_GIT_REPO]:
+    'git リポジトリ URL を入力してください（オプション）：',
+  [StarterStringKey.PROMPT_HOSTNAME]:
+    '本番環境で使用されるホスト名を入力してください：',
+  [StarterStringKey.PROMPT_DRY_RUN]:
+    'ドライランモードで実行しますか（ファイルを作成せずにプレビュー）？',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: 'E2E テストを含めますか？',
-  [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'オプションのパッケージグループを選択してください：',
-  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]: 'ドキュメントを生成しますか（README、ARCHITECTURE、API ドキュメント）？',
-  [StarterStringKey.PROMPT_SETUP_DEVCONTAINER]: 'DevContainer 設定をセットアップしますか？',
+  [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]:
+    'オプションのパッケージグループを選択してください：',
+  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]:
+    'ドキュメントを生成しますか（README、ARCHITECTURE、API ドキュメント）？',
+  [StarterStringKey.PROMPT_SETUP_DEVCONTAINER]:
+    'DevContainer 設定をセットアップしますか？',
   [StarterStringKey.PROMPT_DEVCONTAINER_CONFIG]: 'DevContainer 設定：',
-  [StarterStringKey.PROMPT_MONGO_PASSWORD]: 'MongoDB root パスワードを入力してください：',
-  [StarterStringKey.PROMPT_USE_IN_MEMORY_DB]: '開発用にインメモリデータベースを使用しますか？',
-  [StarterStringKey.PROMPT_DEV_DATABASE_NAME]: 'インメモリデータベース名を入力してください：',
+  [StarterStringKey.PROMPT_MONGO_PASSWORD]:
+    'MongoDB root パスワードを入力してください：',
+  [StarterStringKey.PROMPT_USE_IN_MEMORY_DB]:
+    '開発用にインメモリデータベースを使用しますか？',
+  [StarterStringKey.PROMPT_DEV_DATABASE_NAME]:
+    'インメモリデータベース名を入力してください：',
   [StarterStringKey.PROMPT_GENERATE_SECRET]: '{name} を生成しますか？',
-  [StarterStringKey.PROMPT_ENTER_SECRET]: '{name} を入力してください（64文字の16進数文字列）：',
-  [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]: '初期 git コミットを作成しますか？',
-  [StarterStringKey.PROMPT_PUSH_TO_REMOTE]: 'リモートリポジトリにプッシュしますか？',
-  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]: 'Playwright ブラウザをインストールしますか？（E2E テストに必要）',
+  [StarterStringKey.PROMPT_ENTER_SECRET]:
+    '{name} を入力してください（64文字の16進数文字列）：',
+  [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]:
+    '初期 git コミットを作成しますか？',
+  [StarterStringKey.PROMPT_PUSH_TO_REMOTE]:
+    'リモートリポジトリにプッシュしますか？',
+  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]:
+    'Playwright ブラウザをインストールしますか？（E2E テストに必要）',
   [StarterStringKey.PROMPT_SITE_TITLE]: 'サイトのタイトルを入力してください：',
-  [StarterStringKey.PROMPT_SITE_DESCRIPTION]: 'サイトの説明を入力してください：',
-  [StarterStringKey.PROMPT_SITE_TAGLINE]: 'サイトのキャッチフレーズを入力してください：',
-  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]: '無効なワークスペース名（文字、数字、ダッシュのみ）',
-  [StarterStringKey.VALIDATION_INVALID_PREFIX]: '無効なプレフィックス（小文字、数字、ダッシュのみ）',
-  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]: '無効な名前空間（@ で始まる必要があります）',
+  [StarterStringKey.PROMPT_SITE_DESCRIPTION]:
+    'サイトの説明を入力してください：',
+  [StarterStringKey.PROMPT_SITE_TAGLINE]:
+    'サイトのキャッチフレーズを入力してください：',
+  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]:
+    '無効なワークスペース名（文字、数字、ダッシュのみ）',
+  [StarterStringKey.VALIDATION_INVALID_PREFIX]:
+    '無効なプレフィックス（小文字、数字、ダッシュのみ）',
+  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]:
+    '無効な名前空間（@ で始まる必要があります）',
   [StarterStringKey.VALIDATION_INVALID_GIT_REPO]: '無効な git リポジトリ URL',
   [StarterStringKey.VALIDATION_INVALID_HOSTNAME]: '無効なホスト名形式',
   [StarterStringKey.VALIDATION_PASSWORD_REQUIRED]: 'パスワードが必要です',
-  [StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED]: 'データベース名を空にすることはできません',
-  [StarterStringKey.VALIDATION_MUST_BE_HEX_64]: '64文字の16進数文字列である必要があります',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_NOT_FOUND]: 'package.json が見つかりません',
+  [StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED]:
+    'データベース名を空にすることはできません',
+  [StarterStringKey.VALIDATION_MUST_BE_HEX_64]:
+    '64文字の16進数文字列である必要があります',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_NOT_FOUND]:
+    'package.json が見つかりません',
   [StarterStringKey.VALIDATION_PACKAGE_JSON_INVALID]: '無効な package.json',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]: 'package.json に name フィールドがありません',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]: 'package.json に version フィールドがありません',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]: 'package.json にスクリプトが定義されていません',
-  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]: 'React バージョンが @types/react と一致しません',
-  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]: 'react を使用する場合は react-dom が必要です',
-  [StarterStringKey.VALIDATION_GITIGNORE_NOT_FOUND]: '.gitignore ファイルが見つかりません',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]:
+    'package.json に name フィールドがありません',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]:
+    'package.json に version フィールドがありません',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]:
+    'package.json にスクリプトが定義されていません',
+  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]:
+    'React バージョンが @types/react と一致しません',
+  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]:
+    'react を使用する場合は react-dom が必要です',
+  [StarterStringKey.VALIDATION_GITIGNORE_NOT_FOUND]:
+    '.gitignore ファイルが見つかりません',
   [StarterStringKey.VALIDATION_README_NOT_FOUND]: 'README.md が見つかりません',
-  [StarterStringKey.VALIDATION_LICENSE_NOT_FOUND]: 'LICENSE ファイルが見つかりません',
+  [StarterStringKey.VALIDATION_LICENSE_NOT_FOUND]:
+    'LICENSE ファイルが見つかりません',
   [StarterStringKey.VALIDATION_PASSED]: '検証が問題なく合格しました',
-  [StarterStringKey.VALIDATION_PASSED_WITH_WARNINGS]: '検証が合格しました（警告あり）',
+  [StarterStringKey.VALIDATION_PASSED_WITH_WARNINGS]:
+    '検証が合格しました（警告あり）',
   [StarterStringKey.VALIDATION_FAILED]: '検証が失敗しました',
   [StarterStringKey.VALIDATION_REPORT_HEADER]: '検証レポート',
   [StarterStringKey.VALIDATION_ERRORS]: 'エラー：{count}',
@@ -71,58 +109,84 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Nx プラグインをインストール中',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: '依存関係をインストール中',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: 'プロジェクト構造を生成中',
-  [StarterStringKey.STEP_INSTALL_REACT_COMPONENTS]: 'React コンポーネントパッケージをインストール中',
+  [StarterStringKey.STEP_INSTALL_REACT_COMPONENTS]:
+    'React コンポーネントパッケージをインストール中',
   [StarterStringKey.STEP_RENDER_TEMPLATES]: '設定テンプレートをレンダリング中',
-  [StarterStringKey.STEP_COPY_SCAFFOLDING]: 'スキャフォールディングファイルをコピー中',
+  [StarterStringKey.STEP_COPY_SCAFFOLDING]:
+    'スキャフォールディングファイルをコピー中',
   [StarterStringKey.STEP_GENERATE_LICENSE]: 'LICENSE ファイルを生成中',
   [StarterStringKey.STEP_ADD_SCRIPTS]: 'package.json スクリプトを追加中',
   [StarterStringKey.STEP_GENERATE_DOCUMENTATION]: 'ドキュメントを生成中',
   [StarterStringKey.STEP_SETUP_ENVIRONMENT]: '環境ファイルをセットアップ中',
-  [StarterStringKey.STEP_REBUILD_NATIVE_MODULES]: 'ネイティブモジュールをビルド中',
+  [StarterStringKey.STEP_REBUILD_NATIVE_MODULES]:
+    'ネイティブモジュールをビルド中',
   [StarterStringKey.STEP_VALIDATE_GENERATION]: '生成されたプロジェクトを検証中',
   [StarterStringKey.STEP_INITIAL_COMMIT]: '初期コミットを作成中',
-  [StarterStringKey.STEP_INSTALL_PLAYWRIGHT]: 'Playwright ブラウザをインストール中',
+  [StarterStringKey.STEP_INSTALL_PLAYWRIGHT]:
+    'Playwright ブラウザをインストール中',
   [StarterStringKey.STEP_SKIPPING]: 'スキップ：{description}',
   [StarterStringKey.STEP_COMPLETED]: '完了：{description}',
   [StarterStringKey.STEP_FAILED]: '失敗：{description}',
   [StarterStringKey.GENERATION_STARTING]: '生成を開始中（{count} ステップ）',
   [StarterStringKey.GENERATION_COMPLETE]: '生成完了！',
   [StarterStringKey.GENERATION_FAILED]: '生成失敗',
-  [StarterStringKey.GENERATION_DRY_RUN_MODE]: 'ドライランモード - ファイルは作成されません',
-  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]: 'ドライラン完了。生成するにはドライランなしで再実行してください。',
+  [StarterStringKey.GENERATION_DRY_RUN_MODE]:
+    'ドライランモード - ファイルは作成されません',
+  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]:
+    'ドライラン完了。生成するにはドライランなしで再実行してください。',
   [StarterStringKey.GENERATION_ROLLBACK]: '変更をロールバック中...',
-  [StarterStringKey.GENERATION_ROLLBACK_FAILED]: 'ロールバック失敗：{description}',
+  [StarterStringKey.GENERATION_ROLLBACK_FAILED]:
+    'ロールバック失敗：{description}',
   [StarterStringKey.PROJECT_GENERATING]: '{type} を生成中：{name}',
-  [StarterStringKey.PROJECT_ADDED_TARGETS]: 'copy-env と post-build ターゲットを {name}/project.json に追加しました',
-  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]: '{project} に {package} をインストール中',
-  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]: 'devcontainer 設定をコピー中：{type}',
-  [StarterStringKey.TSCONFIG_BASE_UPDATED]: 'tsconfig.base.json を esModuleInterop と allowSyntheticDefaultImports で更新しました',
-  [StarterStringKey.ENV_CREATED_WITH_SECRETS]: '{name}/.env をシークレット付きで作成しました',
-  [StarterStringKey.ENV_CREATED_FROM_API]: '{apiName}/.env から {name}/.env を作成しました',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER]: '.devcontainer/.env を MongoDB 設定付きで作成しました',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]: '.env.example から .devcontainer/.env を MongoDB 設定付きで作成しました',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]: '最小限の .devcontainer/.env を作成しました（.env.example が見つかりません）',
+  [StarterStringKey.PROJECT_ADDED_TARGETS]:
+    'copy-env と post-build ターゲットを {name}/project.json に追加しました',
+  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]:
+    '{project} に {package} をインストール中',
+  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]:
+    'devcontainer 設定をコピー中：{type}',
+  [StarterStringKey.TSCONFIG_BASE_UPDATED]:
+    'tsconfig.base.json を esModuleInterop と allowSyntheticDefaultImports で更新しました',
+  [StarterStringKey.ENV_CREATED_WITH_SECRETS]:
+    '{name}/.env をシークレット付きで作成しました',
+  [StarterStringKey.ENV_CREATED_FROM_API]:
+    '{apiName}/.env から {name}/.env を作成しました',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER]:
+    '.devcontainer/.env を MongoDB 設定付きで作成しました',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]:
+    '.env.example から .devcontainer/.env を MongoDB 設定付きで作成しました',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]:
+    '最小限の .devcontainer/.env を作成しました（.env.example が見つかりません）',
   [StarterStringKey.ENV_GENERATED_SECRET]: '{name} を生成しました',
   [StarterStringKey.DOC_GENERATED_README]: '生成：README.md',
   [StarterStringKey.DOC_GENERATED_ARCHITECTURE]: '生成：ARCHITECTURE.md',
   [StarterStringKey.DOC_GENERATED_API]: '生成：{name}/API.md',
   [StarterStringKey.TEMPLATE_RENDERED]: 'レンダリング：{path}',
   [StarterStringKey.TEMPLATE_COPIED]: 'コピー：{path}',
-  [StarterStringKey.PACKAGE_INSTALLATION_FAILED]: 'パッケージのインストールに失敗しました。',
-  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]: '上記に "exit code 127" が表示される場合は、ビルドツールをインストールしてください：',
-  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]: '次に再試行またはスキップ：yarn start --start-at=addYarnPackages',
-  [StarterStringKey.PACKAGE_RESOLVING_VERSION]: '{package} のバージョンを解決中',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]: '{package} の最新バージョンの解決に失敗しました。\'latest\' を使用します',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]: '{package} の安定バージョンの解決に失敗しました。\'latest\' を使用します',
-  [StarterStringKey.PLUGIN_REGISTERING]: 'プラグインを登録中：{name} v{version}',
-  [StarterStringKey.PLUGIN_HOOK_FAILED]: 'プラグイン {name} フック {hook} が失敗しました：{error}',
-  [StarterStringKey.DRY_RUN_HEADER]: 'ドライランモード - ファイルは作成されません',
+  [StarterStringKey.PACKAGE_INSTALLATION_FAILED]:
+    'パッケージのインストールに失敗しました。',
+  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]:
+    '上記に "exit code 127" が表示される場合は、ビルドツールをインストールしてください：',
+  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]:
+    '次に再試行またはスキップ：yarn start --start-at=addYarnPackages',
+  [StarterStringKey.PACKAGE_RESOLVING_VERSION]:
+    '{package} のバージョンを解決中',
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]:
+    "{package} の最新バージョンの解決に失敗しました。'latest' を使用します",
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]:
+    "{package} の安定バージョンの解決に失敗しました。'latest' を使用します",
+  [StarterStringKey.PLUGIN_REGISTERING]:
+    'プラグインを登録中：{name} v{version}',
+  [StarterStringKey.PLUGIN_HOOK_FAILED]:
+    'プラグイン {name} フック {hook} が失敗しました：{error}',
+  [StarterStringKey.DRY_RUN_HEADER]:
+    'ドライランモード - ファイルは作成されません',
   [StarterStringKey.DRY_RUN_SUMMARY]: 'ドライラン概要',
   [StarterStringKey.DRY_RUN_FILES_TO_CREATE]: '作成するファイル：{count}',
   [StarterStringKey.DRY_RUN_FILES_TO_MODIFY]: '変更するファイル：{count}',
   [StarterStringKey.DRY_RUN_FILES_TO_DELETE]: '削除するファイル：{count}',
   [StarterStringKey.DRY_RUN_COMMANDS_TO_RUN]: '実行するコマンド：{count}',
-  [StarterStringKey.DRY_RUN_ENCOUNTERED_ERROR]: 'ドライランでエラーが発生しました：{error}',
+  [StarterStringKey.DRY_RUN_ENCOUNTERED_ERROR]:
+    'ドライランでエラーが発生しました：{error}',
   [StarterStringKey.DRY_RUN_ACTIONS]: 'アクション：',
   [StarterStringKey.DIFF_CHANGES_SUMMARY]: '変更概要',
   [StarterStringKey.DIFF_FILES_ADDED]: '{count} ファイル追加',
@@ -132,19 +196,30 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DIFF_BEFORE]: '前：',
   [StarterStringKey.DIFF_AFTER]: '後：',
   [StarterStringKey.COMMAND_FAILED]: 'コマンド失敗：{command}',
-  [StarterStringKey.COMMAND_REBUILDING_NATIVE]: 'ビルドスクリプトを再有効化してネイティブモジュールをビルド中...',
-  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]: 'Playwright ブラウザをインストール中（数分かかる場合があります）...',
-  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]: 'スキップしました。後で手動で実行：yarn playwright install --with-deps',
+  [StarterStringKey.COMMAND_REBUILDING_NATIVE]:
+    'ビルドスクリプトを再有効化してネイティブモジュールをビルド中...',
+  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]:
+    'Playwright ブラウザをインストール中（数分かかる場合があります）...',
+  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]:
+    'スキップしました。後で手動で実行：yarn playwright install --with-deps',
   [StarterStringKey.SUCCESS_GENERATION_COMPLETE]: '生成完了！',
-  [StarterStringKey.SUCCESS_MONOREPO_CREATED]: 'Monorepo が作成されました：{path}',
+  [StarterStringKey.SUCCESS_MONOREPO_CREATED]:
+    'Monorepo が作成されました：{path}',
   [StarterStringKey.SUCCESS_VALIDATION_NO_ISSUES]: '検証が問題なく合格しました',
-  [StarterStringKey.WARNING_DIRECTORY_EXISTS]: 'ディレクトリ {path} は既に存在し、空ではありません',
-  [StarterStringKey.WARNING_UPDATE_ENV_FILE]: '重要：{name}/.env を設定で更新してください',
-  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]: '重要：.devcontainer/.env を MongoDB 設定で更新してください',
-  [StarterStringKey.WARNING_VALIDATION_ERRORS]: '検証でエラーが見つかりましたが、続行します...',
-  [StarterStringKey.WARNING_DRY_RUN_RERUN]: 'ドライラン完了。生成するにはドライランなしで再実行してください。',
-  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]: '他の言語用に汎用のデフォルトサイトタイトル、タグライン、説明が入力されています。これらの値をカスタマイズするには、i18n-setup.ts ファイルを編集してください。',
-  [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]: 'ディレクトリ {path} は既に存在し、空ではありません',
+  [StarterStringKey.WARNING_DIRECTORY_EXISTS]:
+    'ディレクトリ {path} は既に存在し、空ではありません',
+  [StarterStringKey.WARNING_UPDATE_ENV_FILE]:
+    '重要：{name}/.env を設定で更新してください',
+  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]:
+    '重要：.devcontainer/.env を MongoDB 設定で更新してください',
+  [StarterStringKey.WARNING_VALIDATION_ERRORS]:
+    '検証でエラーが見つかりましたが、続行します...',
+  [StarterStringKey.WARNING_DRY_RUN_RERUN]:
+    'ドライラン完了。生成するにはドライランなしで再実行してください。',
+  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]:
+    '他の言語用に汎用のデフォルトサイトタイトル、タグライン、説明が入力されています。これらの値をカスタマイズするには、i18n-setup.ts ファイルを編集してください。',
+  [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]:
+    'ディレクトリ {path} は既に存在し、空ではありません',
   [StarterStringKey.ERROR_INVALID_START_STEP]: '無効な開始ステップ：{step}',
   [StarterStringKey.ERROR_FATAL]: '致命的なエラー',
   [StarterStringKey.SECTION_WORKSPACE_CONFIG]: 'ワークスペース設定',
@@ -155,15 +230,25 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SECTION_SECURITY_CONFIG]: 'セキュリティ設定',
   [StarterStringKey.SECTION_EXPRESS_SUITE_PACKAGES]: 'Express Suite パッケージ',
   [StarterStringKey.SECTION_NEXT_STEPS]: '次のステップ：',
-  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]: '# {name}/.env を設定で更新してください',
+  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]:
+    '# {name}/.env を設定で更新してください',
+  [StarterStringKey.SECTION_NEXT_STEPS_INIT_DB]: 'yarn inituserdb',
+  [StarterStringKey.SECTION_NEXT_STEPS_COPY_CREDENTIALS]:
+    '⚠️  上記の出力から認証情報ブロックを {name}/.env にコピーしてください\n      認証情報には ADMIN_ID、ADMIN_MNEMONIC、ADMIN_PASSWORD などが含まれます',
+  [StarterStringKey.SECTION_NEXT_STEPS_MEMORY_DB_INFO]:
+    'ℹ️  インメモリデータベースを使用 - ユーザー認証情報は実行時に自動生成されます',
   [StarterStringKey.SECTION_GENERATED_PROJECTS]: '生成されたプロジェクト：',
   [StarterStringKey.SECTION_ISSUES]: '問題：',
   [StarterStringKey.SECTION_RUNNING_VALIDATION]: '生成後の検証を実行中',
   [StarterStringKey.DEVCONTAINER_SIMPLE]: 'シンプル（Node.js のみ）',
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'MongoDB 付き',
-  [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]: 'MongoDB レプリカセット付き',
-  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]: 'Ubuntu/Debian: sudo apt-get install build-essential python3',
-  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]: 'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
+  [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
+    'MongoDB レプリカセット付き',
+  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
+    'Ubuntu/Debian: sudo apt-get install build-essential python3',
+  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:
+    'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
-  [StarterStringKey.SYSTEM_CHECK_WINDOWS]: 'Windows: Visual Studio Build Tools をインストール',
+  [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
+    'Windows: Visual Studio Build Tools をインストール',
 };

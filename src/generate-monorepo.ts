@@ -1415,6 +1415,10 @@ export {};
           `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream`;
         addScripts['inituserdb:drop'] =
           `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args=--drop`;
+        addScripts['inituserdb:setenv'] =
+          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args=--setEnv`;
+        addScripts['inituserdb:drop:setenv'] =
+          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args="--drop --setEnv"`;
       }
 
       const interpolatedScripts: Record<string, string> = {};
@@ -1781,7 +1785,21 @@ export {};
     }
 
     Logger.section(getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS));
-    Logger.dim(`  cd ${workspaceName}`);
+
+    // Add devcontainer setup instructions if applicable
+    if (devcontainerChoice !== 'none') {
+      Logger.info(`\n📦 DevContainer Setup:`);
+      Logger.dim(`  1. Open the folder in VS Code:`);
+      Logger.dim(`     code ${workspaceName}`);
+      Logger.dim(`  2. When prompted, click "Reopen in Container"`);
+      Logger.dim(
+        `     Or use Command Palette: "Dev Containers: Rebuild and Reopen in Container"`,
+      );
+      Logger.dim(`  3. Wait for the container to build and start\n`);
+    } else {
+      Logger.dim(`  cd ${workspaceName}`);
+    }
+
     if (apiProject) {
       Logger.dim(
         `  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV, { name: apiProject.name })}`,
@@ -1794,15 +1812,19 @@ export {};
       (devcontainerChoice === 'mongodb' ||
         devcontainerChoice === 'mongodb-replicaset')
     ) {
+      Logger.info(`\n🗄️  Database Initialization:`);
       Logger.dim(`  yarn build:dev`);
       Logger.dim(
-        `  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_INIT_DB)}`,
+        `  yarn inituserdb:setenv  # Recommended: Automatically updates ${apiProject?.name}/.env`,
       );
-      Logger.warning(
-        `\n  ${getStarterTranslation(StarterStringKey.SECTION_NEXT_STEPS_COPY_CREDENTIALS, { name: apiProject?.name || 'api' })}\n`,
+      Logger.info(
+        `\n  💡 Alternative options:\n` +
+          `     • yarn inituserdb           - View credentials without updating .env\n` +
+          `     • yarn inituserdb:drop:setenv - Drop DB, reinitialize, and update .env\n`,
       );
-      Logger.dim(`  yarn serve:dev`);
+      Logger.dim(`\n  yarn serve:dev`);
     } else {
+      Logger.info(`\n🚀 Start Development:`);
       Logger.dim(`  yarn build:dev`);
       Logger.dim(`  yarn serve:dev`);
       if (useInMemoryDb) {

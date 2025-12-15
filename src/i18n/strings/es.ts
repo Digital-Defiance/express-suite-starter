@@ -3,64 +3,104 @@ import { StarterStringKey } from '../starter-string-key';
 export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STARTER_TITLE]: 'Iniciador de Node Express Suite',
   [StarterStringKey.STARTER_SUBTITLE]: 'Anteriormente Proyecto Albatros',
-  [StarterStringKey.STARTER_DESCRIPTION]: 'Node Express Suite Starter genera un monorepo NX con stack MERN que incluye aplicación React, API Express, bibliotecas compartidas, integración de @digitaldefiance/node-express-suite y @digitaldefiance/express-suite-react-components.',
+  [StarterStringKey.STARTER_DESCRIPTION]:
+    'Node Express Suite Starter genera un monorepo NX con stack MERN que incluye aplicación React, API Express, bibliotecas compartidas, integración de @digitaldefiance/node-express-suite y @digitaldefiance/express-suite-react-components.',
   [StarterStringKey.CLI_BANNER]: 'Iniciador de Express Suite',
   [StarterStringKey.CLI_FATAL_ERROR]: 'Error fatal',
-  [StarterStringKey.CLI_CANCELLED]: 'Cancelado. Por favor instale las herramientas requeridas e intente nuevamente.',
-  [StarterStringKey.CLI_INSTALL_REQUIRED_TOOLS]: 'Por favor instale las herramientas requeridas e intente nuevamente',
+  [StarterStringKey.CLI_CANCELLED]:
+    'Cancelado. Por favor instale las herramientas requeridas e intente nuevamente.',
+  [StarterStringKey.CLI_INSTALL_REQUIRED_TOOLS]:
+    'Por favor instale las herramientas requeridas e intente nuevamente',
   [StarterStringKey.SYSTEM_CHECK_HEADER]: 'Verificación del Sistema',
   [StarterStringKey.SYSTEM_CHECK_PASSED]: 'Verificación del sistema aprobada',
-  [StarterStringKey.SYSTEM_CHECK_CONTINUE_ANYWAY]: '¿Continuar de todos modos? (La instalación puede fallar)',
-  [StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS]: 'Faltan herramientas de compilación requeridas:',
-  [StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS]: 'Herramientas opcionales no encontradas:',
-  [StarterStringKey.SYSTEM_CHECK_INSTALL_INSTRUCTIONS]: 'Instrucciones de instalación:',
-  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]: 'Ubuntu/Debian: sudo apt-get install build-essential python3',
-  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]: 'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
+  [StarterStringKey.SYSTEM_CHECK_CONTINUE_ANYWAY]:
+    '¿Continuar de todos modos? (La instalación puede fallar)',
+  [StarterStringKey.SYSTEM_CHECK_MISSING_TOOLS]:
+    'Faltan herramientas de compilación requeridas:',
+  [StarterStringKey.SYSTEM_CHECK_OPTIONAL_TOOLS]:
+    'Herramientas opcionales no encontradas:',
+  [StarterStringKey.SYSTEM_CHECK_INSTALL_INSTRUCTIONS]:
+    'Instrucciones de instalación:',
+  [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
+    'Ubuntu/Debian: sudo apt-get install build-essential python3',
+  [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:
+    'Fedora/RHEL: sudo dnf install gcc-c++ make python3',
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
-  [StarterStringKey.SYSTEM_CHECK_WINDOWS]: 'Windows: Instalar Visual Studio Build Tools',
-  [StarterStringKey.PROMPT_WORKSPACE_NAME]: 'Ingrese el nombre del espacio de trabajo:',
+  [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
+    'Windows: Instalar Visual Studio Build Tools',
+  [StarterStringKey.PROMPT_WORKSPACE_NAME]:
+    'Ingrese el nombre del espacio de trabajo:',
   [StarterStringKey.PROMPT_PROJECT_PREFIX]: 'Ingrese el prefijo del proyecto:',
   [StarterStringKey.PROMPT_NPM_NAMESPACE]: 'Ingrese el espacio de nombres npm:',
   [StarterStringKey.PROMPT_PARENT_DIRECTORY]: 'Ingrese el directorio padre:',
-  [StarterStringKey.PROMPT_GIT_REPO]: 'Ingrese la URL del repositorio git (opcional):',
-  [StarterStringKey.PROMPT_HOSTNAME]: 'Ingrese el nombre de host que se utilizará para producción:',
-  [StarterStringKey.PROMPT_DRY_RUN]: '¿Ejecutar en modo de prueba (vista previa sin crear archivos)?',
+  [StarterStringKey.PROMPT_GIT_REPO]:
+    'Ingrese la URL del repositorio git (opcional):',
+  [StarterStringKey.PROMPT_HOSTNAME]:
+    'Ingrese el nombre de host que se utilizará para producción:',
+  [StarterStringKey.PROMPT_DRY_RUN]:
+    '¿Ejecutar en modo de prueba (vista previa sin crear archivos)?',
   [StarterStringKey.PROMPT_INCLUDE_E2E]: '¿Incluir pruebas E2E?',
-  [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]: 'Seleccione grupos de paquetes opcionales:',
-  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]: '¿Generar documentación (README, ARCHITECTURE, documentos API)?',
+  [StarterStringKey.PROMPT_SELECT_PACKAGE_GROUPS]:
+    'Seleccione grupos de paquetes opcionales:',
+  [StarterStringKey.PROMPT_ENABLE_DOC_GENERATION]:
+    '¿Generar documentación (README, ARCHITECTURE, documentos API)?',
   [StarterStringKey.PROMPT_SETUP_DEVCONTAINER]: '¿Configurar DevContainer?',
-  [StarterStringKey.PROMPT_DEVCONTAINER_CONFIG]: 'Configuración de DevContainer:',
-  [StarterStringKey.PROMPT_MONGO_PASSWORD]: 'Ingrese la contraseña root de MongoDB:',
-  [StarterStringKey.PROMPT_USE_IN_MEMORY_DB]: '¿Usar base de datos en memoria para desarrollo?',
-  [StarterStringKey.PROMPT_DEV_DATABASE_NAME]: 'Ingrese el nombre de la base de datos en memoria:',
+  [StarterStringKey.PROMPT_DEVCONTAINER_CONFIG]:
+    'Configuración de DevContainer:',
+  [StarterStringKey.PROMPT_MONGO_PASSWORD]:
+    'Ingrese la contraseña root de MongoDB:',
+  [StarterStringKey.PROMPT_USE_IN_MEMORY_DB]:
+    '¿Usar base de datos en memoria para desarrollo?',
+  [StarterStringKey.PROMPT_DEV_DATABASE_NAME]:
+    'Ingrese el nombre de la base de datos en memoria:',
   [StarterStringKey.PROMPT_GENERATE_SECRET]: '¿Generar {name}?',
-  [StarterStringKey.PROMPT_ENTER_SECRET]: 'Ingrese {name} (cadena hexadecimal de 64 caracteres):',
-  [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]: '¿Crear commit inicial de git?',
+  [StarterStringKey.PROMPT_ENTER_SECRET]:
+    'Ingrese {name} (cadena hexadecimal de 64 caracteres):',
+  [StarterStringKey.PROMPT_CREATE_INITIAL_COMMIT]:
+    '¿Crear commit inicial de git?',
   [StarterStringKey.PROMPT_PUSH_TO_REMOTE]: '¿Enviar al repositorio remoto?',
-  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]: '¿Instalar navegadores de Playwright? (Requerido para pruebas E2E)',
+  [StarterStringKey.PROMPT_INSTALL_PLAYWRIGHT]:
+    '¿Instalar navegadores de Playwright? (Requerido para pruebas E2E)',
   [StarterStringKey.PROMPT_SITE_TITLE]: 'Ingrese el título del sitio:',
-  [StarterStringKey.PROMPT_SITE_DESCRIPTION]: 'Ingrese la descripción del sitio:',
+  [StarterStringKey.PROMPT_SITE_DESCRIPTION]:
+    'Ingrese la descripción del sitio:',
   [StarterStringKey.PROMPT_SITE_TAGLINE]: 'Ingrese el eslogan del sitio:',
-  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]: 'Nombre de espacio de trabajo inválido (solo letras, números, guiones)',
-  [StarterStringKey.VALIDATION_INVALID_PREFIX]: 'Prefijo inválido (solo letras minúsculas, números, guiones)',
-  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]: 'Espacio de nombres inválido (debe comenzar con @)',
-  [StarterStringKey.VALIDATION_INVALID_GIT_REPO]: 'URL de repositorio git inválida',
-  [StarterStringKey.VALIDATION_INVALID_HOSTNAME]: 'Formato de nombre de host inválido',
+  [StarterStringKey.VALIDATION_INVALID_WORKSPACE_NAME]:
+    'Nombre de espacio de trabajo inválido (solo letras, números, guiones)',
+  [StarterStringKey.VALIDATION_INVALID_PREFIX]:
+    'Prefijo inválido (solo letras minúsculas, números, guiones)',
+  [StarterStringKey.VALIDATION_INVALID_NAMESPACE]:
+    'Espacio de nombres inválido (debe comenzar con @)',
+  [StarterStringKey.VALIDATION_INVALID_GIT_REPO]:
+    'URL de repositorio git inválida',
+  [StarterStringKey.VALIDATION_INVALID_HOSTNAME]:
+    'Formato de nombre de host inválido',
   [StarterStringKey.VALIDATION_PASSWORD_REQUIRED]: 'Contraseña requerida',
-  [StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED]: 'El nombre de la base de datos no puede estar vacío',
-  [StarterStringKey.VALIDATION_MUST_BE_HEX_64]: 'Debe ser una cadena hexadecimal de 64 caracteres',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_NOT_FOUND]: 'package.json no encontrado',
+  [StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED]:
+    'El nombre de la base de datos no puede estar vacío',
+  [StarterStringKey.VALIDATION_MUST_BE_HEX_64]:
+    'Debe ser una cadena hexadecimal de 64 caracteres',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_NOT_FOUND]:
+    'package.json no encontrado',
   [StarterStringKey.VALIDATION_PACKAGE_JSON_INVALID]: 'package.json inválido',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]: 'package.json falta el campo name',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]: 'package.json falta el campo version',
-  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]: 'package.json no tiene scripts definidos',
-  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]: 'Desajuste de versión de React con @types/react',
-  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]: 'react-dom es requerido al usar react',
-  [StarterStringKey.VALIDATION_GITIGNORE_NOT_FOUND]: 'Archivo .gitignore no encontrado',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_NAME]:
+    'package.json falta el campo name',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_MISSING_VERSION]:
+    'package.json falta el campo version',
+  [StarterStringKey.VALIDATION_PACKAGE_JSON_NO_SCRIPTS]:
+    'package.json no tiene scripts definidos',
+  [StarterStringKey.VALIDATION_REACT_VERSION_MISMATCH]:
+    'Desajuste de versión de React con @types/react',
+  [StarterStringKey.VALIDATION_REACT_DOM_REQUIRED]:
+    'react-dom es requerido al usar react',
+  [StarterStringKey.VALIDATION_GITIGNORE_NOT_FOUND]:
+    'Archivo .gitignore no encontrado',
   [StarterStringKey.VALIDATION_README_NOT_FOUND]: 'README.md no encontrado',
-  [StarterStringKey.VALIDATION_LICENSE_NOT_FOUND]: 'Archivo LICENSE no encontrado',
+  [StarterStringKey.VALIDATION_LICENSE_NOT_FOUND]:
+    'Archivo LICENSE no encontrado',
   [StarterStringKey.VALIDATION_PASSED]: 'Validación aprobada sin problemas',
-  [StarterStringKey.VALIDATION_PASSED_WITH_WARNINGS]: 'Validación aprobada (con advertencias)',
+  [StarterStringKey.VALIDATION_PASSED_WITH_WARNINGS]:
+    'Validación aprobada (con advertencias)',
   [StarterStringKey.VALIDATION_FAILED]: 'Validación fallida',
   [StarterStringKey.VALIDATION_REPORT_HEADER]: 'Informe de Validación',
   [StarterStringKey.VALIDATION_ERRORS]: 'Errores: {count}',
@@ -69,14 +109,18 @@ export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.VALIDATION_FIX]: 'Solución: {fix}',
   [StarterStringKey.STEP_CHECK_TARGET_DIR]: 'Verificando directorio de destino',
   [StarterStringKey.STEP_CREATE_MONOREPO]: 'Creando monorepo Nx',
-  [StarterStringKey.STEP_UPDATE_TSCONFIG_BASE]: 'Actualizando configuración base de TypeScript',
+  [StarterStringKey.STEP_UPDATE_TSCONFIG_BASE]:
+    'Actualizando configuración base de TypeScript',
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Configurando remoto git',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Configurando Yarn Berry',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Instalando plugins Nx',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Instalando dependencias',
-  [StarterStringKey.STEP_GENERATE_PROJECTS]: 'Generando estructura del proyecto',
-  [StarterStringKey.STEP_INSTALL_REACT_COMPONENTS]: 'Instalando paquete de componentes React',
-  [StarterStringKey.STEP_RENDER_TEMPLATES]: 'Renderizando plantillas de configuración',
+  [StarterStringKey.STEP_GENERATE_PROJECTS]:
+    'Generando estructura del proyecto',
+  [StarterStringKey.STEP_INSTALL_REACT_COMPONENTS]:
+    'Instalando paquete de componentes React',
+  [StarterStringKey.STEP_RENDER_TEMPLATES]:
+    'Renderizando plantillas de configuración',
   [StarterStringKey.STEP_COPY_SCAFFOLDING]: 'Copiando archivos de andamiaje',
   [StarterStringKey.STEP_GENERATE_LICENSE]: 'Generando archivo LICENSE',
   [StarterStringKey.STEP_ADD_SCRIPTS]: 'Agregando scripts a package.json',
@@ -85,48 +129,71 @@ export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_REBUILD_NATIVE_MODULES]: 'Compilando módulos nativos',
   [StarterStringKey.STEP_VALIDATE_GENERATION]: 'Validando proyecto generado',
   [StarterStringKey.STEP_INITIAL_COMMIT]: 'Creando commit inicial',
-  [StarterStringKey.STEP_INSTALL_PLAYWRIGHT]: 'Instalando navegadores de Playwright',
+  [StarterStringKey.STEP_INSTALL_PLAYWRIGHT]:
+    'Instalando navegadores de Playwright',
   [StarterStringKey.STEP_SKIPPING]: 'Omitiendo: {description}',
   [StarterStringKey.STEP_COMPLETED]: 'Completado: {description}',
   [StarterStringKey.STEP_FAILED]: 'Fallido: {description}',
-  [StarterStringKey.GENERATION_STARTING]: 'Iniciando generación ({count} pasos)',
+  [StarterStringKey.GENERATION_STARTING]:
+    'Iniciando generación ({count} pasos)',
   [StarterStringKey.GENERATION_COMPLETE]: '¡Generación completa!',
   [StarterStringKey.GENERATION_FAILED]: 'Generación fallida',
-  [StarterStringKey.GENERATION_DRY_RUN_MODE]: 'MODO DE PRUEBA - No se crearán archivos',
-  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]: 'Prueba completa. Vuelva a ejecutar sin modo de prueba para generar.',
+  [StarterStringKey.GENERATION_DRY_RUN_MODE]:
+    'MODO DE PRUEBA - No se crearán archivos',
+  [StarterStringKey.GENERATION_DRY_RUN_COMPLETE]:
+    'Prueba completa. Vuelva a ejecutar sin modo de prueba para generar.',
   [StarterStringKey.GENERATION_ROLLBACK]: 'Revirtiendo cambios...',
-  [StarterStringKey.GENERATION_ROLLBACK_FAILED]: 'Reversión fallida para: {description}',
+  [StarterStringKey.GENERATION_ROLLBACK_FAILED]:
+    'Reversión fallida para: {description}',
   [StarterStringKey.PROJECT_GENERATING]: 'Generando {type}: {name}',
-  [StarterStringKey.PROJECT_ADDED_TARGETS]: 'Agregados objetivos copy-env y post-build a {name}/project.json',
-  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]: 'Instalando {package} en {project}',
-  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]: 'Copiando configuración de devcontainer: {type}',
-  [StarterStringKey.TSCONFIG_BASE_UPDATED]: 'Actualizado tsconfig.base.json con esModuleInterop y allowSyntheticDefaultImports',
-  [StarterStringKey.ENV_CREATED_WITH_SECRETS]: 'Creado {name}/.env con secretos',
-  [StarterStringKey.ENV_CREATED_FROM_API]: 'Creado {name}/.env desde {apiName}/.env',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER]: 'Creado .devcontainer/.env con configuración de MongoDB',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]: 'Creado .devcontainer/.env desde .env.example con configuración de MongoDB',
-  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]: 'Creado .devcontainer/.env mínimo (no se encontró .env.example)',
+  [StarterStringKey.PROJECT_ADDED_TARGETS]:
+    'Agregados objetivos copy-env y post-build a {name}/project.json',
+  [StarterStringKey.PROJECT_INSTALLING_PACKAGE]:
+    'Instalando {package} en {project}',
+  [StarterStringKey.PROJECT_COPYING_DEVCONTAINER]:
+    'Copiando configuración de devcontainer: {type}',
+  [StarterStringKey.TSCONFIG_BASE_UPDATED]:
+    'Actualizado tsconfig.base.json con esModuleInterop y allowSyntheticDefaultImports',
+  [StarterStringKey.ENV_CREATED_WITH_SECRETS]:
+    'Creado {name}/.env con secretos',
+  [StarterStringKey.ENV_CREATED_FROM_API]:
+    'Creado {name}/.env desde {apiName}/.env',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER]:
+    'Creado .devcontainer/.env con configuración de MongoDB',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_FROM_EXAMPLE]:
+    'Creado .devcontainer/.env desde .env.example con configuración de MongoDB',
+  [StarterStringKey.ENV_CREATED_DEVCONTAINER_MINIMAL]:
+    'Creado .devcontainer/.env mínimo (no se encontró .env.example)',
   [StarterStringKey.ENV_GENERATED_SECRET]: 'Generado {name}',
   [StarterStringKey.DOC_GENERATED_README]: 'Generado: README.md',
   [StarterStringKey.DOC_GENERATED_ARCHITECTURE]: 'Generado: ARCHITECTURE.md',
   [StarterStringKey.DOC_GENERATED_API]: 'Generado: {name}/API.md',
   [StarterStringKey.TEMPLATE_RENDERED]: 'Renderizado: {path}',
   [StarterStringKey.TEMPLATE_COPIED]: 'Copiado: {path}',
-  [StarterStringKey.PACKAGE_INSTALLATION_FAILED]: 'Instalación de paquete fallida.',
-  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]: 'Si ve "exit code 127" arriba, instale herramientas de compilación:',
-  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]: 'Luego reintente u omita: yarn start --start-at=addYarnPackages',
-  [StarterStringKey.PACKAGE_RESOLVING_VERSION]: 'Resolviendo versión para {package}',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]: 'Fallo al resolver última versión para {package}, usando \'latest\'',
-  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]: 'Fallo al resolver versión estable para {package}, usando \'latest\'',
-  [StarterStringKey.PLUGIN_REGISTERING]: 'Registrando plugin: {name} v{version}',
-  [StarterStringKey.PLUGIN_HOOK_FAILED]: 'Hook {hook} del plugin {name} falló: {error}',
+  [StarterStringKey.PACKAGE_INSTALLATION_FAILED]:
+    'Instalación de paquete fallida.',
+  [StarterStringKey.PACKAGE_INSTALL_BUILD_TOOLS]:
+    'Si ve "exit code 127" arriba, instale herramientas de compilación:',
+  [StarterStringKey.PACKAGE_RETRY_OR_SKIP]:
+    'Luego reintente u omita: yarn start --start-at=addYarnPackages',
+  [StarterStringKey.PACKAGE_RESOLVING_VERSION]:
+    'Resolviendo versión para {package}',
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST]:
+    "Fallo al resolver última versión para {package}, usando 'latest'",
+  [StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE]:
+    "Fallo al resolver versión estable para {package}, usando 'latest'",
+  [StarterStringKey.PLUGIN_REGISTERING]:
+    'Registrando plugin: {name} v{version}',
+  [StarterStringKey.PLUGIN_HOOK_FAILED]:
+    'Hook {hook} del plugin {name} falló: {error}',
   [StarterStringKey.DRY_RUN_HEADER]: 'Modo de Prueba - No se crearán archivos',
   [StarterStringKey.DRY_RUN_SUMMARY]: 'Resumen de Prueba',
   [StarterStringKey.DRY_RUN_FILES_TO_CREATE]: 'Archivos a crear: {count}',
   [StarterStringKey.DRY_RUN_FILES_TO_MODIFY]: 'Archivos a modificar: {count}',
   [StarterStringKey.DRY_RUN_FILES_TO_DELETE]: 'Archivos a eliminar: {count}',
   [StarterStringKey.DRY_RUN_COMMANDS_TO_RUN]: 'Comandos a ejecutar: {count}',
-  [StarterStringKey.DRY_RUN_ENCOUNTERED_ERROR]: 'Prueba encontró error: {error}',
+  [StarterStringKey.DRY_RUN_ENCOUNTERED_ERROR]:
+    'Prueba encontró error: {error}',
   [StarterStringKey.DRY_RUN_ACTIONS]: 'Acciones:',
   [StarterStringKey.DIFF_CHANGES_SUMMARY]: 'Resumen de Cambios',
   [StarterStringKey.DIFF_FILES_ADDED]: '{count} archivos agregados',
@@ -136,34 +203,56 @@ export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DIFF_BEFORE]: 'Antes:',
   [StarterStringKey.DIFF_AFTER]: 'Después:',
   [StarterStringKey.COMMAND_FAILED]: 'Comando fallido: {command}',
-  [StarterStringKey.COMMAND_REBUILDING_NATIVE]: 'Reactivando scripts de compilación y compilando módulos nativos...',
-  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]: 'Instalando navegadores de Playwright (esto puede tomar unos minutos)...',
-  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]: 'Omitido. Ejecute manualmente más tarde: yarn playwright install --with-deps',
+  [StarterStringKey.COMMAND_REBUILDING_NATIVE]:
+    'Reactivando scripts de compilación y compilando módulos nativos...',
+  [StarterStringKey.COMMAND_INSTALLING_PLAYWRIGHT_BROWSERS]:
+    'Instalando navegadores de Playwright (esto puede tomar unos minutos)...',
+  [StarterStringKey.COMMAND_SKIPPED_PLAYWRIGHT]:
+    'Omitido. Ejecute manualmente más tarde: yarn playwright install --with-deps',
   [StarterStringKey.SUCCESS_GENERATION_COMPLETE]: '¡Generación Completa!',
   [StarterStringKey.SUCCESS_MONOREPO_CREATED]: 'Monorepo creado en: {path}',
-  [StarterStringKey.SUCCESS_VALIDATION_NO_ISSUES]: 'Validación aprobada sin problemas',
-  [StarterStringKey.WARNING_DIRECTORY_EXISTS]: 'El directorio {path} ya existe y no está vacío',
-  [StarterStringKey.WARNING_UPDATE_ENV_FILE]: 'IMPORTANTE: Actualice {name}/.env con su configuración',
-  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]: 'IMPORTANTE: Actualice .devcontainer/.env con su configuración de MongoDB',
-  [StarterStringKey.WARNING_VALIDATION_ERRORS]: 'Validación encontró errores, pero continuando...',
-  [StarterStringKey.WARNING_DRY_RUN_RERUN]: 'Prueba completa. Vuelva a ejecutar sin modo de prueba para generar.',
-  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]: 'Se han completado el Título del Sitio, Eslogan y Descripciones genéricos predeterminados para los otros idiomas. Edite el archivo i18n-setup.ts para personalizar estos valores.',
-  [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]: 'El directorio {path} ya existe y no está vacío',
+  [StarterStringKey.SUCCESS_VALIDATION_NO_ISSUES]:
+    'Validación aprobada sin problemas',
+  [StarterStringKey.WARNING_DIRECTORY_EXISTS]:
+    'El directorio {path} ya existe y no está vacío',
+  [StarterStringKey.WARNING_UPDATE_ENV_FILE]:
+    'IMPORTANTE: Actualice {name}/.env con su configuración',
+  [StarterStringKey.WARNING_UPDATE_DEVCONTAINER_ENV]:
+    'IMPORTANTE: Actualice .devcontainer/.env con su configuración de MongoDB',
+  [StarterStringKey.WARNING_VALIDATION_ERRORS]:
+    'Validación encontró errores, pero continuando...',
+  [StarterStringKey.WARNING_DRY_RUN_RERUN]:
+    'Prueba completa. Vuelva a ejecutar sin modo de prueba para generar.',
+  [StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS]:
+    'Se han completado el Título del Sitio, Eslogan y Descripciones genéricos predeterminados para los otros idiomas. Edite el archivo i18n-setup.ts para personalizar estos valores.',
+  [StarterStringKey.ERROR_DIRECTORY_NOT_EMPTY]:
+    'El directorio {path} ya existe y no está vacío',
   [StarterStringKey.ERROR_INVALID_START_STEP]: 'Paso inicial inválido: {step}',
   [StarterStringKey.ERROR_FATAL]: 'Error fatal',
-  [StarterStringKey.SECTION_WORKSPACE_CONFIG]: 'Configuración del Espacio de Trabajo',
+  [StarterStringKey.SECTION_WORKSPACE_CONFIG]:
+    'Configuración del Espacio de Trabajo',
   [StarterStringKey.SECTION_OPTIONAL_PROJECTS]: 'Proyectos Opcionales',
   [StarterStringKey.SECTION_PACKAGE_GROUPS]: 'Grupos de Paquetes',
-  [StarterStringKey.SECTION_DEVCONTAINER_CONFIG]: 'Configuración de DevContainer',
+  [StarterStringKey.SECTION_DEVCONTAINER_CONFIG]:
+    'Configuración de DevContainer',
   [StarterStringKey.SECTION_DATABASE_CONFIG]: 'Configuración de Base de Datos',
   [StarterStringKey.SECTION_SECURITY_CONFIG]: 'Configuración de Seguridad',
-  [StarterStringKey.SECTION_EXPRESS_SUITE_PACKAGES]: 'Paquetes de Express Suite',
+  [StarterStringKey.SECTION_EXPRESS_SUITE_PACKAGES]:
+    'Paquetes de Express Suite',
   [StarterStringKey.SECTION_NEXT_STEPS]: 'Próximos pasos:',
-  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]: '# Actualice {name}/.env con su configuración',
+  [StarterStringKey.SECTION_NEXT_STEPS_UPDATE_ENV]:
+    '# Actualice {name}/.env con su configuración',
+  [StarterStringKey.SECTION_NEXT_STEPS_INIT_DB]: 'yarn inituserdb',
+  [StarterStringKey.SECTION_NEXT_STEPS_COPY_CREDENTIALS]:
+    '⚠️  Copie el bloque de credenciales de la salida anterior a {name}/.env\n      Las credenciales incluyen ADMIN_ID, ADMIN_MNEMONIC, ADMIN_PASSWORD, etc.',
+  [StarterStringKey.SECTION_NEXT_STEPS_MEMORY_DB_INFO]:
+    'ℹ️  Usando base de datos en memoria - las credenciales de usuario se generarán automáticamente en tiempo de ejecución',
   [StarterStringKey.SECTION_GENERATED_PROJECTS]: 'Proyectos generados:',
   [StarterStringKey.SECTION_ISSUES]: 'Problemas:',
-  [StarterStringKey.SECTION_RUNNING_VALIDATION]: 'Ejecutando validación post-generación',
+  [StarterStringKey.SECTION_RUNNING_VALIDATION]:
+    'Ejecutando validación post-generación',
   [StarterStringKey.DEVCONTAINER_SIMPLE]: 'Simple (solo Node.js)',
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'Con MongoDB',
-  [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]: 'Con Conjunto de Réplicas de MongoDB',
+  [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
+    'Con Conjunto de Réplicas de MongoDB',
 };

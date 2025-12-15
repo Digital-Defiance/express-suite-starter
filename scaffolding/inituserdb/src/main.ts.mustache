@@ -142,8 +142,18 @@ async function main() {
     );
     if (app.environment.detailedDebug) {
       DatabaseInitializationService.printServerInitResults(result.data);
-      // DatabaseInitializationService.setEnvFromInitResults(result.data);
-      // app.reloadEnvironment(envDir, true);
+      
+      // Handle --setEnv flag to write credentials to .env file
+      if (process.argv.includes('--setEnv')) {
+        const apiEnvPath = join(
+          BaseApplication.distDir,
+          '..', // Go up from dist
+          '{{prefix}}-api',
+          '.env',
+        );
+        DatabaseInitializationService.writeEnvFile(apiEnvPath, result.data);
+      }
+      
       const initHash = DatabaseInitializationService.serverInitResultHash(
         result.data,
       );
