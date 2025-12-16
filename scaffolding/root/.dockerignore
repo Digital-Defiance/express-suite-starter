@@ -1,0 +1,68 @@
+# Dependencies (except in dist folder)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Source files (we only copy dist folder)
+express-suite-example-api/src
+express-suite-example-react/src
+express-suite-example-api-lib/src
+express-suite-example-react-lib/src
+express-suite-example-lib/src
+express-suite-example-inituserdb/src
+express-suite-example-api-e2e
+express-suite-example-react-e2e
+
+# Build outputs (except dist)
+tmp
+out-tsc
+
+# Environment files (will be set via container env vars)
+.env
+.env.local
+.env.production
+render.env
+
+# Dev container
+.devcontainer
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage
+.nx/cache
+.nx/workspace-data
+
+# Documentation (optional - remove these lines if you want docs in image)
+*.md
+!README.md
+
+# Config files not needed in container
+.editorconfig
+.prettierrc
+.eslintrc*
+jest.config.*
+tsconfig*.json
+
+# Scripts
+*.sh
+!entrypoint.sh
+
+# Yarn
+.yarn/cache
+.yarn/install-state.gz
+.pnp.*

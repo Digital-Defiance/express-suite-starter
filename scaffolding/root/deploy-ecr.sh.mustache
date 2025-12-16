@@ -1,0 +1,117 @@
+#!/bin/bash
+# deploy-ecr.sh - Build and push to AWS ECR
+
+set -e
+
+# Configuration
+REGISTRY="${ECR_REGISTRY:-public.ecr.aws/<registry_alias>/<repository_name>:latest}"
+IMAGE_NAME="${IMAGE_NAME:-{{prefix}}}"
+TAG="${1:-{{prefix}}-latest}"
+
+# Extract region from registry URL
+if [[ $REGISTRY == *.dkr.ecr.*.amazonaws.com* ]]; then
+    REGION=$(echo "$REGISTRY" | sed -n 's/.*\.ecr\.\([^.]*\)\.amazonaws.*/\1/p')
+    ACCOUNT_ID=$(echo "$REGISTRY" | cut -d'.' -f1)
+    LOGIN_DOMAIN="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
+else
+    REGION="${AWS_REGION:-us-east-1}"
+    LOGIN_DOMAIN="public.ecr.aws"
+fi
+
+echo "🚀 AWS ECR Deployment"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Repository: $REGISTRY"
+echo "Tag: $TAG"
+echo "Full Image: $REGISTRY:$TAG"
+echo ""
+
+# Check if Docker is running
+if ! docker info > /dev/null 2>&1; then
+    echo "❌ Error: Docker is not running"
+    exit 1
+fi
+
+# Check if AWS CLI is available
+if ! command -v aws &> /dev/null; then
+    echo "❌ Error: AWS CLI is not installed"
+    exit 1
+fi
+
+# Check AWS credentials
+echo "🔍 Checking AWS credentials..."
+if ! aws sts get-caller-identity > /dev/null 2>&1; then
+    echo "❌ Error: AWS credentials not configured"
+    exit 1
+fi
+
+# Fix Docker credential helper issue
+echo "🔧 Configuring Docker credentials..."
+mkdir -p ~/.docker
+if [ ! -f ~/.docker/config.json ]; then
+    echo '{"credsStore":""}' > ~/.docker/config.json
+else
+    # Backup existing config
+    cp ~/.docker/config.json ~/.docker/config.json.backup
+    # Set credsStore to empty
+    jq '.credsStore = ""' ~/.docker/config.json.backup > ~/.docker/config.json || \
+        echo '{"credsStore":""}' > ~/.docker/config.json
+fi
+
+# Login to ECR
+echo "🔐 Logging in to ECR..."
+echo "  Region: $REGION"
+echo "  Domain: $LOGIN_DOMAIN"
+if [[ $REGISTRY == public.ecr.aws* ]]; then
+    aws ecr-public get-login-password --region us-east-1 | \
+        docker login --username AWS --password-stdin public.ecr.aws
+else
+    aws ecr get-login-password --region "$REGION" | \
+        docker login --username AWS --password-stdin "$LOGIN_DOMAIN"
+    
+    # Check if repository exists, create if it doesn't
+    REPO_NAME=$(echo "$REGISTRY" | cut -d'/' -f2-)
+    echo "📦 Checking if repository exists: $REPO_NAME"
+    if ! aws ecr describe-repositories --repository-names "$REPO_NAME" --region "$REGION" &>/dev/null; then
+        echo "  Creating repository: $REPO_NAME"
+        aws ecr create-repository \
+            --repository-name "$REPO_NAME" \
+            --region "$REGION" \
+            --image-scanning-configuration scanOnPush=true \
+            --encryption-configuration encryptionType=AES256 > /dev/null
+        echo "  ✓ Repository created"
+    else
+        echo "  ✓ Repository exists"
+    fi
+fi
+
+# Build application locally first
+echo "🏗️  Building application locally..."
+if [ ! -d "dist/express-suite-example-api" ]; then
+    echo "  Running yarn build..."
+    yarn build
+else
+    echo "  ✓ dist folder exists, skipping yarn build"
+    echo "  To force rebuild, run: rm -rf dist && ./deploy-ecr.sh"
+fi
+
+# Build Docker image
+echo "📦 Building Docker image..."
+docker build -t $IMAGE_NAME:$TAG .
+
+# Tag image
+echo "🏷️  Tagging image..."
+docker tag $IMAGE_NAME:$TAG $REGISTRY:$TAG
+
+# Push to ECR
+echo "⬆️  Pushing to ECR..."
+docker push $REGISTRY:$TAG
+
+echo ""
+echo "✅ Successfully deployed!"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Image: $REGISTRY:$TAG"
+echo ""
+echo "🚀 Next steps:"
+echo "  1. Deploy to ECS/App Runner/Elastic Beanstalk"
+echo "  2. Set environment variables (see AWS_ECR_DEPLOYMENT.md)"
+echo "  3. Configure load balancer and scaling"

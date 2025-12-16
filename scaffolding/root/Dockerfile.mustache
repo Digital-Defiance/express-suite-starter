@@ -1,0 +1,47 @@
+# Dockerfile for ECR NX MERN Application
+# Production runtime image (build locally first)
+# Run: yarn build && docker build -t {{prefix}} .
+
+FROM node:22-bookworm-slim
+
+WORKDIR /app
+
+# Install necessary runtime dependencies for MongoDB Memory Server
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    libcurl4 \
+    libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable corepack for Yarn 4.x support
+RUN corepack enable
+
+# Copy Yarn configuration and dependencies from workspace root
+COPY .yarnrc.yml ./
+COPY package.json yarn.lock ./
+
+# Install ALL dependencies first (this gets dotenv and other workspace deps)
+RUN yarn install && yarn cache clean
+
+# Copy pre-built artifacts (must run `yarn build` first)
+COPY dist/{{prefix}}-api ./
+COPY dist/{{prefix}}-react ./dist/{{prefix}}-react
+
+# Remove .env file - environment variables should be used instead
+RUN rm -f .env
+
+# Set environment variables
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOST=0.0.0.0
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start the application
+CMD ["node", "main.js"]
