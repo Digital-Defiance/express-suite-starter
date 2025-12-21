@@ -15,5 +15,12 @@ const app: App = new App(
 const context = GlobalActiveContext.getInstance<CoreLanguageCode, IActiveContext<CoreLanguageCode>>();
 context.languageContextSpace = 'admin';
 (async () => {
-  await app.start();
+  try {
+    await app.start();
+  } catch (error) {
+    console.error('Failed to start the application:', error instanceof Error ? error.message : error);
+    console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
+    console.error('Full error object:', JSON.stringify(error, null, 2));
+    process.exit(1);
+  }
 })();
