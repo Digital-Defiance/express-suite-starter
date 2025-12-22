@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -17,7 +17,12 @@
     "create-project": "yarn start",
     "build": "npx tsc && chmod +x dist/src/cli.js",
     "build:logged": "npx tsc 2>&1 | ansifilter -o build.log && chmod +x dist/src/cli.js",
-    "test": "npx jest",
+    "lint": "npx eslint 'src/**/*.ts'",
+    "lint:fix": "npx eslint 'src/**/*.ts' --fix",
+    "test": "npx jest --testPathIgnorePatterns='(i18n|step-executor|plugin-manager|dry-run|system-check|package-resolver|full-generation|plugin-integration).spec.ts'",
+    "test:all": "npx jest",
+    "test:unit": "npx jest tests/unit",
+    "test:integration": "npx jest tests/integration",
     "test:watch": "npx jest --watch",
     "test:coverage": "npx jest --coverage",
     "test:logged": "npx jest 2>&1 | ansifilter -o test.log",
@@ -26,8 +31,8 @@
     "publish:public": "npm publish --access public"
   },
   "dependencies": {
-    "@digitaldefiance/express-suite-react-components": "^2.9.6",
-    "@digitaldefiance/i18n-lib": "3.8.5",
+    "@digitaldefiance/express-suite-react-components": "^2.9.14",
+    "@digitaldefiance/i18n-lib": "npm:@digitaldefiance/i18n-lib@3.8.12",
     "@inquirer/prompts": "^7.5.0",
     "chalk": "^4.1.2",
     "handlebars": "^4.7.8",
@@ -35,7 +40,7 @@
     "validator": "^13.15.0"
   },
   "devDependencies": {
-    "@digitaldefiance/express-suite-test-utils": "1.0.12",
+    "@digitaldefiance/express-suite-test-utils": "1.0.13",
     "@nx/js": "22.0.2",
     "@nx/workspace": "22.0.2",
     "@types/jest": "^29.5.0",

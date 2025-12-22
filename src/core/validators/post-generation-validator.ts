@@ -1,7 +1,6 @@
 import { ValidationReport, ValidationIssue } from '../interfaces/validation-issue.interface';
 import { GeneratorContext } from '../interfaces';
 import { Logger } from '../../cli/logger';
-import { runCommand } from '../../utils/shell-utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -125,7 +124,7 @@ export class PostGenerationValidator {
           fix: 'yarn add react-dom',
         });
       }
-    } catch (error) {
+    } catch (_error) {
       // Already handled in validatePackageJson
     }
 

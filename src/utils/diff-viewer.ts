@@ -1,5 +1,4 @@
 import { Logger } from '../cli/logger';
-import * as fs from 'fs';
 
 export interface FileDiff {
   path: string;

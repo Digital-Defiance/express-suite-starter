@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "paths": {
+      "@digitaldefiance/*": ["node_modules/@digitaldefiance/*"]
+    }
+  }
+}

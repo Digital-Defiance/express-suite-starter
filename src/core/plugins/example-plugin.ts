@@ -7,11 +7,11 @@ export const examplePlugin: Plugin = {
   version: '1.0.0',
   
   hooks: {
-    beforeGeneration: async (context: GeneratorContext) => {
+    beforeGeneration: async (_context: GeneratorContext) => {
       Logger.info('Example plugin: Before generation');
     },
     
-    afterGeneration: async (context: GeneratorContext) => {
+    afterGeneration: async (_context: GeneratorContext) => {
       Logger.info('Example plugin: After generation');
     },
   },

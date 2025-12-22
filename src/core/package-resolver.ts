@@ -1,6 +1,5 @@
 import { PackageResolution } from './interfaces/package-resolution.interface';
 import { Logger } from '../cli/logger';
-import { runCommand } from '../utils/shell-utils';
 import { getStarterTranslation } from '../i18n';
 import { StarterStringKey } from '../i18n/starter-string-key';
 
@@ -48,7 +47,7 @@ export class PackageResolver {
         stdio: ['pipe', 'pipe', 'pipe']
       });
       return `^${result.trim()}`;
-    } catch (error) {
+    } catch (_error) {
       Logger.warning(getStarterTranslation(StarterStringKey.PACKAGE_FAILED_RESOLVE_LATEST, { package: packageName }));
       return 'latest';
     }
@@ -62,7 +61,7 @@ export class PackageResolver {
         stdio: ['pipe', 'pipe', 'pipe']
       });
       return `^${result.trim()}`;
-    } catch (error) {
+    } catch (_error) {
       Logger.warning(getStarterTranslation(StarterStringKey.PACKAGE_FAILED_RESOLVE_STABLE, { package: packageName }));
       return 'latest';
     }

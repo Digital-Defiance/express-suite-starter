@@ -482,7 +482,7 @@ async function main() {
     description: getStarterTranslation(
       StarterStringKey.STEP_UPDATE_TSCONFIG_BASE,
     ),
-    execute: (context) => {
+    execute: (_context) => {
       const tsconfigBasePath = path.join(monorepoPath, 'tsconfig.base.json');
       if (fs.existsSync(tsconfigBasePath)) {
         const tsconfigBase = JSON.parse(
@@ -1573,7 +1573,7 @@ export {};
 
         if (fs.existsSync(devcontainerEnvExamplePath)) {
           let envContent = fs.readFileSync(devcontainerEnvExamplePath, 'utf-8');
-          const mongoUri = buildMongoUri(workspaceName);
+          const _mongoUri = buildMongoUri(workspaceName);
 
           // Replace MongoDB configuration for Docker Compose
           envContent = envContent.replace(

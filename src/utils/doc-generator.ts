@@ -6,7 +6,7 @@ import { Logger } from '../cli/logger';
 export class DocGenerator {
   static generateProjectDocs(context: GeneratorContext): void {
     const monorepoPath = context.state.get('monorepoPath');
-    const workspaceName = context.config.workspace?.name || 'project';
+    const _workspaceName = context.config.workspace?.name || 'project';
     
     this.generateReadme(monorepoPath, context);
     this.generateArchitectureDoc(monorepoPath, context);

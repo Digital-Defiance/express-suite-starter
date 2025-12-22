@@ -85,7 +85,7 @@ export class StepExecutor {
         try {
           Logger.info(`Rolling back: ${step.description}`);
           await step.rollback(context);
-        } catch (error) {
+        } catch (_error) {
           Logger.error(getStarterTranslation(StarterStringKey.GENERATION_ROLLBACK_FAILED, { description: step.description }));
         }
       }
