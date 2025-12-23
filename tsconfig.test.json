@@ -4,7 +4,9 @@
     "baseUrl": ".",
     "isolatedModules": true,
     "paths": {
-      "@digitaldefiance/*": ["node_modules/@digitaldefiance/*"]
+      "@digitaldefiance/*": [
+        "node_modules/@digitaldefiance/*"
+      ]
     }
   }
 }

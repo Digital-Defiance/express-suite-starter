@@ -5,6 +5,10 @@ module.exports = {
   testMatch: ['**/*.spec.ts', '**/*.test.ts'],
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
+  moduleNameMapper: {
+    '^lru-cache$': '<rootDir>/__mocks__/lru-cache.js',
+  },
+  setupFiles: ['<rootDir>/../../jest.setup.js'],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',

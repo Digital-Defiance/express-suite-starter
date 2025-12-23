@@ -1506,27 +1506,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:4.4.20":
-  version: 4.4.20
-  resolution: "@digitaldefiance/ecies-lib@npm:4.4.20"
+"@digitaldefiance/ecies-lib@npm:4.4.25":
+  version: 4.4.25
+  resolution: "@digitaldefiance/ecies-lib@npm:4.4.25"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.8.12"
+    "@digitaldefiance/i18n-lib": "npm:3.8.16"
     "@ethereumjs/wallet": "npm:^10.0.0"
     "@noble/curves": "npm:^2.0.1"
     "@noble/hashes": "npm:^2.0.1"
     "@scure/bip32": "npm:^2.0.0"
     bson: "npm:^6.10.4"
     ts-brand: "npm:^0.2.0"
-  checksum: 10c0/3287a1a8b108b8f9da737f91809952cf19503200ca9d1752f4754ac295a1dbde019b96e46e97d7b664eb0c3f06fa393c921376ca093f41033d17e1e8d584c228
+  checksum: 10c0/72a1ec331368aaff32209bf806ad61b090420730b542fc0f94d30a60d94fb42bf4510bc944d82a445ff6a1569af67973b33d5e5f0ba7eb00f6b80cb609b0c746
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.9.14":
-  version: 2.9.14
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.14"
+"@digitaldefiance/express-suite-react-components@npm:^2.9.18":
+  version: 2.9.18
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.18"
   dependencies:
-    "@digitaldefiance/i18n-lib": "npm:3.8.12"
-    "@digitaldefiance/suite-core-lib": "npm:3.6.20"
+    "@digitaldefiance/i18n-lib": "npm:3.8.16"
+    "@digitaldefiance/suite-core-lib": "npm:3.6.24"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1541,7 +1541,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/9e616ecfc251cf513e171f69e1d661b32056351543f1067be1fa8d8cafc31674045e4cac85669c961d37540d5c0b182d82f7a89317d7b884c53193702fa08481
+  checksum: 10c0/9adda8cf9e12d3a35ad48915ff4060dd8c92673d817b6f30dda7da4d89975fd7a3c0e5375eaa3d386189247ac8a6dacdddbe15deef1ca6d94c1b3c0efa04777d
   languageName: node
   linkType: hard
 
@@ -1549,9 +1549,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.9.14"
-    "@digitaldefiance/express-suite-test-utils": "npm:1.0.13"
-    "@digitaldefiance/i18n-lib": "npm:@digitaldefiance/i18n-lib@3.8.12"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.9.18"
+    "@digitaldefiance/express-suite-test-utils": "npm:1.0.14"
+    "@digitaldefiance/i18n-lib": "npm:^3.8.16"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
     "@nx/workspace": "npm:22.0.2"
@@ -1575,9 +1575,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@digitaldefiance/express-suite-test-utils@npm:1.0.13":
-  version: 1.0.13
-  resolution: "@digitaldefiance/express-suite-test-utils@npm:1.0.13"
+"@digitaldefiance/express-suite-test-utils@npm:1.0.14":
+  version: 1.0.14
+  resolution: "@digitaldefiance/express-suite-test-utils@npm:1.0.14"
   dependencies:
     "@jest/globals": "npm:^30.0.5"
     "@types/jest": "npm:^30.0.0"
@@ -1585,28 +1585,29 @@ __metadata:
     mongodb-memory-server: "npm:^10.1.3"
   peerDependencies:
     mongoose: ^8.0.0
-  checksum: 10c0/0bf5928fa2285715ea5adba0fdeb2f7146a249b0e564d45db1290b12142b5ba32a477c8ec78a4d4bfd93fb94d77da6d8fd2964aa6ae40cd14c98e7d94a2254e5
+  checksum: 10c0/c474c099801eba568d0f0c7f8c593511080cf5985e061e019bc5bf4c6fe1ce707a979deb1de9d4b60f4b241d4c31ca36cd0ca553ae8dbde2dcc4f70f2f3e0a7f
   languageName: node
   linkType: hard
 
-"@digitaldefiance/i18n-lib@npm:3.8.12, @digitaldefiance/i18n-lib@npm:@digitaldefiance/i18n-lib@3.8.12":
-  version: 3.8.12
-  resolution: "@digitaldefiance/i18n-lib@npm:3.8.12"
+"@digitaldefiance/i18n-lib@npm:3.8.16, @digitaldefiance/i18n-lib@npm:^3.8.16":
+  version: 3.8.16
+  resolution: "@digitaldefiance/i18n-lib@npm:3.8.16"
   dependencies:
     currency-codes: "npm:^2.2.0"
+    lru-cache: "npm:^5.1.1"
     moment: "npm:^2.30.1"
     moment-timezone: "npm:^0.6.0"
-  checksum: 10c0/099a9aacc5c3f84dc5cd370fa548ee247ca12e2dbd36930617b5721b908110db6e1176eaaa4f6c63329e9e7dbdd9e47f0a67ca8d1640a6c857530f909dfcfb66
+  checksum: 10c0/21288d1fa56bb75cf71b234705c9f3ba0fba1e5a5a8511b1e669dac4960ff92b95bbf3a57e57aa3b6c2061cc5629207843e058efb1474a99ed8b222c6df6202a
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:3.6.20":
-  version: 3.6.20
-  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.20"
+"@digitaldefiance/suite-core-lib@npm:3.6.24":
+  version: 3.6.24
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.24"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:4.4.20"
-    "@digitaldefiance/i18n-lib": "npm:3.8.12"
-  checksum: 10c0/346503480eb16d7c94d01d9899c2a817ad84fedf0ac17a1f4f6bd6fb6a743186cfd97bd4969d050d885ac1d54b01b29836e476ba5ca364a1895ef7c966c2fdbf
+    "@digitaldefiance/ecies-lib": "npm:4.4.25"
+    "@digitaldefiance/i18n-lib": "npm:3.8.16"
+  checksum: 10c0/d4aed6d66780443a280e55e8ea6d89ddc92bbe5368ae9b5f74c6bac1e9b93839ebc0678f92924466e5bda5a898145f7d9dc5a4dc77e8d1654aac976bfdf70b2f
   languageName: node
   linkType: hard
 
