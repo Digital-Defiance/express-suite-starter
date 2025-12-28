@@ -1506,27 +1506,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:4.4.25":
-  version: 4.4.25
-  resolution: "@digitaldefiance/ecies-lib@npm:4.4.25"
+"@digitaldefiance/ecies-lib@npm:4.6.3":
+  version: 4.6.3
+  resolution: "@digitaldefiance/ecies-lib@npm:4.6.3"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
     "@ethereumjs/wallet": "npm:^10.0.0"
-    "@noble/curves": "npm:^2.0.1"
-    "@noble/hashes": "npm:^2.0.1"
-    "@scure/bip32": "npm:^2.0.0"
+    "@noble/curves": "npm:1.9.0"
+    "@noble/hashes": "npm:1.8.0"
+    "@scure/bip32": "npm:1.7.0"
     bson: "npm:^6.10.4"
     ts-brand: "npm:^0.2.0"
-  checksum: 10c0/72a1ec331368aaff32209bf806ad61b090420730b542fc0f94d30a60d94fb42bf4510bc944d82a445ff6a1569af67973b33d5e5f0ba7eb00f6b80cb609b0c746
+  peerDependencies:
+    paillier-bigint: ^3.4.1
+  peerDependenciesMeta:
+    paillier-bigint:
+      optional: true
+  checksum: 10c0/92fb5227cf32da46fe86ceccf1e22ea55d80aef097094e00e23d35979462cc0b1421e73c2b1c736e088e516db855dddd6cb58700afeb407521d57309890b4b3f
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.9.18":
-  version: 2.9.18
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.18"
+"@digitaldefiance/express-suite-react-components@npm:^2.9.20":
+  version: 2.9.20
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.20"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-    "@digitaldefiance/suite-core-lib": "npm:3.6.24"
+    "@digitaldefiance/suite-core-lib": "npm:3.6.27"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1541,7 +1546,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/9adda8cf9e12d3a35ad48915ff4060dd8c92673d817b6f30dda7da4d89975fd7a3c0e5375eaa3d386189247ac8a6dacdddbe15deef1ca6d94c1b3c0efa04777d
+  checksum: 10c0/b995c36ab2e271a44e99740da2033a0d837d013c843a966d7d1e514ffc8467479ed6a5fc263dc87b47b16f55c22340abbb101a30cdf943fe9caa1d5abc677177
   languageName: node
   linkType: hard
 
@@ -1549,7 +1554,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.9.18"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.9.20"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.14"
     "@digitaldefiance/i18n-lib": "npm:^3.8.16"
     "@inquirer/prompts": "npm:^7.5.0"
@@ -1601,13 +1606,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:3.6.24":
-  version: 3.6.24
-  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.24"
+"@digitaldefiance/suite-core-lib@npm:3.6.27":
+  version: 3.6.27
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.27"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:4.4.25"
+    "@digitaldefiance/ecies-lib": "npm:4.6.3"
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-  checksum: 10c0/d4aed6d66780443a280e55e8ea6d89ddc92bbe5368ae9b5f74c6bac1e9b93839ebc0678f92924466e5bda5a898145f7d9dc5a4dc77e8d1654aac976bfdf70b2f
+  checksum: 10c0/d143ecac1ab42ba515f7c489ff22aa18b75d937c4dd3f49fb41a55f8b6e60c65a7fe5c7e4407061ab5c2832f724e2db761e576034accde6b80c5724279cde841
   languageName: node
   linkType: hard
 
@@ -2803,15 +2808,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/curves@npm:2.0.1, @noble/curves@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@noble/curves@npm:2.0.1"
-  dependencies:
-    "@noble/hashes": "npm:2.0.1"
-  checksum: 10c0/e0b329eb9229e862d3b7203e0444bd479e9ecf2d5990181908dad416aab69106717ca696fc7b12ad0eb19d710f58c454646b27ce517a4298ab9abc89a9bdb6ee
-  languageName: node
-  linkType: hard
-
 "@noble/curves@npm:~1.9.0":
   version: 1.9.7
   resolution: "@noble/curves@npm:1.9.7"
@@ -2825,13 +2821,6 @@ __metadata:
   version: 1.8.0
   resolution: "@noble/hashes@npm:1.8.0"
   checksum: 10c0/06a0b52c81a6fa7f04d67762e08b2c476a00285858150caeaaff4037356dd5e119f45b2a530f638b77a5eeca013168ec1b655db41bae3236cb2e9d511484fc77
-  languageName: node
-  linkType: hard
-
-"@noble/hashes@npm:2.0.1, @noble/hashes@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@noble/hashes@npm:2.0.1"
-  checksum: 10c0/e81769ce21c3b1c80141a3b99bd001f17edea09879aa936692ae39525477386d696101cd573928a304806efb2b9fa751e1dd83241c67d0c84d30091e85c79bdb
   languageName: node
   linkType: hard
 
@@ -3048,13 +3037,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/base@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@scure/base@npm:2.0.0"
-  checksum: 10c0/7d999c7bebf053bb49cb706fdc6c5366737cff0f7f7518f52d32d7f7ad7b898904f03673648a2af5c4f22396f5c05f1d8bddbf010d6595052d07ba8163d506ad
-  languageName: node
-  linkType: hard
-
 "@scure/base@npm:^1.2.4, @scure/base@npm:~1.2.5":
   version: 1.2.6
   resolution: "@scure/base@npm:1.2.6"
@@ -3070,17 +3052,6 @@ __metadata:
     "@noble/hashes": "npm:~1.8.0"
     "@scure/base": "npm:~1.2.5"
   checksum: 10c0/e3d4c1f207df16abcd79babcdb74d36f89bdafc90bf02218a5140cc5cba25821d80d42957c6705f35210cc5769714ea9501d4ae34732cdd1c26c9ff182a219f7
-  languageName: node
-  linkType: hard
-
-"@scure/bip32@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@scure/bip32@npm:2.0.1"
-  dependencies:
-    "@noble/curves": "npm:2.0.1"
-    "@noble/hashes": "npm:2.0.1"
-    "@scure/base": "npm:2.0.0"
-  checksum: 10c0/7c7ceac0ded08942afc866fa8a2f6fe1ad90b09932fd11560418701a965efe26e0cdf29ea87d18bc0bd847d34541c2ba1afed08794e273eafac8ab2ad23d012d
   languageName: node
   linkType: hard
 
