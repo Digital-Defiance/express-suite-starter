@@ -563,6 +563,34 @@ async function main() {
   });
 
   executor.addStep({
+    name: 'addPackageResolutions',
+    description: getStarterTranslation(StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS),
+    execute: (_context) => {
+      const packageJsonPath = path.join(monorepoPath, 'package.json');
+      if (fs.existsSync(packageJsonPath)) {
+        const packageJson = JSON.parse(
+          fs.readFileSync(packageJsonPath, 'utf-8'),
+        );
+
+        // Add resolutions to ensure consistent @noble package versions
+        packageJson.resolutions = {
+          '@noble/curves': '1.9.0',
+          '@noble/hashes': '1.8.0',
+          '@scure/bip32': '1.7.0',
+        };
+
+        fs.writeFileSync(
+          packageJsonPath,
+          JSON.stringify(packageJson, null, 2) + '\n',
+        );
+        Logger.info(
+          getStarterTranslation(StarterStringKey.PACKAGE_RESOLUTIONS_ADDED),
+        );
+      }
+    },
+  });
+
+  executor.addStep({
     name: 'addNxPlugins',
     description: getStarterTranslation(StarterStringKey.STEP_ADD_NX_PLUGINS),
     execute: () => {

@@ -81,6 +81,7 @@ export enum StarterStringKey {
   STEP_UPDATE_TSCONFIG_BASE = 'step_updateTsConfigBase',
   STEP_SETUP_GIT_ORIGIN = 'step_setupGitOrigin',
   STEP_YARN_BERRY_SETUP = 'step_yarnBerrySetup',
+  STEP_ADD_PACKAGE_RESOLUTIONS = 'step_addPackageResolutions',
   STEP_ADD_NX_PLUGINS = 'step_addNxPlugins',
   STEP_ADD_YARN_PACKAGES = 'step_addYarnPackages',
   STEP_GENERATE_PROJECTS = 'step_generateProjects',
@@ -116,6 +117,9 @@ export enum StarterStringKey {
 
   // TypeScript Configuration
   TSCONFIG_BASE_UPDATED = 'tsconfig_baseUpdated',
+
+  // Package Management
+  PACKAGE_RESOLUTIONS_ADDED = 'package_resolutionsAdded',
 
   // Environment Setup
   ENV_CREATED_WITH_SECRETS = 'env_createdWithSecrets',

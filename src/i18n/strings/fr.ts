@@ -109,6 +109,8 @@ export const frTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]:
     'Configuration du dépôt git distant',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Configuration de Yarn Berry',
+  [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'Ajout des résolutions de paquets',
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Résolutions de paquets ajoutées pour @noble/curves, @noble/hashes et @scure/bip32',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Installation des plugins Nx',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Installation des dépendances',
   [StarterStringKey.STEP_GENERATE_PROJECTS]:

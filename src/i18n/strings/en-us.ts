@@ -117,6 +117,8 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
     'Updating TypeScript base configuration',
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Setting up Git remote',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Setting up Yarn Berry',
+  [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]:
+    'Adding package resolutions for dependency version consistency',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Adding Nx plugins',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Installing dependencies',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: 'Generating project structure',
@@ -160,6 +162,10 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   // TypeScript Configuration
   [StarterStringKey.TSCONFIG_BASE_UPDATED]:
     'Updated tsconfig.base.json with esModuleInterop and allowSyntheticDefaultImports',
+
+  // Package Management
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]:
+    'Added package resolutions for @noble/curves, @noble/hashes, and @scure/bip32',
 
   // Environment Setup
   [StarterStringKey.ENV_CREATED_WITH_SECRETS]:

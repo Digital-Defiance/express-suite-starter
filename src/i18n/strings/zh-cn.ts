@@ -87,6 +87,8 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_UPDATE_TSCONFIG_BASE]: '正在更新 TypeScript 基础配置',
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: '正在设置 git 远程',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: '正在配置 Yarn Berry',
+  [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: '正在添加包解决方案',
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: '已为 @noble/curves、@noble/hashes 和 @scure/bip32 添加包解决方案',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: '正在安装 Nx 插件',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: '正在安装依赖项',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: '正在生成项目结构',
