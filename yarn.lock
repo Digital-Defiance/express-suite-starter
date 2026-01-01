@@ -1506,9 +1506,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/ecies-lib@npm:4.6.3":
-  version: 4.6.3
-  resolution: "@digitaldefiance/ecies-lib@npm:4.6.3"
+"@digitaldefiance/ecies-lib@npm:4.7.6":
+  version: 4.7.6
+  resolution: "@digitaldefiance/ecies-lib@npm:4.7.6"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
     "@ethereumjs/wallet": "npm:^10.0.0"
@@ -1516,22 +1516,18 @@ __metadata:
     "@noble/hashes": "npm:1.8.0"
     "@scure/bip32": "npm:1.7.0"
     bson: "npm:^6.10.4"
+    paillier-bigint: "npm:^3.4.1"
     ts-brand: "npm:^0.2.0"
-  peerDependencies:
-    paillier-bigint: ^3.4.1
-  peerDependenciesMeta:
-    paillier-bigint:
-      optional: true
-  checksum: 10c0/92fb5227cf32da46fe86ceccf1e22ea55d80aef097094e00e23d35979462cc0b1421e73c2b1c736e088e516db855dddd6cb58700afeb407521d57309890b4b3f
+  checksum: 10c0/9c4a9317f27ca5178738cb73780ee32025184206783de421e90f6b425cd0f436f34b5d2a27e0dafca6d38c58d145c6e570e7590f930c5816a0ebd728354b461e
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.9.20":
-  version: 2.9.20
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.20"
+"@digitaldefiance/express-suite-react-components@npm:^2.9.23":
+  version: 2.9.23
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.23"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-    "@digitaldefiance/suite-core-lib": "npm:3.6.27"
+    "@digitaldefiance/suite-core-lib": "npm:3.6.30"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1546,7 +1542,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/b995c36ab2e271a44e99740da2033a0d837d013c843a966d7d1e514ffc8467479ed6a5fc263dc87b47b16f55c22340abbb101a30cdf943fe9caa1d5abc677177
+  checksum: 10c0/156a70ce1ce314092a817b7df855495528edc05aa3dbcca40b66444b5d8b8d7c0397fd8294e5b32002d299cf92225fa0af71e3efdfb1a74a67f0b68dc2cbf9a3
   languageName: node
   linkType: hard
 
@@ -1554,7 +1550,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.9.20"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.9.23"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.14"
     "@digitaldefiance/i18n-lib": "npm:^3.8.16"
     "@inquirer/prompts": "npm:^7.5.0"
@@ -1606,13 +1602,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:3.6.27":
-  version: 3.6.27
-  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.27"
+"@digitaldefiance/suite-core-lib@npm:3.6.30":
+  version: 3.6.30
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.30"
   dependencies:
-    "@digitaldefiance/ecies-lib": "npm:4.6.3"
+    "@digitaldefiance/ecies-lib": "npm:4.7.6"
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-  checksum: 10c0/d143ecac1ab42ba515f7c489ff22aa18b75d937c4dd3f49fb41a55f8b6e60c65a7fe5c7e4407061ab5c2832f724e2db761e576034accde6b80c5724279cde841
+  checksum: 10c0/15347bf247313412077cbaa8c59105886d8f821b24b5b1bfb7e0401533baed89bae92666eea19756c11b2fadf3ac961968a6032919a0444fc6f4340b5f2ee974
   languageName: node
   linkType: hard
 
@@ -3793,6 +3789,13 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 10c0/f23823513b63173a001030fae4f2dabe283b99a9d324ade3ad3d148e218134676f1ee8568c877cd79ec1c53158dcf2d2ba527a97c606618928ba99dd930102bf
+  languageName: node
+  linkType: hard
+
+"bigint-crypto-utils@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "bigint-crypto-utils@npm:3.3.0"
+  checksum: 10c0/7d06fa01d63e8e9513eee629fe8a426993276b1bdca5aefd0eb3188cee7026334d29e801ef6187a5bc6105ebf26e6e79e6fab544a7da769ccf55b913e66d2a14
   languageName: node
   linkType: hard
 
@@ -7364,6 +7367,15 @@ __metadata:
   version: 1.0.1
   resolution: "package-json-from-dist@npm:1.0.1"
   checksum: 10c0/62ba2785eb655fec084a257af34dbe24292ab74516d6aecef97ef72d4897310bc6898f6c85b5cd22770eaa1ce60d55a0230e150fb6a966e3ecd6c511e23d164b
+  languageName: node
+  linkType: hard
+
+"paillier-bigint@npm:^3.4.1":
+  version: 3.4.3
+  resolution: "paillier-bigint@npm:3.4.3"
+  dependencies:
+    bigint-crypto-utils: "npm:^3.3.0"
+  checksum: 10c0/5e049a4e8d651fd2f62dc2e51987ccc1122872eb11369f3c94aab3c2e9453bb4d5fbf8d96baa49d0bc3eb6ddd1d06b9527c6942c33a7f32f2223f2ed0d0e8679
   languageName: node
   linkType: hard
 
