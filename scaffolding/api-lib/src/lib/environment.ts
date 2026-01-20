@@ -5,8 +5,9 @@ import { IEnvironmentAws } from './interfaces/environment-aws';
 import { Constants } from './constants';
 import { getSuiteCoreTranslation, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
 import { EmailService } from './services/email';
+import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 
-export class Environment extends BaseEnvironment implements IEnvironment {
+export class Environment<TID extends PlatformID> extends BaseEnvironment<TID> implements IEnvironment<TID> {
   private _aws: IEnvironmentAws;
 
   constructor(path?: string, initialization = false, override = true) {

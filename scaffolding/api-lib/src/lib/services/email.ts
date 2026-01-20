@@ -7,27 +7,26 @@ function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]
     console[type](...args);
   }
 }
-import { Types } from '@digitaldefiance/mongoose-types';
 import { Environment } from '../environment';
-import { IConstants } from '../interfaces/constants';
+import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 
 /**
  * A generic service for sending emails using Amazon SES.
  */
-export class EmailService {
+export class EmailService<TID extends PlatformID> {
   private readonly sesClient: SESClient;
   private readonly emailSender: string;
   private readonly disableEmailSend: boolean;
   private readonly debug: boolean;
-  private readonly application: IApplication;
+  private readonly application: IApplication<TID>;
 
   /**
    * Constructs an instance of EmailService.
    * @param config Configuration object containing AWS credentials, region, sender email, and debug/disable flags.
    */
-  constructor(application: IApplication) {
+  constructor(application: IApplication<TID>) {
     this.application = application;
-    const environment = application.environment as Environment;
+    const environment = application.environment as Environment<TID>;
     this.emailSender = environment.emailSender;
     this.disableEmailSend = environment.disableEmailSend;
     this.debug = environment.debug;

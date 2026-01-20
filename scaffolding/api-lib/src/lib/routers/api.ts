@@ -3,20 +3,21 @@ import { ITokenRole, ITokenUser, IUserBase } from '@digitaldefiance/suite-core-l
 import { Types } from '@digitaldefiance/mongoose-types';
 import { Environment } from '../environment';
 import { IConstants } from '../interfaces/constants';
+import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 
 export class ApiRouter<
-  I extends Types.ObjectId | string = Types.ObjectId,
-  D extends Date = Date,
-  S extends string = string,
-  A extends string = string,
-  TUser extends IUserBase<I, D, S, A> = IUserBase<I, D, S, A>,
-  TTokenRole extends ITokenRole<I, D> = ITokenRole<I, D>,
+  TID extends Types.ObjectId | string = Types.ObjectId,
+  TDate extends Date = Date,
+  TLanguage extends CoreLanguageCode = CoreLanguageCode,
+  TAccountStatus extends string = string,
+  TUser extends IUserBase<TID, TDate, TLanguage, TAccountStatus> = IUserBase<TID, TDate, TLanguage, TAccountStatus>,
+  TTokenRole extends ITokenRole<TID, TDate> = ITokenRole<TID, TDate>,
   TTokenUser extends ITokenUser = ITokenUser,
-  TEnvironment extends Environment = Environment,
+  TEnvironment extends Environment<TID> = Environment<TID>,
   TConstants extends IConstants = IConstants,
-  TBaseDocument extends IBaseDocument<any, Types.ObjectId> = IBaseDocument<any, Types.ObjectId>,
-  TApplication extends IApplication = IApplication,
-> extends BaseApiRouter<I,D,S,A, TUser,TTokenRole,TBaseDocument, TTokenUser,TConstants, TEnvironment, TApplication> {
+  TBaseDocument extends IBaseDocument<any, TID> = IBaseDocument<any, TID>,
+  TApplication extends IApplication<TID> = IApplication<TID>,
+> extends BaseApiRouter<TID,TDate,TLanguage,TAccountStatus, TUser,TTokenRole,TBaseDocument, TTokenUser,TConstants, TEnvironment, TApplication> {
   constructor(app: TApplication) {
     super(app);
   }

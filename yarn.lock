@@ -1524,12 +1524,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/express-suite-react-components@npm:^2.9.35":
-  version: 2.9.37
-  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.37"
+"@digitaldefiance/express-suite-react-components@npm:^2.9.38":
+  version: 2.9.38
+  resolution: "@digitaldefiance/express-suite-react-components@npm:2.9.38"
   dependencies:
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-    "@digitaldefiance/suite-core-lib": "npm:3.6.47"
+    "@digitaldefiance/suite-core-lib": "npm:3.6.49"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^7.0.2"
@@ -1544,7 +1544,7 @@ __metadata:
     yup: "npm:^1.6.1"
   peerDependencies:
     react-router-dom: 6.29.0
-  checksum: 10c0/78048626a1e2b080808e5f8ac92e9d604664e563c905f2d71512d34f3f212fabc50b39a69f4774df69a1f6c7d2dbfa2df8b4c60d8509d5c9bf1cfe74e512bab6
+  checksum: 10c0/3219d15929f2942b8b77f3c5636c255b18bb045bda694c5d0f3ad17fefb7cca22ada2fce3f8772f2261524649c07ecd2d4547d8da0043695d93c02743a0ce6ec
   languageName: node
   linkType: hard
 
@@ -1552,7 +1552,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
-    "@digitaldefiance/express-suite-react-components": "npm:^2.9.35"
+    "@digitaldefiance/express-suite-react-components": "npm:^2.9.38"
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.14"
     "@digitaldefiance/i18n-lib": "npm:^3.8.16"
     "@inquirer/prompts": "npm:^7.5.0"
@@ -1604,13 +1604,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/suite-core-lib@npm:3.6.47":
-  version: 3.6.47
-  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.47"
+"@digitaldefiance/suite-core-lib@npm:3.6.49":
+  version: 3.6.49
+  resolution: "@digitaldefiance/suite-core-lib@npm:3.6.49"
   dependencies:
     "@digitaldefiance/ecies-lib": "npm:4.12.8"
     "@digitaldefiance/i18n-lib": "npm:3.8.16"
-  checksum: 10c0/d1035a31f4be58fd058b3fd89d5ec7f9f2b1370fc5e4eac0431ce67e23895b15ce9c96303f83becfc9968758eabea4d487ac169b94894ffa16d77eb61b154125
+  checksum: 10c0/d4982c14c532b129f632ddd486888a0de93f8e1aa39e5d69bd4a2602cacfec6d59afae4813533ca547a9ce47f2c1930e50577c377affd08afd883533806931de
   languageName: node
   linkType: hard
 
