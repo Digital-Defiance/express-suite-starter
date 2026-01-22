@@ -521,6 +521,11 @@ async function main() {
     description: getStarterTranslation(StarterStringKey.STEP_SETUP_GIT_ORIGIN),
     skip: () => !gitRepo,
     execute: () => {
+      // Ensure git is initialized in the monorepo before setting origin
+      if (!fs.existsSync(path.join(monorepoPath, '.git'))) {
+        runCommand('git init', { cwd: monorepoPath, dryRun: context.dryRun });
+      }
+
       try {
         // Try to add the remote
         runCommand(`git remote add origin ${gitRepo}`, {
