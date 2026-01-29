@@ -1499,12 +1499,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@digitaldefiance/branded-enum@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@digitaldefiance/branded-enum@npm:0.0.6"
+  checksum: 10c0/1b70a5a3089c1a4673df9ea4f51cb9d3818291c3170e56fb211372dd4ac7e95b941b0bd95f4982d1f927ae13fca7ad156d360eca1053adbe066af1b282877230
+  languageName: node
+  linkType: hard
+
 "@digitaldefiance/express-suite-starter@workspace:.":
   version: 0.0.0-use.local
   resolution: "@digitaldefiance/express-suite-starter@workspace:."
   dependencies:
     "@digitaldefiance/express-suite-test-utils": "npm:1.0.14"
-    "@digitaldefiance/i18n-lib": "npm:^3.8.16"
+    "@digitaldefiance/i18n-lib": "npm:^4.0.3"
     "@inquirer/prompts": "npm:^7.5.0"
     "@nx/js": "npm:22.0.2"
     "@nx/workspace": "npm:22.0.2"
@@ -1542,15 +1549,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digitaldefiance/i18n-lib@npm:^3.8.16":
-  version: 3.8.16
-  resolution: "@digitaldefiance/i18n-lib@npm:3.8.16"
+"@digitaldefiance/i18n-lib@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@digitaldefiance/i18n-lib@npm:4.0.3"
   dependencies:
+    "@digitaldefiance/branded-enum": "npm:0.0.6"
     currency-codes: "npm:^2.2.0"
     lru-cache: "npm:^5.1.1"
     moment: "npm:^2.30.1"
     moment-timezone: "npm:^0.6.0"
-  checksum: 10c0/21288d1fa56bb75cf71b234705c9f3ba0fba1e5a5a8511b1e669dac4960ff92b95bbf3a57e57aa3b6c2061cc5629207843e058efb1474a99ed8b222c6df6202a
+  checksum: 10c0/2ea410e619accbcb46c66a16b05c7268c47298844f05a324b307beec3fdeb4d518903b238419767c9f918b5ab2e03c6a38ddd38a758d68c26678e7c648c62f49
   languageName: node
   linkType: hard
 
