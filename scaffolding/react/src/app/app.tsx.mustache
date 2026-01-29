@@ -13,7 +13,7 @@ import AlbatrossLogo from '../assets/albatross.svg';
 import { AppConstants, EciesConfig } from '{{namespace}}/lib';
 import { appMenuConfigs } from './menus';
 import { LanguageRegistry } from '@digitaldefiance/i18n-lib';
-import { SuiteCoreComponentId, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
+import { SuiteCoreComponentId, SuiteCoreStringKey, SuiteCoreStringKeyValue } from '@digitaldefiance/suite-core-lib';
 
 const getApiBaseUrl = () => {
   if (
@@ -65,7 +65,7 @@ const App: FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <TranslationProvider i18nEngine={i18nEngine}>
-        <TranslatedTitle<SuiteCoreStringKey>
+        <TranslatedTitle<SuiteCoreStringKeyValue>
           componentId={SuiteCoreComponentId}
           stringKey={SuiteCoreStringKey.Common_SiteTemplate} />
         <AppThemeProvider customTheme={createAppTheme}>

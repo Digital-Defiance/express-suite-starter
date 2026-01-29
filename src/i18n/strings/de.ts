@@ -107,7 +107,7 @@ export const deTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Git-Remote wird eingerichtet',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Yarn Berry wird konfiguriert',
   [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'Paketauflösungen werden hinzugefügt',
-  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Paketauflösungen hinzugefügt für @noble/curves, @noble/hashes und @scure/bip32',
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Paketauflösungen hinzugefügt für @noble/curves, @noble/hashes, @scure/bip32 und @scure/bip39',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Nx-Plugins werden installiert',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]:
     'Abhängigkeiten werden installiert',

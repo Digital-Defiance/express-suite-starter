@@ -114,7 +114,7 @@ export const esTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Configurando remoto git',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Configurando Yarn Berry',
   [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'Agregando resoluciones de paquetes',
-  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Resoluciones de paquetes agregadas para @noble/curves, @noble/hashes y @scure/bip32',
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Resoluciones de paquetes agregadas para @noble/curves, @noble/hashes, @scure/bip32 y @scure/bip39',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Instalando plugins Nx',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Instalando dependencias',
   [StarterStringKey.STEP_GENERATE_PROJECTS]:

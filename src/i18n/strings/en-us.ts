@@ -165,7 +165,7 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
 
   // Package Management
   [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]:
-    'Added package resolutions for @noble/curves, @noble/hashes, and @scure/bip32',
+    'Added package resolutions for @noble/curves, @noble/hashes, @scure/bip32, and @scure/bip39',
 
   // Environment Setup
   [StarterStringKey.ENV_CREATED_WITH_SECRETS]:

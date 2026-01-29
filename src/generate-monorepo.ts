@@ -579,9 +579,10 @@ async function main() {
 
         // Add resolutions to ensure consistent @noble package versions
         packageJson.resolutions = {
-          '@noble/curves': '1.9.0',
-          '@noble/hashes': '1.8.0',
-          '@scure/bip32': '1.7.0',
+          '@noble/curves': '1.4.2',
+          '@noble/hashes': '1.4.0',
+          '@scure/bip32': '1.4.0',
+          '@scure/bip39': '1.3.0',
         };
 
         fs.writeFileSync(

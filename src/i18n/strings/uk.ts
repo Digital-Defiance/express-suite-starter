@@ -102,7 +102,7 @@ export const ukTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_UPDATE_TSCONFIG_BASE]:
     'Оновлення базової конфігурації TypeScript',
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'Налаштування віддаленого git',
-  [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Налаштування Yarn Berry',  [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'Додавання розв\'язань пакетів',  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Додано розвʼязання пакетів для @noble/curves, @noble/hashes та @scure/bip32',
+  [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Налаштування Yarn Berry',  [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'Додавання розв\'язань пакетів',  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: 'Додано розвʼязання пакетів для @noble/curves, @noble/hashes, @scure/bip32 та @scure/bip39',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Встановлення плагінів Nx',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: 'Встановлення залежностей',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: 'Генерація структури проекту',

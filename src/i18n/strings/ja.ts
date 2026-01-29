@@ -107,7 +107,7 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.STEP_SETUP_GIT_ORIGIN]: 'git リモートをセットアップ中',
   [StarterStringKey.STEP_YARN_BERRY_SETUP]: 'Yarn Berry を設定中',
   [StarterStringKey.STEP_ADD_PACKAGE_RESOLUTIONS]: 'パッケージ解決を追加中',
-  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: '@noble/curves、@noble/hashes、@scure/bip32 のパッケージ解決を追加しました',
+  [StarterStringKey.PACKAGE_RESOLUTIONS_ADDED]: '@noble/curves、@noble/hashes、@scure/bip32、@scure/bip39 のパッケージ解決を追加しました',
   [StarterStringKey.STEP_ADD_NX_PLUGINS]: 'Nx プラグインをインストール中',
   [StarterStringKey.STEP_ADD_YARN_PACKAGES]: '依存関係をインストール中',
   [StarterStringKey.STEP_GENERATE_PROJECTS]: 'プロジェクト構造を生成中',
