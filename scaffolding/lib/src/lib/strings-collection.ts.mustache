@@ -1,7 +1,13 @@
-import { LanguageCodes } from '@digitaldefiance/i18n-lib';
+import { LanguageCodes, type BrandedMasterStringsCollection, type CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-string-key';
 
-export const Strings = {
+/**
+ * Master strings collection for the {{WorkspaceName}} component.
+ *
+ * This collection provides translations for all supported languages.
+ * Uses `BrandedMasterStringsCollection` for type-safe branded enum support.
+ */
+export const Strings: BrandedMasterStringsCollection<typeof {{WorkspaceName}}StringKey, CoreLanguageCode> = {
   [LanguageCodes.EN_US]: {
     [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isEnUs}}{{siteTitle}}{{/isEnUs}}{{^isEnUs}}Your Site Title{{/isEnUs}}',
     [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isEnUs}}{{siteDescription}}{{/isEnUs}}{{^isEnUs}}Your description here{{/isEnUs}}',

@@ -1,5 +1,29 @@
-export enum {{WorkspaceName}}StringKey {
-  SiteTitle = 'siteTitle',
-  SiteDescription = 'siteDescription',
-  SiteTagline = 'siteTagline',
-}
+import { createI18nStringKeys } from '@digitaldefiance/i18n-lib';
+
+/**
+ * Branded string keys for the {{WorkspaceName}} component.
+ *
+ * Created using `createI18nStringKeys` for type-safe i18n support.
+ * Use `typeof {{WorkspaceName}}StringKey` when referencing the type.
+ *
+ * @example
+ * ```typescript
+ * import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-string-key';
+ * import type { BrandedStringsCollection } from '@digitaldefiance/i18n-lib';
+ *
+ * const strings: BrandedStringsCollection<typeof {{WorkspaceName}}StringKey> = {
+ *   [{{WorkspaceName}}StringKey.SiteTitle]: 'My Site',
+ * };
+ * ```
+ */
+export const {{WorkspaceName}}StringKey = createI18nStringKeys('{{WorkspaceName}}', {
+  SiteTitle: 'siteTitle',
+  SiteDescription: 'siteDescription',
+  SiteTagline: 'siteTagline',
+} as const);
+
+/**
+ * Type alias for the branded string key values.
+ * Use this when you need to type a variable that holds a string key value.
+ */
+export type {{WorkspaceName}}StringKeyValue = typeof {{WorkspaceName}}StringKey[keyof typeof {{WorkspaceName}}StringKey];

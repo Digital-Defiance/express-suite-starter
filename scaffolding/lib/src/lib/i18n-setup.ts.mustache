@@ -8,6 +8,7 @@ import {
   I18nBuilder,
   I18nEngine,
 } from '@digitaldefiance/i18n-lib';
+import type { BrandedEnumValue } from '@digitaldefiance/branded-enum';
 import { AppConstants } from './constants';
 import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-string-key';
 import { Strings } from './strings-collection';
@@ -82,8 +83,17 @@ export const i18nContext: IActiveContext<CoreLanguageCode> = {
   },
 };
 
+/**
+ * Translate a string key to the current or specified language.
+ *
+ * @param name - The branded string key value to translate
+ * @param variables - Optional variables to interpolate into the translation
+ * @param language - Optional language override
+ * @param context - Optional context space override
+ * @returns The translated string
+ */
 export const translate = (
-  name: {{WorkspaceName}}StringKey,
+  name: BrandedEnumValue<typeof {{WorkspaceName}}StringKey>,
   variables?: Record<string, string | number>,
   language?: CoreLanguageCode,
   context?: LanguageContextSpace,
