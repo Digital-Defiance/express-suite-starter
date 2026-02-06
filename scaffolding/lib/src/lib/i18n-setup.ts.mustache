@@ -10,7 +10,7 @@ import {
 } from '@digitaldefiance/i18n-lib';
 import type { BrandedEnumValue } from '@digitaldefiance/branded-enum';
 import { AppConstants } from './constants';
-import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-string-key';
+import { {{WorkspaceName}}StringKey, type {{WorkspaceName}}StringKeyValue } from './enumerations/{{workspaceName}}-string-key';
 import { Strings } from './strings-collection';
 import { createSuiteCoreComponentConfig } from '@digitaldefiance/suite-core-lib';
 
@@ -59,6 +59,11 @@ if (!registrationResult.isValid) {
   console.warn('Component has missing translations:', registrationResult.errors);
 }
 
+// Register the branded string key enum for direct translation support
+if (!i18nEngine.hasStringKeyEnum({{WorkspaceName}}StringKey)) {
+  i18nEngine.registerStringKeyEnum({{WorkspaceName}}StringKey);
+}
+
 const globalContext = GlobalActiveContext.getInstance<CoreLanguageCode, IActiveContext<CoreLanguageCode>>();
 globalContext.createContext(LanguageCodes.EN_US, LanguageCodes.EN_US, ComponentId);
 
@@ -85,6 +90,7 @@ export const i18nContext: IActiveContext<CoreLanguageCode> = {
 
 /**
  * Translate a string key to the current or specified language.
+ * Uses translateStringKey for automatic component ID resolution.
  *
  * @param name - The branded string key value to translate
  * @param variables - Optional variables to interpolate into the translation
@@ -93,7 +99,7 @@ export const i18nContext: IActiveContext<CoreLanguageCode> = {
  * @returns The translated string
  */
 export const translate = (
-  name: BrandedEnumValue<typeof {{WorkspaceName}}StringKey>,
+  name: BrandedEnumValue<typeof {{WorkspaceName}}StringKey> | {{WorkspaceName}}StringKeyValue,
   variables?: Record<string, string | number>,
   language?: CoreLanguageCode,
   context?: LanguageContextSpace,
@@ -105,5 +111,31 @@ export const translate = (
       ? globalContext.getContext(ComponentId).adminLanguage
       : globalContext.getContext(ComponentId).language);
 
-  return i18nEngine.translate(ComponentId, name, variables, lang);
+  return i18nEngine.translateStringKey(name, variables, lang);
+};
+
+/**
+ * Safe translation with fallback - never throws.
+ * Returns a placeholder string if translation fails.
+ *
+ * @param name - The branded string key value to translate
+ * @param variables - Optional variables to interpolate into the translation
+ * @param language - Optional language override
+ * @param context - Optional context space override
+ * @returns The translated string or a placeholder on failure
+ */
+export const safeTranslate = (
+  name: BrandedEnumValue<typeof {{WorkspaceName}}StringKey> | {{WorkspaceName}}StringKeyValue,
+  variables?: Record<string, string | number>,
+  language?: CoreLanguageCode,
+  context?: LanguageContextSpace,
+): string => {
+  const activeContext = context ?? globalContext.getContext(ComponentId).currentContext;
+  const lang =
+    language ??
+    (activeContext === 'admin'
+      ? globalContext.getContext(ComponentId).adminLanguage
+      : globalContext.getContext(ComponentId).language);
+
+  return i18nEngine.safeTranslateStringKey(name, variables, lang);
 };

@@ -24,7 +24,13 @@
     "declarationMap": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "noImplicitOverride": false
+    "noImplicitOverride": false,
+    "baseUrl": "../..",
+    "paths": {
+      "@digitaldefiance/i18n-lib": [
+        "dist/packages/digitaldefiance-i18n-lib/src/index.d.ts"
+      ]
+    }
   },
   "include": [
     "src/**/*",
