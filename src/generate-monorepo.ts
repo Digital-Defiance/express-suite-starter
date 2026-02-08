@@ -243,12 +243,12 @@ async function main() {
       })),
   });
 
-  const enableDocGeneration = await confirm({
-    message: getStarterTranslation(
-      StarterStringKey.PROMPT_ENABLE_DOC_GENERATION,
-    ),
-    default: true,
-  });
+  // const enableDocGeneration = await confirm({
+  //   message: getStarterTranslation(
+  //     StarterStringKey.PROMPT_ENABLE_DOC_GENERATION,
+  //   ),
+  //   default: true,
+  // });
 
   Logger.section(
     getStarterTranslation(StarterStringKey.SECTION_DEVCONTAINER_CONFIG),
@@ -1469,6 +1469,7 @@ export {};
     description: getStarterTranslation(
       StarterStringKey.STEP_GENERATE_DOCUMENTATION,
     ),
+    //skip: () => !enableDocGeneration || dryRun,
     skip: () => true, // Disabled - README now comes from scaffolding/root/
     execute: async () => {
       const { DocGenerator } = await import('./utils/doc-generator');
