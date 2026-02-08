@@ -460,7 +460,7 @@ Logger.command('cmd')        // $ Gray
 ## Testing
 
 - **21 test suites** (18 unit + 3 integration)
-- **137 tests** passing
+- **96 tests** passing
 - **95%+ coverage** on core components
 - **100% coverage** on critical paths
 
