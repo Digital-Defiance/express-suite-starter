@@ -1469,7 +1469,7 @@ export {};
     description: getStarterTranslation(
       StarterStringKey.STEP_GENERATE_DOCUMENTATION,
     ),
-    skip: () => !enableDocGeneration || dryRun,
+    skip: () => true, // Disabled - README now comes from scaffolding/root/
     execute: async () => {
       const { DocGenerator } = await import('./utils/doc-generator');
       DocGenerator.generateProjectDocs(context);
