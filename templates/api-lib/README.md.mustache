@@ -4,20 +4,88 @@ API business logic library for {{WORKSPACE_NAME}}.
 
 ## Purpose
 
-Business logic, services, and models for the API layer.
+Business logic, services, models, and decorator-based API controllers for the API layer.
 
 ## Structure
 
 ```
 src/
-├── services/       # Business logic services
-├── models/         # Data models
-├── validators/     # Input validation
-└── utils/          # API utilities
+├── lib/
+│   ├── routers/        # Decorator-based API controllers
+│   ├── services/       # Business logic services
+│   ├── models/         # Mongoose data models
+│   ├── documents/      # TypeScript document interfaces
+│   ├── schemas/        # Mongoose schemas
+│   ├── interfaces/     # TypeScript interfaces
+│   ├── application.ts  # Main application class
+│   ├── environment.ts  # Environment configuration
+│   └── constants.ts    # Application constants
+└── index.ts            # Public exports
+```
+
+## Decorator-Based Controllers
+
+This library uses the decorator-based approach from `@digitaldefiance/node-express-suite` for defining API routes. This provides:
+
+- **Type-safe routing** with `@Get`, `@Post`, `@Put`, `@Delete`, `@Patch` decorators
+- **Automatic OpenAPI documentation** with `@ApiTags`, `@ApiSummary`, `@Returns` decorators
+- **Built-in authentication** with `@RequireAuth`, `@Public` decorators
+- **Request validation** with `@ValidateBody`, `@ValidateParams`, `@ValidateQuery` decorators
+- **Parameter injection** with `@Param`, `@Body`, `@Query`, `@Header` decorators
+
+### Example Controller
+
+```typescript
+import {
+  DecoratorBaseController,
+  ApiController,
+  Get,
+  Post,
+  RequireAuth,
+  Public,
+  ApiTags,
+  ApiSummary,
+  Returns,
+  Param,
+  Body,
+  ValidateBody,
+} from '@digitaldefiance/node-express-suite';
+import { z } from 'zod';
+
+const CreateItemSchema = z.object({
+  name: z.string().min(1).max(100),
+  description: z.string().optional(),
+});
+
+@ApiTags('Items')
+@ApiController('/api/items', { description: 'Item management endpoints' })
+@RequireAuth()
+export class ItemController extends DecoratorBaseController {
+  constructor(app: IApplication) {
+    super(app);
+  }
+
+  @Public()
+  @ApiSummary('List all items')
+  @Returns(200, 'ItemList')
+  @Get('/')
+  async listItems() {
+    return { items: [] };
+  }
+
+  @ValidateBody(CreateItemSchema)
+  @ApiSummary('Create a new item')
+  @Returns(201, 'Item')
+  @Returns(400, 'ValidationError')
+  @Post('/')
+  async createItem(@Body() data: z.infer<typeof CreateItemSchema>) {
+    return { id: 'new-id', ...data };
+  }
+}
 ```
 
 ## Usage
 
 ```typescript
-import { UserService } from '{{NAMESPACE_ROOT}}/api-lib';
+import { App, Environment, Constants } from '{{NAMESPACE_ROOT}}/api-lib';
 ```

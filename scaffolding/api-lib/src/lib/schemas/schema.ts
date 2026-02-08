@@ -1,4 +1,4 @@
-import { Connection } from '@digitaldefiance/mongoose-types';
+import { Connection, Types } from '@digitaldefiance/mongoose-types';
 import { BaseModelName, createEmailTokenSchema, createMnemonicSchema, createRoleSchema, createUsedDirectLoginTokenSchema, createUserRoleSchema, MnemonicSchema, RoleSchema, SchemaCollection, SchemaMap, UsedDirectLoginTokenSchema, UserRoleSchema } from '@digitaldefiance/node-express-suite';
 import EmailTokenModel from '../models/email-token';
 import MnemonicModel from '../models/mnemonic';
@@ -11,7 +11,7 @@ import { ModelDocMap } from '../shared-types';
 import { IConstants } from '../interfaces/constants';
 import { Constants } from '../constants';
 
-export function getSchemaMap(connection: Connection, constants: IConstants = Constants): SchemaMap<ModelDocMap> {
+export function getSchemaMap(connection: Connection, constants: IConstants = Constants): SchemaMap<Types.ObjectId, ModelDocMap> {
   return {
     EmailToken: {
       collection: SchemaCollection.EmailToken,

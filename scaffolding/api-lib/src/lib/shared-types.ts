@@ -48,7 +48,7 @@ export type SchemaMap = {
   /**
    * For each model name, contains the corresponding schema and model
    */
-  [K in keyof ModelDocMap]: ISchema<ModelDocMap[K]>;
+  [K in keyof ModelDocMap]: ISchema<Types.ObjectId, ModelDocMap[K]>;
 };
 
 export type ApiRequestHandler<T extends ApiResponse> = (

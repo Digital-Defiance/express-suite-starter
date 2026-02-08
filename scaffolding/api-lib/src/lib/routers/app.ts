@@ -3,9 +3,10 @@ import { Request, Response, NextFunction } from 'express';
 import { Environment } from '../environment';
 import { IConstants } from '../interfaces/constants';
 import { Constants } from '../constants';
+import { Types } from '@digitaldefiance/mongoose-types';
 
-export class AppRouter extends BaseAppRouter<IApplication> {
-  constructor(apiRouter: BaseRouter<IApplication>) {
+export class AppRouter extends BaseAppRouter<Types.ObjectId, IApplication<Types.ObjectId>> {
+  constructor(apiRouter: BaseRouter<Types.ObjectId, IApplication<Types.ObjectId>>) {
     super(apiRouter);
   }
 
@@ -17,7 +18,7 @@ export class AppRouter extends BaseAppRouter<IApplication> {
     const jsFile = this.getAssetFilename(this.assetsDir, /^index-.*\.js$/);
     const cssFile = this.getAssetFilename(this.assetsDir, /^index-.*\.css$/);
     const constants = this.application.constants as IConstants;
-    const environment = this.application.environment as Environment;
+    const environment = this.application.environment as Environment<Types.ObjectId>;
     const SiteName = constants.Site;
     const locals = {
       ...this.getBaseViewLocals(req, res),
