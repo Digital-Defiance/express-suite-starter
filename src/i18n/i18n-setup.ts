@@ -1,14 +1,12 @@
 /**
  * Express Suite Starter i18n Setup
- * Uses I18nBuilder pattern for proper engine initialization.
+ * Uses createI18nSetup factory for proper engine initialization.
  * Supports translateStringKey for direct branded enum translation.
  */
 import {
-  I18nBuilder,
+  createI18nSetup,
   I18nEngine,
   LanguageCodes,
-  createCoreComponentRegistration,
-  getCoreLanguageDefinitions,
 } from '@digitaldefiance/i18n-lib';
 import type { ComponentConfig, EngineConfig } from '@digitaldefiance/i18n-lib';
 import { StarterStringKey } from './starter-string-key';
@@ -43,62 +41,24 @@ export function createStarterComponentConfig(): ComponentConfig {
 }
 
 let _starterEngine: I18nEngine | undefined;
-let _componentRegistered = false;
-
-/**
- * Register the engine with all required components using I18nBuilder
- */
-function registerEngine(config?: EngineConfig): I18nEngine {
-  const newEngine = I18nBuilder.create()
-    .withLanguages(getCoreLanguageDefinitions())
-    .withDefaultLanguage(config?.defaultLanguage ?? LanguageCodes.EN_US)
-    .withInstanceKey('default')
-    .withStringKeyEnum(StarterStringKeys)
-    .build();
-
-  // Register Core i18n component (required for error messages)
-  const coreReg = createCoreComponentRegistration();
-  newEngine.register({
-    id: coreReg.component.id,
-    strings: coreReg.strings as Record<string, Record<string, string>>,
-  });
-
-  // Register Starter component
-  const starterConfig = createStarterComponentConfig();
-  const result = newEngine.registerIfNotExists(starterConfig);
-
-  if (!result.isValid && result.errors.length > 0) {
-    console.warn(
-      `Starter component has ${result.errors.length} errors`,
-      result.errors.slice(0, 5),
-    );
-  }
-
-  return newEngine;
-}
 
 /**
  * Get or create the Starter i18n engine
  */
 export function getStarterI18nEngine(config?: EngineConfig): I18nEngine {
-  if (I18nEngine.hasInstance('default')) {
-    _starterEngine = I18nEngine.getInstance('default');
-
-    // Ensure our component is registered on existing instance
-    if (!_componentRegistered) {
-      _starterEngine.registerIfNotExists(createStarterComponentConfig());
-
-      // Register branded string key enum for translateStringKey support
-      if (!_starterEngine.hasStringKeyEnum(StarterStringKeys)) {
-        _starterEngine.registerStringKeyEnum(StarterStringKeys);
-      }
-
-      _componentRegistered = true;
-    }
-  } else if (!_starterEngine) {
-    _starterEngine = registerEngine(config);
-    _componentRegistered = true;
+  if (_starterEngine && I18nEngine.hasInstance('default')) {
+    return _starterEngine;
   }
+
+  const result = createI18nSetup({
+    componentId: StarterComponentId,
+    stringKeyEnum: StarterStringKeys,
+    strings: createStarterComponentConfig().strings,
+    aliases: ['StarterStringKey'],
+    defaultLanguage: config?.defaultLanguage ?? LanguageCodes.EN_US,
+  });
+
+  _starterEngine = result.engine as I18nEngine;
   return _starterEngine;
 }
 
@@ -116,14 +76,11 @@ export const starterI18nEngine = new Proxy({} as I18nEngine, {
  */
 export function resetStarterI18nEngine(): void {
   _starterEngine = undefined;
-  _componentRegistered = false;
 }
 
 /**
  * Helper to translate Starter strings using translateStringKey.
  * Uses the branded enum for automatic component ID resolution.
- * 
- * @param stringKey - Can be either the plain StarterStringKey enum or StarterStringKeyValue
  */
 export function getStarterTranslation(
   stringKey: StarterStringKey | StarterStringKeyValue,
@@ -139,8 +96,6 @@ export function getStarterTranslation(
 
 /**
  * Safe translation with fallback using safeTranslateStringKey.
- * 
- * @param stringKey - Can be either the plain StarterStringKey enum or StarterStringKeyValue
  */
 export function safeStarterTranslation(
   stringKey: StarterStringKey | StarterStringKeyValue,
