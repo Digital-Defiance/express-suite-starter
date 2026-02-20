@@ -1,5 +1,7 @@
 import {
   BaseApplication,
+  MongoApplicationBase,
+  MongooseDocumentStore,
   DatabaseInitializationService,
   Environment,
   IServerInitResult,
@@ -83,7 +85,14 @@ async function main() {
     '.env',
   );
   const env: Environment = new Environment(envDir, true);
-  const app = new BaseApplication(env, getSchemaMap, DatabaseInitializationService.initUserDb, DatabaseInitializationService.serverInitResultHash, AppConstants);
+  const store = new MongooseDocumentStore(
+    getSchemaMap,
+    DatabaseInitializationService.initUserDb,
+    DatabaseInitializationService.serverInitResultHash,
+    env,
+    AppConstants,
+  );
+  const app = new MongoApplicationBase(env, store, AppConstants);
   context.languageContextSpace = 'admin';
   const shouldDropDatabase = process.argv.includes('--drop');
   debugLog(

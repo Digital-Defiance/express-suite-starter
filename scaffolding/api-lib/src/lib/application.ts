@@ -1,6 +1,6 @@
 import {
   Application,
-  BaseApplication,
+  MongoApplicationBase,
   IFailableResult,
   IServerInitResult,
   DummyEmailService,
@@ -56,7 +56,7 @@ export class App<
   constructor(
     environment: Environment<Types.ObjectId>,
     databaseInitFunction: (
-      application: BaseApplication<Types.ObjectId, ModelDocMap, TInitResults>,
+      application: MongoApplicationBase<Types.ObjectId, ModelDocMap, TInitResults>,
     ) => Promise<IFailableResult<TInitResults>>,
     initResultHashFunction: (initResults: TInitResults) => string,
     constants: TConstants = Constants as TConstants,
