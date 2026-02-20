@@ -3,8 +3,8 @@ import { createExpressConstants } from '@digitaldefiance/node-express-suite';
 
 export const Constants: IConstants = {
   ...createExpressConstants('{{hostname}}', '{{hostname}}'),
-  Site: '{{workspaceName}}' as const,
-  SiteTagline: 'Your tagline here' as const,
-  SiteDescription: 'Your description here' as const,
+  Site: '{{siteTitle}}' as const,
+  SiteTagline: '{{siteTagline}}' as const,
+  SiteDescription: '{{siteDescription}}' as const,
   PasswordRegex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
 };
