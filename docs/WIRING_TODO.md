@@ -11,7 +11,7 @@
 - [ ] Update React environment configs with hostname
 
 ### 2. API Setup (api-lib)
-- [ ] Create ApplicationConcrete similar to node-express-suite
+- [ ] Create MongoApplicationConcrete similar to node-express-suite
 - [ ] Set up constants (similar to LocalhostConstants)
 - [ ] Create ApiRouter with all auth endpoints
 - [ ] Create AppRouter
@@ -70,7 +70,7 @@ Need to create page components that wire forms to API:
 
 ### Phase 1: API Foundation
 1. Create constants file
-2. Set up ApplicationConcrete
+2. Set up MongoApplicationConcrete
 3. Create basic routers (ApiRouter, AppRouter)
 4. Implement auth controllers
 

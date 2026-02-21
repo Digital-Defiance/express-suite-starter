@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "2.4.17",
+  "version": "3.0.0",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -42,6 +42,7 @@
     "@digitaldefiance/express-suite-test-utils": "npm:@digitaldefiance/express-suite-test-utils@1.1.1",
     "@nx/js": "22.0.2",
     "@nx/workspace": "22.0.2",
+    "@playwright/test": "^1.52.0",
     "@types/jest": "^29.5.0",
     "@types/mustache": "^4.2.5",
     "@types/node": "^20.0.0",

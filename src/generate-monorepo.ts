@@ -27,6 +27,7 @@ import {
 } from './i18n';
 import { TranslatableGenericError } from '@digitaldefiance/i18n-lib';
 import { LanguageCodes } from '@digitaldefiance/i18n-lib';
+import { PostGenerationValidator } from './core/validators/post-generation-validator';
 
 async function main() {
   printBanner();
@@ -1692,9 +1693,6 @@ export {};
     ),
     skip: () => dryRun,
     execute: async () => {
-      const { PostGenerationValidator } = await import(
-        './core/validators/post-generation-validator'
-      );
       const report = await PostGenerationValidator.validate(context);
       PostGenerationValidator.printReport(report);
 

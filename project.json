@@ -1,0 +1,16 @@
+{
+  "name": "digitaldefiance-express-suite-starter",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/digitaldefiance-express-suite-starter/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx playwright test --config=e2e/playwright.config.ts",
+        "cwd": "packages/digitaldefiance-express-suite-starter"
+      }
+    }
+  }
+}

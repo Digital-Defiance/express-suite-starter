@@ -1,12 +1,13 @@
 import {
   BaseApplication,
-  MongoApplicationBase,
+  MongoDatabasePlugin,
   MongooseDocumentStore,
   DatabaseInitializationService,
   Environment,
   IServerInitResult,
   getSchemaMap,
 } from '@digitaldefiance/node-express-suite';
+import type { IMongoApplication } from '@digitaldefiance/node-express-suite';
 
 // Simple debugLog implementation
 function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
@@ -85,14 +86,29 @@ async function main() {
     '.env',
   );
   const env: Environment = new Environment(envDir, true);
-  const store = new MongooseDocumentStore(
-    getSchemaMap,
-    DatabaseInitializationService.initUserDb,
-    DatabaseInitializationService.serverInitResultHash,
-    env,
-    AppConstants,
-  );
-  const app = new MongoApplicationBase(env, store, AppConstants);
+
+  // Create MongoDatabasePlugin for database lifecycle management
+  const mongoPlugin = new MongoDatabasePlugin({
+    schemaMapFactory: getSchemaMap,
+    databaseInitFunction: DatabaseInitializationService.initUserDb,
+    initResultHashFunction: DatabaseInitializationService.serverInitResultHash,
+    environment: env,
+    constants: AppConstants,
+  });
+
+  // Create a no-op IDatabase since MongoDatabasePlugin manages its own connection
+  const noOpDb = {
+    collection() { throw new Error('Use MongoDatabasePlugin'); },
+    startSession() { throw new Error('Use MongoDatabasePlugin'); },
+    withTransaction() { throw new Error('Use MongoDatabasePlugin'); },
+    listCollections() { return []; },
+    async dropCollection() { return false; },
+    async connect() { /* no-op */ },
+    async disconnect() { /* no-op */ },
+    isConnected() { return false; },
+  };
+
+  const app = new BaseApplication(env, noOpDb as never, AppConstants);
   context.languageContextSpace = 'admin';
   const shouldDropDatabase = process.argv.includes('--drop');
   debugLog(
@@ -107,10 +123,15 @@ async function main() {
     }),
   );
   let exitCode = 1;
-  await app.start();
+
+  // Connect the plugin
+  await mongoPlugin.connect();
+  await mongoPlugin.init(app as never);
+  app.authProvider = mongoPlugin.authenticationProvider;
+
   if (shouldDropDatabase) {
     const result = await DatabaseInitializationService.dropDatabase(
-      app.db.connection,
+      mongoPlugin.db.connection,
     );
     if (result) {
       debugLog(
@@ -130,7 +151,7 @@ async function main() {
         'error',
         getSuiteCoreTranslation(SuiteCoreStringKey.Admin_Error_FailedToDropDatabase),
       );
-      await app.stop();
+      await mongoPlugin.disconnect();
       process.exit(2);
     }
   }
@@ -140,7 +161,7 @@ async function main() {
     getSuiteCoreTranslation(SuiteCoreStringKey.Admin_StartingDbInitialization),
   );
   const result: IFailableResult<IServerInitResult> =
-    await DatabaseInitializationService.initUserDb(app);
+    await DatabaseInitializationService.initUserDb(app as unknown as IMongoApplication);
   if (result.success && result.data) {
     debugLog(
       app.environment.debug,
@@ -183,7 +204,7 @@ async function main() {
     );
     exitCode++;
   }
-  await app.stop();
+  await mongoPlugin.disconnect();
   process.exit(exitCode);
 }
 
