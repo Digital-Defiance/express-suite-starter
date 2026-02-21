@@ -1,13 +1,11 @@
 import {
   BaseApplication,
   MongoDatabasePlugin,
-  MongooseDocumentStore,
   DatabaseInitializationService,
   Environment,
   IServerInitResult,
   getSchemaMap,
 } from '@digitaldefiance/node-express-suite';
-import type { IMongoApplication } from '@digitaldefiance/node-express-suite';
 
 // Simple debugLog implementation
 function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
@@ -160,8 +158,14 @@ async function main() {
     'log',
     getSuiteCoreTranslation(SuiteCoreStringKey.Admin_StartingDbInitialization),
   );
+  const mongoApp = mongoPlugin.mongoApplication;
+  if (!mongoApp) {
+    console.error('MongoPlugin was not initialized — mongoApplication is undefined');
+    await mongoPlugin.disconnect();
+    process.exit(2);
+  }
   const result: IFailableResult<IServerInitResult> =
-    await DatabaseInitializationService.initUserDb(app as unknown as IMongoApplication);
+    await DatabaseInitializationService.initUserDb(mongoApp);
   if (result.success && result.data) {
     debugLog(
       app.environment.debug,
