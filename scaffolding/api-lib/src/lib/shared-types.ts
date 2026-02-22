@@ -5,7 +5,7 @@ import { Brand } from 'ts-brand';
 import type { IUserDocument } from './documents/user';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 import { IKeyPairBufferWithUnEncryptedPrivateKey, ISigningKeyPrivateKeyInfo, ISimplePublicKeyOnly, ISimpleKeyPairBuffer, ISimplePublicKeyOnlyBuffer } from '@digitaldefiance/node-ecies-lib'
-import {IApiErrorResponse, IApiMessageResponse, ISchema, IStatusCodeResponse, IApiExpressValidationErrorResponse, IApiMongoValidationErrorResponse, IUserRoleDocument, IUsedDirectLoginTokenDocument, IRoleDocument, IMnemonicDocument, IEmailTokenDocument } from '@digitaldefiance/node-express-suite';
+import {IApiErrorResponse, IApiMessageResponse, ISchema, IStatusCodeResponse, IApiExpressValidationErrorResponse, IApiMongoValidationErrorResponse, UserRoleDocument, UsedDirectLoginTokenDocument, RoleDocument, MnemonicDocument, EmailTokenDocument } from '@digitaldefiance/node-express-suite';
 
 export type DefaultBackendIdType = Types.ObjectId;
 
@@ -36,12 +36,12 @@ export type ValidatedBody<T extends string> = {
  * Schema map interface
  */
 export type ModelDocMap = {
-  EmailToken: IEmailTokenDocument;
-  Mnemonic: IMnemonicDocument;
-  Role: IRoleDocument;
-  UsedDirectLoginToken: IUsedDirectLoginTokenDocument;
+  EmailToken: EmailTokenDocument;
+  Mnemonic: MnemonicDocument;
+  Role: RoleDocument;
+  UsedDirectLoginToken: UsedDirectLoginTokenDocument;
   User: IUserDocument;
-  UserRole: IUserRoleDocument;
+  UserRole: UserRoleDocument;
 };
 
 export type SchemaMap = {

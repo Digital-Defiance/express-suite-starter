@@ -1,5 +1,5 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { IApplication, IBaseDocument } from '@digitaldefiance/node-express-suite';
+import { IApplication, BaseDocument } from '@digitaldefiance/node-express-suite';
 
 // Simple debugLog implementation
 function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
