@@ -1,6 +1,6 @@
 # Node Express Suite Starter
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<img src="assets/albatross.svg" style="height: 200px;" />
 
 Automated generator for MERN stack monorepos using [@digitaldefiance/node-express-suite](https://www.npmjs.com/package/@digitaldefiance/node-express-suite).
 
