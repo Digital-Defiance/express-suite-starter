@@ -6,7 +6,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import '../styles.scss';
 import SplashPage from './pages/SplashPage';
 import { createAppTheme } from './theme.tsx';
-import { AppThemeProvider, DashboardPage, MenuProvider, I18nProvider as TranslationProvider, AuthProvider, SuiteConfigProvider, ApiAccess, ChangePasswordFormWrapper, VerifyEmailPageWrapper, RegisterFormWrapper, UserSettingsFormWrapper, LogoutPageWrapper, LoginFormWrapper, PrivateRoute, UnAuthRoute, TopMenu, TranslatedTitle, BackupCodeLoginWrapper, BackupCodesWrapper } from '@digitaldefiance/express-suite-react-components';
+import { AppThemeProvider, DashboardPage, MenuProvider, I18nProvider as TranslationProvider, AuthProvider, SuiteConfigProvider, ApiAccess, ChangePasswordFormWrapper, VerifyEmailPageWrapper, RegisterFormWrapper, UserSettingsFormWrapper, LogoutPageWrapper, LoginFormWrapper, PrivateRoute, UnAuthRoute, TopMenu, TranslatedTitle, BackupCodeLoginWrapper, BackupCodesWrapper, ForgotPasswordFormWrapper, ResetPasswordFormWrapper } from '@digitaldefiance/express-suite-react-components';
 import { environment } from '../environments/environment';
 import { {{WorkspaceName}}StringKey, ComponentId, i18nEngine } from '{{namespace}}/lib';
 import AlbatrossLogo from '../assets/albatross.svg';
@@ -94,6 +94,22 @@ const InnerApp: FC = () => {
               <PrivateRoute>
                 <ApiAccess />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <UnAuthRoute>
+                <ForgotPasswordFormWrapper />
+              </UnAuthRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <UnAuthRoute>
+                <ResetPasswordFormWrapper />
+              </UnAuthRoute>
             }
           />
           <Route path="/backup-code" element={<BackupCodeLoginWrapper />} />
