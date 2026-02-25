@@ -520,6 +520,191 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 4.19.11
+
+- Version sync release (no substantive changes)
+
+### Version 3.0.3
+
+- Add Albatross branding assets (ico, jpg, png, svg)
+- Enhance README with Express Suite details and images
+- Update scaffolded React app to use Albatross branding
+
+### Version 3.0.2
+
+- Update scaffolded types to use renamed document interfaces from node-express-suite (e.g. `IBaseDocument` → `BaseDocument`, `IUserRoleDocument` → `UserRoleDocument`)
+
+### Version 3.0.1
+
+- Fix inituserdb to use `mongoPlugin.mongoApplication` with null check instead of unsafe cast
+
+### Version 3.0.0
+
+- Add programmatic (headless) monorepo generation API (`ProgrammaticGenerator`)
+- Add `src/index.ts` public entry point for library usage
+- Add Playwright e2e tests and `project.json` with e2e target
+- Refactor scaffolded `Application` class to use `MongoApplicationBase` and `MongoDatabasePlugin`
+- Update scaffolded inituserdb to use `MongooseDocumentStore` and `MongoApplicationBase`
+
+### Version 2.4.17
+
+- Use mustache template variables for site title, tagline, and description in scaffolded constants
+
+### Version 2.4.16
+
+- Dependency updates
+
+### Version 2.4.15
+
+- Refactor scaffolded `Application` to use `MongoApplicationBase`
+- Update scaffolded inituserdb to use `MongooseDocumentStore`
+
+### Version 2.4.14
+
+- Extend `IConstants` with `ISuiteCoreI18nConstants` for type-safe i18n template variables
+
+### Version 2.4.13
+
+- Dependency updates
+
+### Version 2.4.12 - 2.4.11
+
+- Dependency updates
+
+### Version 2.4.10
+
+- Simplify scaffolded i18n setup to use `createI18nSetup` helper
+- Remove verbose manual i18n engine configuration from scaffolded lib and starter
+
+### Version 2.4.9
+
+- Add scaffolded `README.md` template for generated projects
+
+### Version 2.4.8
+
+- Update test count in README (137 → 96)
+
+### Version 2.4.7
+
+- Refactor scaffolded `Application` to use library's `ApiRouter` with built-in `UserController` auth routes
+- Expand scaffolded API router with additional route handling and documentation
+- Enhance scaffolded api-lib README template
+
+### Version 2.4.6
+
+- Dependency updates
+
+### Version 2.4.5
+
+- Enhance i18n setup with `translateStringKey` support and `safeTranslate` fallback function
+- Register branded string key enum for direct translation support in scaffolded lib
+- Accept `StringKeyValue` union type in translate functions
+
+### Version 2.4.4
+
+- Migrate scaffolded string keys from enum to branded enum using `createI18nStringKeys`
+- Update scaffolded i18n setup to use `BrandedEnumValue` types
+- Update scaffolded strings collection to use `BrandedMasterStringsCollection`
+
+### Version 2.4.3
+
+- Dependency updates
+
+### Version 2.4.2
+
+- Fix jest config for test setup
+
+### Version 2.4.0
+
+- Add branded starter string key module (`branded-starter-string-key.ts`)
+- Update scaffolded React app to use `SuiteCoreStringKeyValue` type
+- Pin `@noble/curves`, `@noble/hashes`, `@scure/bip32`, `@scure/bip39` resolutions
+- Remove yarn.lock from tracked files
+
+### Version 2.3.28
+
+- Add post-generation step in `generate-monorepo.ts`
+
+### Version 2.3.27
+
+- Remove `@digitaldefiance/express-suite-react-components` dependency
+
+### Version 2.3.26
+
+- Dependency updates
+
+### Version 2.3.25
+
+- Improve scaffolded user document generics (use `PlatformID`, named type params)
+- Add `PlatformID` generic to scaffolded `Environment` and `IEnvironment`
+- Update scaffolded `ApiRouter` generics with `CoreLanguageCode` type param
+
+### Version 2.3.24
+
+- Dependency updates
+
+### Version 2.3.22 - 2.3.23
+
+- Dependency updates
+
+### Version 2.3.21
+
+- Dependency updates
+
+### Version 2.3.20 - 2.3.18
+
+- Dependency updates
+
+### Version 2.3.17 - 2.3.15
+
+- Dependency updates
+
+### Version 2.3.14
+
+- Add git initialization step to `generate-monorepo.ts`
+- Add i18n strings for git init prompts across all languages
+
+### Version 2.3.13
+
+- Dependency updates
+
+### Version 2.3.12
+
+- Add global `lru-cache` mock in test setup
+- Update test tsconfig paths
+
+### Version 2.3.11
+
+- Add ESLint config (`eslint.config.mjs`) and Jest config
+- Add Dockerfile, `.dockerignore`, and ECR deploy script scaffolding
+- Add `tsconfig.test.json`
+- Fix diff-viewer and doc-generator imports
+
+### Version 2.3.10
+
+- Improve i18n translations for French, Japanese, Ukrainian, and Chinese (formatting and completeness)
+
+### Version 2.3.9
+
+- Update `createUserSchema` call signature (additional parameter)
+- Refactor scaffolded API/inituserdb serve targets to use `nx:run-commands` instead of `@nx/js:node`
+- Mark `@digitaldefiance/*` packages as external in esbuild options
+
+### Version 2.3.8
+
+- Refactor `generate-monorepo.ts` build targets: add esbuild external packages, production yarn install, and `prune-lockfile`/`copy-workspace-modules` dependencies
+
+### Version 2.3.4
+
+- Fix preset to use non-workspace package reference for test-utils
+- Add `typeRoots` and `noImplicitOverride` to tsconfig
+
+### Version 2.3.3
+
+- Major refactor of `generate-monorepo.ts` (formatting, structure, i18n integration)
+- Add publish script
+- Update project generator tests
+
 ### Version 2.3.1
 
 - Update react-components, test-utils
