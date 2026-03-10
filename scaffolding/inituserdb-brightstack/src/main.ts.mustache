@@ -1,6 +1,5 @@
 import {
   brightchainDatabaseInit,
-  BrightDbApplication,
   BrightDbEnvironment,
 } from '@brightchain/node-express-suite';
 import { Constants as AppConstants } from '{{namespace}}/api-lib';
@@ -77,8 +76,7 @@ async function main() {
   }
 
   const envDir = join(
-    BrightDbApplication.distDir,
-    '{{prefix}}-inituserdb',
+    __dirname,
     '.env',
   );
   const env = new BrightDbEnvironment(envDir, true);
@@ -153,8 +151,8 @@ async function main() {
     // Handle --setEnv flag to write credentials to .env file
     if (process.argv.includes('--setEnv')) {
       const apiEnvPath = join(
-        BrightDbApplication.distDir,
-        '..', // Go up from dist
+        __dirname,
+        '..', // Go up from this project's dist dir
         '{{prefix}}-api',
         '.env',
       );

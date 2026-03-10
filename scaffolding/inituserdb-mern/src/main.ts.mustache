@@ -79,8 +79,7 @@ async function main() {
   }
 
   const envDir = join(
-    BaseApplication.distDir,
-    '{{prefix}}-inituserdb',
+    __dirname,
     '.env',
   );
   const env: Environment = new Environment(envDir, true);
@@ -180,8 +179,8 @@ async function main() {
       // Handle --setEnv flag to write credentials to .env file
       if (process.argv.includes('--setEnv')) {
         const apiEnvPath = join(
-          BaseApplication.distDir,
-          '..', // Go up from dist
+          __dirname,
+          '..', // Go up from this project's dist dir
           '{{prefix}}-api',
           '.env',
         );

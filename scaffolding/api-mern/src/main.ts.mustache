@@ -4,7 +4,7 @@ import { GlobalActiveContext, CoreLanguageCode, IActiveContext } from '@digitald
 import { join } from 'path';
 
 const env: Environment = new Environment(
-  join(App.distDir, '{{prefix}}-api', '.env'),
+  join(__dirname, '.env'),
 );
 const app: App = new App(
   env,

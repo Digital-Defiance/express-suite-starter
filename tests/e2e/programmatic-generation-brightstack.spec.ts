@@ -267,12 +267,12 @@ describe('BrightStack Programmatic Generation E2E', () => {
       mainContent = fs.readFileSync(mainPath, 'utf-8');
     });
 
-    it('imports from @brightchain/node-express-suite', () => {
-      expect(mainContent).toContain('@brightchain/node-express-suite');
+    it('uses __dirname for .env path resolution', () => {
+      expect(mainContent).toContain("join(__dirname, '.env')");
     });
 
-    it('imports BrightDbApplication', () => {
-      expect(mainContent).toContain('BrightDbApplication');
+    it('does not use distDir for .env path (avoids doubled path)', () => {
+      expect(mainContent).not.toContain('distDir');
     });
   });
 
