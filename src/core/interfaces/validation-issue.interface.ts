@@ -1,6 +1,6 @@
 export interface ValidationIssue {
   type: 'error' | 'warning' | 'info';
-  category: 'lint' | 'dependency' | 'security' | 'bestPractice';
+  category: 'lint' | 'dependency' | 'security' | 'bestPractice' | 'stackMismatch';
   message: string;
   file?: string;
   line?: number;

@@ -69,6 +69,10 @@ export interface ProgrammaticOptions {
   installPlaywright?: boolean;
   /** Whether to skip system check */
   skipSystemCheck?: boolean;
+  /** BrightStack block store path (for disk-backed storage) */
+  blockStorePath?: string;
+  /** BrightStack member pool name */
+  memberPoolName?: string;
 }
 
 /**
@@ -99,6 +103,8 @@ export async function generateMonorepo(
     pushToRemote = false,
     installPlaywright = false,
     skipSystemCheck: _skipSystemCheck = true,
+    blockStorePath = '',
+    memberPoolName = 'BrightChain',
   } = options;
 
   checkAndUseNode();
@@ -113,6 +119,10 @@ export async function generateMonorepo(
       `Invalid configuration: ${validation.errors.join(', ')}`,
     );
   }
+
+  // Attach blockStorePath and memberPoolName to config for downstream use
+  (config as any).blockStorePath = blockStorePath;
+  (config as any).memberPoolName = memberPoolName;
 
   const { workspace, projects } = config;
   const monorepoPath = path.join(workspace.parentDir, workspace.name);
@@ -667,6 +677,8 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           .replace(/\t/g, '\\t');
       };
 
+      const resolvedStackType = config.stackType ?? 'mern';
+
       const scaffoldingVars: Record<string, string | boolean> = {
         workspaceName,
         WorkspaceName:
@@ -689,6 +701,14 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
         isZhCn: language === LanguageCodes.ZH_CN,
         isJa: language === LanguageCodes.JA,
         isUk: language === LanguageCodes.UK,
+        // Stack-specific template variables
+        stackType: resolvedStackType,
+        isMern: resolvedStackType === 'mern',
+        isBrightStack: resolvedStackType === 'brightstack',
+        blockStorePath: (config as any).blockStorePath ?? '',
+        useMemoryDocstore: useInMemoryDb ? 'true' : '',
+        memberPoolName: (config as any).memberPoolName ?? 'BrightChain',
+        devDatabase: useInMemoryDb ? devDatabaseName : '',
       };
 
       // Copy root scaffolding
@@ -724,8 +744,13 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
       }
 
       // Copy project-specific scaffolding
+      // Stack-dependent project types use suffixed directories (e.g., api-mern, api-lib-mern, inituserdb-mern)
+      const stackDependentTypes = ['api', 'api-lib', 'inituserdb'];
       projects.forEach((project) => {
-        const projectSrc = path.join(scaffoldingDir, project.type);
+        const scaffoldingDirName = stackDependentTypes.includes(project.type)
+          ? `${project.type}-${resolvedStackType}`
+          : project.type;
+        const projectSrc = path.join(scaffoldingDir, scaffoldingDirName);
         if (fs.existsSync(projectSrc)) {
           copyDir(
             projectSrc,
@@ -907,6 +932,9 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
         jwtSecret,
         mnemonicEncryptionKey,
         mnemonicHmacSecret,
+        stackType: config.stackType,
+        blockStorePath: (config as any).blockStorePath,
+        memberPoolName: (config as any).memberPoolName,
       });
     },
   });
@@ -1254,6 +1282,9 @@ function setupEnvironmentFiles(params: {
   jwtSecret: string;
   mnemonicEncryptionKey: string;
   mnemonicHmacSecret: string;
+  stackType?: 'mern' | 'brightstack';
+  blockStorePath?: string;
+  memberPoolName?: string;
 }): void {
   const {
     projects,
@@ -1266,7 +1297,12 @@ function setupEnvironmentFiles(params: {
     jwtSecret,
     mnemonicEncryptionKey,
     mnemonicHmacSecret,
+    stackType: paramStackType,
+    blockStorePath,
+    memberPoolName,
   } = params;
+
+  const envStackType = paramStackType ?? 'mern';
 
   const apiProject = projects.find((p) => p.type === 'api');
   const initUserDbProject = projects.find((p) => p.type === 'inituserdb');
@@ -1317,26 +1353,46 @@ function setupEnvironmentFiles(params: {
         /MNEMONIC_HMAC_SECRET=.*/g,
         `MNEMONIC_HMAC_SECRET=${mnemonicHmacSecret}`,
       );
-      if (
-        devcontainerChoice === 'mongodb' ||
-        devcontainerChoice === 'mongodb-replicaset'
-      ) {
-        const mongoUri = buildMongoUri(workspaceName);
-        envContent = envContent.replace(
-          /MONGO_URI=.*/g,
-          `MONGO_URI=${mongoUri}`,
-        );
+
+      // BrightStack-specific env replacements
+      if (envStackType === 'brightstack') {
+        if (blockStorePath) {
+          envContent = envContent.replace(
+            /BRIGHTCHAIN_BLOCKSTORE_PATH=.*/g,
+            `BRIGHTCHAIN_BLOCKSTORE_PATH=${blockStorePath}`,
+          );
+        }
+        if (memberPoolName) {
+          envContent = envContent.replace(
+            /MEMBER_POOL_NAME=.*/g,
+            `MEMBER_POOL_NAME=${memberPoolName}`,
+          );
+        }
       }
-      if (devcontainerChoice === 'mongodb-replicaset') {
-        envContent = envContent.replace(
-          /MONGO_USE_TRANSACTIONS=.*/g,
-          'MONGO_USE_TRANSACTIONS=true',
-        );
-      } else {
-        envContent = envContent.replace(
-          /MONGO_USE_TRANSACTIONS=.*/g,
-          'MONGO_USE_TRANSACTIONS=false',
-        );
+
+      // MERN-specific env replacements (skip for BrightStack)
+      if (envStackType === 'mern') {
+        if (
+          devcontainerChoice === 'mongodb' ||
+          devcontainerChoice === 'mongodb-replicaset'
+        ) {
+          const mongoUri = buildMongoUri(workspaceName);
+          envContent = envContent.replace(
+            /MONGO_URI=.*/g,
+            `MONGO_URI=${mongoUri}`,
+          );
+        }
+        if (devcontainerChoice === 'mongodb-replicaset') {
+          envContent = envContent.replace(
+            /MONGO_USE_TRANSACTIONS=.*/g,
+            'MONGO_USE_TRANSACTIONS=true',
+          );
+        } else {
+          envContent = envContent.replace(
+            /MONGO_USE_TRANSACTIONS=.*/g,
+            'MONGO_USE_TRANSACTIONS=false',
+          );
+        }
       }
       fs.writeFileSync(envPath, envContent);
       Logger.info(`Created ${apiProject.name}/.env with secrets`);

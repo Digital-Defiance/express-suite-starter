@@ -255,6 +255,37 @@ export const deTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_SIMPLE]: 'Einfach (nur Node.js)',
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'Mit MongoDB',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]: 'Mit MongoDB Replica Set',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]:
+    'Wählen Sie Ihren Anwendungs-Stack',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    'Geben Sie den Block-Store-Pfad für persistenten Speicher ein',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]:
+    'Geben Sie den Mitglieder-Pool-Namen ein',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    'Ungültiger Block-Store-Pfad: darf nicht leer sein und muss gültige Dateisystemzeichen enthalten',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: 'Stack-Auswahl',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]:
+    'BrightStack Speicherkonfiguration',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]: 'Einfach (nur Node.js)',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    'Stack-Inkompatibilität in generierten Dateien erkannt',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    'Erforderliche BrightStack-Umgebungsvariablen fehlen',
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
+    'Stack-übergreifender Import erkannt',
+
   [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
     'Ubuntu/Debian: sudo apt-get install build-essential python3',
   [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:

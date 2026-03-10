@@ -216,4 +216,26 @@ export enum StarterStringKey {
   DEVCONTAINER_SIMPLE = 'devcontainer_simple',
   DEVCONTAINER_MONGODB = 'devcontainer_mongodb',
   DEVCONTAINER_MONGODB_REPLICASET = 'devcontainer_mongodbReplicaset',
+
+  // Stack Selection
+  PROMPT_STACK_TYPE = 'prompt_stackType',
+  STACK_MERN = 'stack_mern',
+  STACK_BRIGHTSTACK = 'stack_brightstack',
+
+  // BrightStack Storage
+  PROMPT_BLOCKSTORE_PATH = 'prompt_blockstorePath',
+  PROMPT_MEMBER_POOL_NAME = 'prompt_memberPoolName',
+  VALIDATION_INVALID_BLOCKSTORE_PATH = 'validation_invalidBlockstorePath',
+
+  // Section Headers (BrightStack)
+  SECTION_STACK_SELECTION = 'section_stackSelection',
+  SECTION_BRIGHTSTACK_STORAGE = 'section_brightstackStorage',
+
+  // DevContainer (BrightStack)
+  DEVCONTAINER_SIMPLE_BRIGHTSTACK = 'devcontainer_simpleBrightstack',
+
+  // Validation (BrightStack)
+  VALIDATION_STACK_MISMATCH = 'validation_stackMismatch',
+  VALIDATION_MISSING_BRIGHTSTACK_ENV = 'validation_missingBrightstackEnv',
+  VALIDATION_CROSS_STACK_IMPORT = 'validation_crossStackImport',
 }

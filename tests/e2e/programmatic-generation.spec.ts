@@ -125,7 +125,7 @@ describe('Programmatic Generation E2E', () => {
   describe('generated directory structure', () => {
     it('api-lib scaffolding produces expected directory structure', () => {
       const apiLibDir = path.join(tmpDir, 'api-lib');
-      renderScaffolding('api-lib', apiLibDir);
+      renderScaffolding('api-lib-mern', apiLibDir);
 
       // Verify key directories exist
       expect(fs.existsSync(path.join(apiLibDir, 'src'))).toBe(true);
@@ -146,14 +146,14 @@ describe('Programmatic Generation E2E', () => {
 
     it('api scaffolding produces expected files', () => {
       const apiDir = path.join(tmpDir, 'api');
-      renderScaffolding('api', apiDir);
+      renderScaffolding('api-mern', apiDir);
 
       expect(fs.existsSync(path.join(apiDir, 'src', 'main.ts'))).toBe(true);
     });
 
     it('inituserdb scaffolding produces expected files', () => {
       const initDir = path.join(tmpDir, 'inituserdb');
-      renderScaffolding('inituserdb', initDir);
+      renderScaffolding('inituserdb-mern', initDir);
 
       expect(fs.existsSync(path.join(initDir, 'src', 'main.ts'))).toBe(true);
     });
@@ -167,7 +167,7 @@ describe('Programmatic Generation E2E', () => {
     });
 
     it('generates all project types without errors', () => {
-      const projectTypes = ['api', 'api-lib', 'lib', 'inituserdb', 'react', 'react-lib'];
+      const projectTypes = ['api-mern', 'api-lib-mern', 'lib', 'inituserdb-mern', 'react', 'react-lib'];
       for (const projectType of projectTypes) {
         const destDir = path.join(tmpDir, projectType);
         expect(() => renderScaffolding(projectType, destDir)).not.toThrow();
@@ -182,7 +182,7 @@ describe('Programmatic Generation E2E', () => {
 
     beforeEach(() => {
       const apiLibDir = path.join(tmpDir, 'api-lib');
-      renderScaffolding('api-lib', apiLibDir);
+      renderScaffolding('api-lib-mern', apiLibDir);
       const appPath = path.join(apiLibDir, 'src', 'lib', 'application.ts');
       applicationContent = fs.readFileSync(appPath, 'utf-8');
     });
@@ -227,7 +227,7 @@ describe('Programmatic Generation E2E', () => {
 
     it('all scaffolded .ts files from api-lib are syntactically valid', () => {
       const apiLibDir = path.join(tmpDir, 'api-lib-syntax');
-      renderScaffolding('api-lib', apiLibDir);
+      renderScaffolding('api-lib-mern', apiLibDir);
 
       const tsFiles = collectFiles(apiLibDir, '.ts');
       expect(tsFiles.length).toBeGreaterThan(0);
@@ -240,7 +240,7 @@ describe('Programmatic Generation E2E', () => {
     });
 
     it('all scaffolded .ts files from all project types are syntactically valid', () => {
-      const projectTypes = ['api', 'api-lib', 'lib', 'inituserdb'];
+      const projectTypes = ['api-mern', 'api-lib-mern', 'lib', 'inituserdb-mern'];
       for (const projectType of projectTypes) {
         const destDir = path.join(tmpDir, `syntax-${projectType}`);
         renderScaffolding(projectType, destDir);
@@ -309,7 +309,7 @@ describe('Programmatic Generation E2E', () => {
               const apiLibDir = path.join(iterDir, 'api-lib');
               fs.mkdirSync(apiLibDir, { recursive: true });
               copyDir(
-                path.join(scaffoldingDir, 'api-lib'),
+                path.join(scaffoldingDir, 'api-lib-mern'),
                 apiLibDir,
                 vars,
                 'mustache',

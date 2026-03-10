@@ -256,4 +256,35 @@ export const frTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'Avec MongoDB',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
     'Avec Ensemble de Répliques MongoDB',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]:
+    'Sélectionnez votre stack applicatif',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    'Entrez le chemin du magasin de blocs pour le stockage persistant',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]:
+    'Entrez le nom du groupe de membres',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    'Chemin du magasin de blocs invalide : doit être non vide avec des caractères de système de fichiers valides',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: 'Sélection du Stack',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]:
+    'Configuration du Stockage BrightStack',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]:
+    'Simple (Node.js uniquement)',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    'Incompatibilité de stack détectée dans les fichiers générés',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    "Variables d'environnement BrightStack requises manquantes",
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
+    'Importation inter-stack détectée',
 };

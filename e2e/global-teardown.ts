@@ -33,11 +33,20 @@ export default async function globalTeardown(): Promise<void> {
 
   const { serverPid, projectDir, tmpDir } = state;
 
-  // Attempt graceful shutdown
+  // Shutdown MERN server
   try {
     process.kill(serverPid, 'SIGTERM');
   } catch {
     // Process may already be dead — ignore
+  }
+
+  // Shutdown BrightStack server if present
+  if (state.brightstack?.serverPid) {
+    try {
+      process.kill(state.brightstack.serverPid, 'SIGTERM');
+    } catch {
+      // Ignore
+    }
   }
 
   // Wait briefly, then force-kill if still alive
@@ -51,9 +60,26 @@ export default async function globalTeardown(): Promise<void> {
     }
   }
 
-  // Remove the parent temp directory (which contains projectDir)
+  if (state.brightstack?.serverPid && isProcessAlive(state.brightstack.serverPid)) {
+    try {
+      process.kill(state.brightstack.serverPid, 'SIGKILL');
+    } catch {
+      // Ignore
+    }
+  }
+
+  // Remove the MERN temp directory
   const dirToRemove = tmpDir || projectDir;
   fs.rmSync(dirToRemove, { recursive: true, force: true });
+
+  // Remove the BrightStack temp directory
+  if (state.brightstack?.tmpDir) {
+    try {
+      fs.rmSync(state.brightstack.tmpDir, { recursive: true, force: true });
+    } catch {
+      // Ignore
+    }
+  }
 
   // Remove the shared state file
   const statePath = getStatePath();

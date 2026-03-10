@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <script nonce="<%= cspNonce %>"></script>
+    <base href="<%= baseHref %>" />
+
+    <script nonce="<%= cspNonce %>">
+      window.APP_CONFIG = {
+        hostname: '<%= hostname %>',
+        siteTitle: '<%= title %>',
+        server: '<%= server %>',
+      };
+    </script>
+    <% if (cssFile) { %>
+    <link rel="stylesheet" href="<%= cssFile %>" />
+    <% } %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <% if (jsFile) { %>
+    <script nonce="<%= cspNonce %>" type="module" src="<%= jsFile %>"></script>
+    <% } %>
+  </body>
+</html>

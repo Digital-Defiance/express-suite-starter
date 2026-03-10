@@ -8,6 +8,7 @@ export class PostGenerationValidator {
   static async validate(context: GeneratorContext): Promise<ValidationReport> {
     const issues: ValidationIssue[] = [];
     const monorepoPath = context.state.get('monorepoPath');
+    const stackType: 'mern' | 'brightstack' = context.config?.stackType ?? 'mern';
 
     Logger.section('Running post-generation validation');
 
@@ -19,6 +20,15 @@ export class PostGenerationValidator {
 
     // Check for common issues
     issues.push(...this.validateBestPractices(monorepoPath));
+
+    // Stack-specific validation
+    if (stackType === 'brightstack') {
+      issues.push(...this.validateNoMongoImports(monorepoPath));
+      issues.push(...this.validateBrightStackEnvVars(monorepoPath));
+    } else {
+      issues.push(...this.validateNoBrightStackImports(monorepoPath));
+      issues.push(...this.validateMernEnvVars(monorepoPath));
+    }
 
     const summary = {
       errors: issues.filter(i => i.type === 'error').length,
@@ -164,6 +174,132 @@ export class PostGenerationValidator {
       });
     }
 
+    return issues;
+  }
+
+  /**
+   * Recursively collect all .ts files under a directory.
+   */
+  private static collectTsFiles(dir: string): string[] {
+    const results: string[] = [];
+    if (!fs.existsSync(dir)) return results;
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory() && entry.name !== 'node_modules') {
+        results.push(...this.collectTsFiles(fullPath));
+      } else if (entry.isFile() && entry.name.endsWith('.ts')) {
+        results.push(fullPath);
+      }
+    }
+    return results;
+  }
+
+  /**
+   * For BrightStack projects, scan API/API-lib source for mongoose, mongodb,
+   * or @digitaldefiance/mongoose-types imports.
+   */
+  static validateNoMongoImports(monorepoPath: string): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+    const mongoPattern = /(?:from\s+['"](?:mongoose|mongodb|@digitaldefiance\/mongoose-types))|(?:require\s*\(\s*['"](?:mongoose|mongodb|@digitaldefiance\/mongoose-types))/;
+
+    const dirsToScan = ['api', 'api-lib'].map(d => path.join(monorepoPath, d));
+    for (const dir of dirsToScan) {
+      for (const filePath of this.collectTsFiles(dir)) {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        if (mongoPattern.test(content)) {
+          issues.push({
+            type: 'warning',
+            category: 'stackMismatch',
+            message: `BrightStack project contains MongoDB import in ${path.relative(monorepoPath, filePath)}`,
+            file: path.relative(monorepoPath, filePath),
+            fix: 'Remove MongoDB imports from BrightStack projects',
+          });
+        }
+      }
+    }
+    return issues;
+  }
+
+  /**
+   * For MERN projects, scan API/API-lib source for @brightchain/* imports.
+   */
+  static validateNoBrightStackImports(monorepoPath: string): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+    const brightchainPattern = /(?:from\s+['"]@brightchain\/)|(?:require\s*\(\s*['"]@brightchain\/)/;
+
+    const dirsToScan = ['api', 'api-lib'].map(d => path.join(monorepoPath, d));
+    for (const dir of dirsToScan) {
+      for (const filePath of this.collectTsFiles(dir)) {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        if (brightchainPattern.test(content)) {
+          issues.push({
+            type: 'warning',
+            category: 'stackMismatch',
+            message: `MERN project contains BrightChain import in ${path.relative(monorepoPath, filePath)}`,
+            file: path.relative(monorepoPath, filePath),
+            fix: 'Remove @brightchain/* imports from MERN projects',
+          });
+        }
+      }
+    }
+    return issues;
+  }
+
+  /**
+   * For BrightStack projects, verify .env.example contains required BrightStack vars.
+   */
+  static validateBrightStackEnvVars(monorepoPath: string): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+    const requiredVars = [
+      'BRIGHTCHAIN_BLOCKSTORE_PATH',
+      'BRIGHTCHAIN_BLOCKSIZE_BYTES',
+      'BRIGHTCHAIN_BLOCKSTORE_TYPE',
+      'USE_MEMORY_DOCSTORE',
+      'DEV_DATABASE',
+      'MEMBER_POOL_NAME',
+    ];
+
+    const envPath = path.join(monorepoPath, '.env.example');
+    if (!fs.existsSync(envPath)) return issues;
+
+    const content = fs.readFileSync(envPath, 'utf-8');
+    const missingVars = requiredVars.filter(v => !content.includes(v));
+
+    if (missingVars.length > 0) {
+      issues.push({
+        type: 'warning',
+        category: 'stackMismatch',
+        message: `BrightStack .env.example missing required variables: ${missingVars.join(', ')}`,
+        file: '.env.example',
+        fix: 'Add missing BrightStack environment variables to .env.example',
+      });
+    }
+    return issues;
+  }
+
+  /**
+   * For MERN projects, verify .env.example contains required MERN vars.
+   */
+  static validateMernEnvVars(monorepoPath: string): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+    const requiredVars = ['MONGO_URI', 'MONGO_USE_TRANSACTIONS', 'DEV_DATABASE'];
+
+    const envPath = path.join(monorepoPath, '.env.example');
+    if (!fs.existsSync(envPath)) return issues;
+
+    const content = fs.readFileSync(envPath, 'utf-8');
+    const missingVars = requiredVars.filter(v => !content.includes(v));
+
+    if (missingVars.length > 0) {
+      issues.push({
+        type: 'warning',
+        category: 'stackMismatch',
+        message: `MERN .env.example missing required variables: ${missingVars.join(', ')}`,
+        file: '.env.example',
+        fix: 'Add missing MERN environment variables to .env.example',
+      });
+    }
     return issues;
   }
 

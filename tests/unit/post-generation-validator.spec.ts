@@ -18,6 +18,8 @@ describe('PostGenerationValidator', () => {
       dryRun: false,
       checkpointPath: '/tmp/checkpoint.json',
     };
+    // Default: readdirSync returns empty array so collectTsFiles doesn't fail
+    mockFs.readdirSync.mockReturnValue([] as any);
   });
 
   describe('validate', () => {
@@ -151,6 +153,168 @@ describe('PostGenerationValidator', () => {
       expect(report.summary.errors).toBeGreaterThan(0);
       expect(report.summary.warnings).toBeGreaterThanOrEqual(0);
       expect(report.summary.info).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  describe('validateNoMongoImports', () => {
+    it('reports warning when BrightStack project contains mongoose import', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readdirSync.mockImplementation((dir: any) => {
+        const d = dir.toString();
+        if (d.endsWith('api') || d.endsWith('api-lib')) {
+          return [{ name: 'src', isDirectory: () => true, isFile: () => false }] as any;
+        }
+        if (d.endsWith('src')) {
+          return [{ name: 'app.ts', isDirectory: () => false, isFile: () => true }] as any;
+        }
+        return [];
+      });
+      mockFs.readFileSync.mockReturnValue("import { Schema } from 'mongoose';");
+
+      const issues = PostGenerationValidator.validateNoMongoImports('/test/monorepo');
+
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues[0]).toMatchObject({
+        type: 'warning',
+        category: 'stackMismatch',
+      });
+      expect(issues[0].message).toContain('MongoDB import');
+    });
+
+    it('reports no issues when BrightStack project has no MongoDB imports', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readdirSync.mockImplementation((dir: any) => {
+        const d = dir.toString();
+        if (d.endsWith('api') || d.endsWith('api-lib')) {
+          return [{ name: 'src', isDirectory: () => true, isFile: () => false }] as any;
+        }
+        if (d.endsWith('src')) {
+          return [{ name: 'app.ts', isDirectory: () => false, isFile: () => true }] as any;
+        }
+        return [];
+      });
+      mockFs.readFileSync.mockReturnValue("import { BrightDbApplication } from '@brightchain/node-express-suite';");
+
+      const issues = PostGenerationValidator.validateNoMongoImports('/test/monorepo');
+
+      expect(issues).toEqual([]);
+    });
+  });
+
+  describe('validateNoBrightStackImports', () => {
+    it('reports warning when MERN project contains @brightchain import', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readdirSync.mockImplementation((dir: any) => {
+        const d = dir.toString();
+        if (d.endsWith('api') || d.endsWith('api-lib')) {
+          return [{ name: 'src', isDirectory: () => true, isFile: () => false }] as any;
+        }
+        if (d.endsWith('src')) {
+          return [{ name: 'app.ts', isDirectory: () => false, isFile: () => true }] as any;
+        }
+        return [];
+      });
+      mockFs.readFileSync.mockReturnValue("import { BrightDbApplication } from '@brightchain/node-express-suite';");
+
+      const issues = PostGenerationValidator.validateNoBrightStackImports('/test/monorepo');
+
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues[0]).toMatchObject({
+        type: 'warning',
+        category: 'stackMismatch',
+      });
+      expect(issues[0].message).toContain('BrightChain import');
+    });
+
+    it('reports no issues when MERN project has no BrightChain imports', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readdirSync.mockImplementation((dir: any) => {
+        const d = dir.toString();
+        if (d.endsWith('api') || d.endsWith('api-lib')) {
+          return [{ name: 'src', isDirectory: () => true, isFile: () => false }] as any;
+        }
+        if (d.endsWith('src')) {
+          return [{ name: 'app.ts', isDirectory: () => false, isFile: () => true }] as any;
+        }
+        return [];
+      });
+      mockFs.readFileSync.mockReturnValue("import { Schema } from 'mongoose';");
+
+      const issues = PostGenerationValidator.validateNoBrightStackImports('/test/monorepo');
+
+      expect(issues).toEqual([]);
+    });
+  });
+
+  describe('validateBrightStackEnvVars', () => {
+    it('reports missing BrightStack env vars', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readFileSync.mockReturnValue('JWT_SECRET=abc\nSOME_OTHER=val');
+
+      const issues = PostGenerationValidator.validateBrightStackEnvVars('/test/monorepo');
+
+      expect(issues.length).toBe(1);
+      expect(issues[0]).toMatchObject({
+        type: 'warning',
+        category: 'stackMismatch',
+      });
+      expect(issues[0].message).toContain('BRIGHTCHAIN_BLOCKSTORE_PATH');
+    });
+
+    it('reports no issues when all BrightStack env vars present', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readFileSync.mockReturnValue(
+        'BRIGHTCHAIN_BLOCKSTORE_PATH=/data\nBRIGHTCHAIN_BLOCKSIZE_BYTES=1048576\n' +
+        'BRIGHTCHAIN_BLOCKSTORE_TYPE=disk\nUSE_MEMORY_DOCSTORE=true\n' +
+        'DEV_DATABASE=test\nMEMBER_POOL_NAME=BrightChain',
+      );
+
+      const issues = PostGenerationValidator.validateBrightStackEnvVars('/test/monorepo');
+
+      expect(issues).toEqual([]);
+    });
+
+    it('returns no issues when .env.example does not exist', () => {
+      mockFs.existsSync.mockReturnValue(false);
+
+      const issues = PostGenerationValidator.validateBrightStackEnvVars('/test/monorepo');
+
+      expect(issues).toEqual([]);
+    });
+  });
+
+  describe('validateMernEnvVars', () => {
+    it('reports missing MERN env vars', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readFileSync.mockReturnValue('JWT_SECRET=abc\nSOME_OTHER=val');
+
+      const issues = PostGenerationValidator.validateMernEnvVars('/test/monorepo');
+
+      expect(issues.length).toBe(1);
+      expect(issues[0]).toMatchObject({
+        type: 'warning',
+        category: 'stackMismatch',
+      });
+      expect(issues[0].message).toContain('MONGO_URI');
+    });
+
+    it('reports no issues when all MERN env vars present', () => {
+      mockFs.existsSync.mockReturnValue(true);
+      mockFs.readFileSync.mockReturnValue(
+        'MONGO_URI=mongodb://localhost\nMONGO_USE_TRANSACTIONS=true\nDEV_DATABASE=test',
+      );
+
+      const issues = PostGenerationValidator.validateMernEnvVars('/test/monorepo');
+
+      expect(issues).toEqual([]);
+    });
+
+    it('returns no issues when .env.example does not exist', () => {
+      mockFs.existsSync.mockReturnValue(false);
+
+      const issues = PostGenerationValidator.validateMernEnvVars('/test/monorepo');
+
+      expect(issues).toEqual([]);
     });
   });
 });

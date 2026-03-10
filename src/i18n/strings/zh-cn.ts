@@ -210,4 +210,30 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_SIMPLE]: '简单（仅 Node.js）',
   [StarterStringKey.DEVCONTAINER_MONGODB]: '带 MongoDB',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]: '带 MongoDB 副本集',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]: '选择您的应用程序技术栈',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    '输入用于持久存储的块存储路径',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]: '输入成员池名称',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    '无效的块存储路径：必须非空且包含有效的文件系统字符',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: '技术栈选择',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]: 'BrightStack 存储配置',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]: '简单（仅 Node.js）',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    '在生成的文件中检测到技术栈不匹配',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    '缺少必需的 BrightStack 环境变量',
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]: '检测到跨技术栈导入',
 };

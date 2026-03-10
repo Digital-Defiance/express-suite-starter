@@ -23,6 +23,18 @@ export interface E2ESharedState {
   adminMnemonic: string;
   /** Admin username (default: 'admin') */
   adminUsername: string;
+  /** BrightStack workspace state (optional, present when dual-stack E2E is enabled) */
+  brightstack?: {
+    projectDir: string;
+    tmpDir: string;
+    port: number;
+    serverPid: number;
+    baseURL: string;
+    workspaceName: string;
+    prefix: string;
+    adminMnemonic: string;
+    adminUsername: string;
+  };
 }
 
 /**

@@ -246,6 +246,38 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'MongoDB 付き',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
     'MongoDB レプリカセット付き',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]:
+    'アプリケーションスタックを選択してください',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    '永続ストレージ用のブロックストアパスを入力してください',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]:
+    'メンバープール名を入力してください',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    '無効なブロックストアパス：空でなく、有効なファイルシステム文字を含む必要があります',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: 'スタック選択',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]:
+    'BrightStack ストレージ設定',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]:
+    'シンプル（Node.js のみ）',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    '生成されたファイルでスタックの不一致が検出されました',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    '必要な BrightStack 環境変数が不足しています',
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
+    'スタック間インポートが検出されました',
+
   [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
     'Ubuntu/Debian: sudo apt-get install build-essential python3',
   [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:

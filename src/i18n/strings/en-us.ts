@@ -292,4 +292,33 @@ export const enUsTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'With MongoDB',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
     'With MongoDB Replica Set',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]: 'Select your application stack',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    'Enter the block store path for persistent storage',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]: 'Enter the member pool name',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    'Invalid block store path: must be non-empty with valid filesystem characters',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: 'Stack Selection',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]:
+    'BrightStack Storage Configuration',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]:
+    'Simple (Node.js only)',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    'Stack mismatch detected in generated files',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    'Missing required BrightStack environment variables',
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
+    'Cross-stack import detected',
 };

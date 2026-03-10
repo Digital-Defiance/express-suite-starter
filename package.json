@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "4.19.11",
+  "version": "4.21.0",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"
@@ -16,6 +16,7 @@
     "start": "npx tsc && node dist/src/generate-monorepo.js",
     "create-project": "yarn start",
     "build": "npx tsc && chmod +x dist/src/cli.js",
+    "build:prod": "NODE_ENV=production npx nx build digitaldefiance-express-suite-starter --configuration=production",
     "build:logged": "npx tsc 2>&1 | ansifilter -o build.log && chmod +x dist/src/cli.js",
     "lint": "npx eslint 'src/**/*.ts'",
     "lint:fix": "npx eslint 'src/**/*.ts' --fix",

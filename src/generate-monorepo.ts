@@ -78,13 +78,6 @@ async function main() {
     }
   }
 
-  // Load preset
-  const presetPath = path.resolve(
-    __dirname,
-    '../../config/presets/standard.json',
-  );
-  const preset = JSON.parse(fs.readFileSync(presetPath, 'utf-8'));
-
   // Prompt for workspace configuration
   Logger.header(
     getStarterTranslation(StarterStringKey.SECTION_WORKSPACE_CONFIG),
@@ -205,6 +198,26 @@ async function main() {
     ),
   );
 
+  // Stack selection
+  Logger.section(getStarterTranslation(StarterStringKey.SECTION_STACK_SELECTION));
+
+  const stackType = await select({
+    message: getStarterTranslation(StarterStringKey.PROMPT_STACK_TYPE),
+    choices: [
+      { name: getStarterTranslation(StarterStringKey.STACK_MERN), value: 'mern' as const },
+      { name: getStarterTranslation(StarterStringKey.STACK_BRIGHTSTACK), value: 'brightstack' as const },
+    ],
+    default: 'mern' as const,
+  });
+
+  // Load preset based on stack type
+  const presetFileName = stackType === 'brightstack' ? 'brightstack.json' : 'standard.json';
+  const presetPath = path.resolve(
+    __dirname,
+    `../../config/presets/${presetFileName}`,
+  );
+  const preset = JSON.parse(fs.readFileSync(presetPath, 'utf-8'));
+
   const dryRun = await confirm({
     message: getStarterTranslation(StarterStringKey.PROMPT_DRY_RUN),
     default: false,
@@ -263,39 +276,45 @@ async function main() {
   let devcontainerChoice = 'none';
   let mongoPassword = '';
   if (setupDevcontainer) {
-    devcontainerChoice = await select({
-      message: getStarterTranslation(
-        StarterStringKey.PROMPT_DEVCONTAINER_CONFIG,
-      ),
-      choices: [
-        {
-          name: getStarterTranslation(StarterStringKey.DEVCONTAINER_SIMPLE),
-          value: 'simple',
-        },
-        {
-          name: getStarterTranslation(StarterStringKey.DEVCONTAINER_MONGODB),
-          value: 'mongodb',
-        },
-        {
-          name: getStarterTranslation(
-            StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET,
-          ),
-          value: 'mongodb-replicaset',
-        },
-      ],
-      default: 'mongodb-replicaset',
-    });
-
-    if (
-      devcontainerChoice === 'mongodb' ||
-      devcontainerChoice === 'mongodb-replicaset'
-    ) {
-      mongoPassword = await input({
-        message: getStarterTranslation(StarterStringKey.PROMPT_MONGO_PASSWORD),
-        validate: (val: string) =>
-          val.length > 0 ||
-          getStarterTranslation(StarterStringKey.VALIDATION_PASSWORD_REQUIRED),
+    if (stackType === 'brightstack') {
+      // BrightStack: only simple devcontainer (no MongoDB containers)
+      devcontainerChoice = 'simple';
+    } else {
+      // MERN: full devcontainer options
+      devcontainerChoice = await select({
+        message: getStarterTranslation(
+          StarterStringKey.PROMPT_DEVCONTAINER_CONFIG,
+        ),
+        choices: [
+          {
+            name: getStarterTranslation(StarterStringKey.DEVCONTAINER_SIMPLE),
+            value: 'simple',
+          },
+          {
+            name: getStarterTranslation(StarterStringKey.DEVCONTAINER_MONGODB),
+            value: 'mongodb',
+          },
+          {
+            name: getStarterTranslation(
+              StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET,
+            ),
+            value: 'mongodb-replicaset',
+          },
+        ],
+        default: 'mongodb-replicaset',
       });
+
+      if (
+        devcontainerChoice === 'mongodb' ||
+        devcontainerChoice === 'mongodb-replicaset'
+      ) {
+        mongoPassword = await input({
+          message: getStarterTranslation(StarterStringKey.PROMPT_MONGO_PASSWORD),
+          validate: (val: string) =>
+            val.length > 0 ||
+            getStarterTranslation(StarterStringKey.VALIDATION_PASSWORD_REQUIRED),
+        });
+      }
     }
   }
 
@@ -309,16 +328,53 @@ async function main() {
   });
 
   let devDatabaseName = '';
-  if (useInMemoryDb) {
-    devDatabaseName = await input({
-      message: getStarterTranslation(StarterStringKey.PROMPT_DEV_DATABASE_NAME),
-      default: 'test',
-      validate: (val: string) =>
-        val.length > 0 ||
-        getStarterTranslation(
-          StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED,
-        ),
+  let blockStorePath = '';
+  let memberPoolName = 'BrightChain';
+
+  if (stackType === 'brightstack') {
+    // BrightStack storage configuration
+    if (!useInMemoryDb) {
+      Logger.section(getStarterTranslation(StarterStringKey.SECTION_BRIGHTSTACK_STORAGE));
+      blockStorePath = await input({
+        message: getStarterTranslation(StarterStringKey.PROMPT_BLOCKSTORE_PATH),
+        validate: (val: string) => {
+          if (!val || val.trim().length === 0) {
+            return getStarterTranslation(StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH);
+          }
+          if (val.includes('\0')) {
+            return getStarterTranslation(StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH);
+          }
+          return true;
+        },
+      });
+    } else {
+      devDatabaseName = await input({
+        message: getStarterTranslation(StarterStringKey.PROMPT_DEV_DATABASE_NAME),
+        default: 'test',
+        validate: (val: string) =>
+          val.length > 0 ||
+          getStarterTranslation(
+            StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED,
+          ),
+      });
+    }
+    memberPoolName = await input({
+      message: getStarterTranslation(StarterStringKey.PROMPT_MEMBER_POOL_NAME),
+      default: 'BrightChain',
     });
+  } else {
+    // MERN database configuration (existing behavior)
+    if (useInMemoryDb) {
+      devDatabaseName = await input({
+        message: getStarterTranslation(StarterStringKey.PROMPT_DEV_DATABASE_NAME),
+        default: 'test',
+        validate: (val: string) =>
+          val.length > 0 ||
+          getStarterTranslation(
+            StarterStringKey.VALIDATION_DATABASE_NAME_REQUIRED,
+          ),
+      });
+    }
   }
 
   Logger.section(
@@ -389,6 +445,7 @@ async function main() {
     },
     projects,
     ...preset,
+    stackType,
   };
 
   // Validate configuration
@@ -1173,6 +1230,7 @@ async function main() {
       };
 
       // Template variables for scaffolding
+      const resolvedStackType = config.stackType ?? 'mern';
       const scaffoldingVars: Record<string, any> = {
         workspaceName,
         WorkspaceName:
@@ -1196,6 +1254,14 @@ async function main() {
         isZhCn: selectedLanguage === LanguageCodes.ZH_CN,
         isJa: selectedLanguage === LanguageCodes.JA,
         isUk: selectedLanguage === LanguageCodes.UK,
+        // Stack-specific template variables
+        stackType: resolvedStackType,
+        isMern: resolvedStackType === 'mern',
+        isBrightStack: resolvedStackType === 'brightstack',
+        blockStorePath: blockStorePath ?? '',
+        useMemoryDocstore: useInMemoryDb ? 'true' : '',
+        memberPoolName: memberPoolName ?? 'BrightChain',
+        devDatabase: useInMemoryDb ? devDatabaseName : '',
       };
 
       // Copy root scaffolding
@@ -1231,8 +1297,13 @@ async function main() {
       }
 
       // Copy project-specific scaffolding
+      // Stack-dependent project types use suffixed directories (e.g., api-mern, api-lib-mern, inituserdb-mern)
+      const stackDependentTypes = ['api', 'api-lib', 'inituserdb'];
       projects.forEach((project) => {
-        const projectSrc = path.join(scaffoldingDir, project.type);
+        const scaffoldingDirName = stackDependentTypes.includes(project.type)
+          ? `${project.type}-${resolvedStackType}`
+          : project.type;
+        const projectSrc = path.join(scaffoldingDir, scaffoldingDirName);
         if (fs.existsSync(projectSrc)) {
           copyDir(
             projectSrc,
@@ -1545,29 +1616,52 @@ export {};
             `MNEMONIC_HMAC_SECRET=${mnemonicHmacSecret}`,
           );
 
-          // Replace MONGO_URI if MongoDB devcontainer
-          if (
-            devcontainerChoice === 'mongodb' ||
-            devcontainerChoice === 'mongodb-replicaset'
-          ) {
-            const mongoUri = buildMongoUri(workspaceName);
-            envContent = envContent.replace(
-              /MONGO_URI=.*/g,
-              `MONGO_URI=${mongoUri}`,
-            );
+          const envStackType = config.stackType ?? 'mern';
+
+          // BrightStack-specific env replacements
+          if (envStackType === 'brightstack') {
+            // Pre-populate blockstore path if provided
+            if (blockStorePath) {
+              envContent = envContent.replace(
+                /BRIGHTCHAIN_BLOCKSTORE_PATH=.*/g,
+                `BRIGHTCHAIN_BLOCKSTORE_PATH=${blockStorePath}`,
+              );
+            }
+            // Member pool name
+            if (memberPoolName) {
+              envContent = envContent.replace(
+                /MEMBER_POOL_NAME=.*/g,
+                `MEMBER_POOL_NAME=${memberPoolName}`,
+              );
+            }
           }
 
-          // Enable transactions for replica set
-          if (devcontainerChoice === 'mongodb-replicaset') {
-            envContent = envContent.replace(
-              /MONGO_USE_TRANSACTIONS=.*/g,
-              'MONGO_USE_TRANSACTIONS=true',
-            );
-          } else {
-            envContent = envContent.replace(
-              /MONGO_USE_TRANSACTIONS=.*/g,
-              'MONGO_USE_TRANSACTIONS=false',
-            );
+          // MERN-specific env replacements (skip for BrightStack)
+          if (envStackType === 'mern') {
+            // Replace MONGO_URI if MongoDB devcontainer
+            if (
+              devcontainerChoice === 'mongodb' ||
+              devcontainerChoice === 'mongodb-replicaset'
+            ) {
+              const mongoUri = buildMongoUri(workspaceName);
+              envContent = envContent.replace(
+                /MONGO_URI=.*/g,
+                `MONGO_URI=${mongoUri}`,
+              );
+            }
+
+            // Enable transactions for replica set
+            if (devcontainerChoice === 'mongodb-replicaset') {
+              envContent = envContent.replace(
+                /MONGO_USE_TRANSACTIONS=.*/g,
+                'MONGO_USE_TRANSACTIONS=true',
+              );
+            } else {
+              envContent = envContent.replace(
+                /MONGO_USE_TRANSACTIONS=.*/g,
+                'MONGO_USE_TRANSACTIONS=false',
+              );
+            }
           }
 
           fs.writeFileSync(envPath, envContent);
@@ -1783,6 +1877,7 @@ export {};
     await executor.execute(context);
 
     if (dryRun) {
+      Logger.info(`Stack type: ${config.stackType ?? 'mern'}`);
       Logger.warning(
         getStarterTranslation(StarterStringKey.WARNING_DRY_RUN_RERUN),
       );

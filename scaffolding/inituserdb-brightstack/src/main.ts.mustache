@@ -1,0 +1,195 @@
+import {
+  brightchainDatabaseInit,
+  BrightDbApplication,
+  BrightDbEnvironment,
+} from '@brightchain/node-express-suite';
+import { Constants as AppConstants } from '{{namespace}}/api-lib';
+import { GlobalActiveContext, IActiveContext } from '@digitaldefiance/i18n-lib';
+import { IECIESConfig } from '@digitaldefiance/ecies-lib';
+import { ECIESService } from '@digitaldefiance/node-ecies-lib';
+import {
+  CoreLanguageCode,
+} from '@digitaldefiance/i18n-lib';
+import { getSuiteCoreTranslation, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
+import { randomBytes } from 'crypto';
+import { join } from 'path';
+import { rm } from 'fs/promises';
+
+// Simple debugLog implementation
+function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
+  if (debug) {
+    console[type](...args);
+  }
+}
+
+async function main() {
+  const context = GlobalActiveContext.getInstance<CoreLanguageCode, IActiveContext<CoreLanguageCode>>();
+  context.languageContextSpace = 'admin';
+
+  const config: IECIESConfig = {
+    curveName: AppConstants.ECIES.CURVE_NAME,
+    primaryKeyDerivationPath: AppConstants.ECIES.PRIMARY_KEY_DERIVATION_PATH,
+    mnemonicStrength: AppConstants.ECIES.MNEMONIC_STRENGTH,
+    symmetricAlgorithm: AppConstants.ECIES.SYMMETRIC_ALGORITHM_CONFIGURATION,
+    symmetricKeyBits: AppConstants.ECIES.SYMMETRIC.KEY_BITS,
+    symmetricKeyMode: AppConstants.ECIES.SYMMETRIC.MODE,
+  };
+  const eciesService = new ECIESService(config);
+  if (process.argv.includes('--gen-system-user-mnemonic')) {
+    const mnemonic = eciesService.generateNewMnemonic();
+    process.env.ADMIN_MNEMONIC = mnemonic.value;
+    console.log(
+      `ADMIN_MNEMONIC="${mnemonic.value}"\n`,
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_MakeSureToSetItInEnv,
+      ),
+    );
+  }
+  if (process.argv.includes('--gen-member-user-mnemonic')) {
+    const mnemonic = eciesService.generateNewMnemonic();
+    process.env.MEMBER_MNEMONIC = mnemonic.value;
+    console.log(
+      `MEMBER_MNEMONIC="${mnemonic.value}"\n`,
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_MakeSureToSetItInEnv,
+      ),
+    );
+  }
+  if (process.argv.includes('--gen-mnemonic-hmac-secret')) {
+    const mnemonicHmacSecret = randomBytes(32).toString('hex');
+    process.env.MNEMONIC_HMAC_SECRET = mnemonicHmacSecret;
+    console.log(
+      `MNEMONIC_HMAC_SECRET="${mnemonicHmacSecret}"\n`,
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_MakeSureToSetItInEnv,
+      ),
+    );
+  }
+  if (process.argv.includes('--gen-mnemonic-encryption-key')) {
+    const mnemonicEncryptionKey = randomBytes(32).toString('hex');
+    process.env.MNEMONIC_ENCRYPTION_KEY = mnemonicEncryptionKey;
+    console.log(
+      `MNEMONIC_ENCRYPTION_KEY="${mnemonicEncryptionKey}"\n`,
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_MakeSureToSetItInEnv,
+      ),
+    );
+  }
+
+  const envDir = join(
+    BrightDbApplication.distDir,
+    '{{prefix}}-inituserdb',
+    '.env',
+  );
+  const env = new BrightDbEnvironment(envDir, true);
+
+  const shouldDrop = process.argv.includes('--drop');
+
+  // If --drop is requested, clear the block store path directory
+  if (shouldDrop && env.blockStorePath) {
+    debugLog(
+      env.detailedDebug,
+      'log',
+      `Clearing block store directory: ${env.blockStorePath}`,
+    );
+    try {
+      await rm(env.blockStorePath, { recursive: true, force: true });
+      debugLog(
+        env.detailedDebug,
+        'log',
+        getSuiteCoreTranslation(SuiteCoreStringKey.Admin_DatabaseDropped),
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      debugLog(
+        env.detailedDebug,
+        'log',
+        getSuiteCoreTranslation(SuiteCoreStringKey.Admin_ProceedingToDbInitialization),
+      );
+    } catch (err) {
+      debugLog(
+        env.detailedDebug,
+        'error',
+        getSuiteCoreTranslation(SuiteCoreStringKey.Admin_Error_FailedToDropDatabase),
+        err,
+      );
+      process.exit(2);
+    }
+  } else if (shouldDrop && !env.blockStorePath) {
+    debugLog(
+      env.detailedDebug,
+      'log',
+      'In-memory mode: --drop is a no-op (data is ephemeral)',
+    );
+  }
+
+  debugLog(
+    env.detailedDebug,
+    'log',
+    getSuiteCoreTranslation(SuiteCoreStringKey.Admin_StartingDbInitialization),
+  );
+
+  let exitCode = 1;
+
+  const result = await brightchainDatabaseInit(env);
+
+  if (result.success && result.backend) {
+    debugLog(
+      env.debug,
+      'log',
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_UserDatabaseInitialized,
+      ),
+    );
+
+    if (env.detailedDebug) {
+      console.log('Block store initialized successfully');
+      console.log(`  Block store type: ${env.blockStoreType}`);
+      if (env.blockStorePath) {
+        console.log(`  Block store path: ${env.blockStorePath}`);
+      }
+      console.log(`  Member pool name: ${env.memberPoolName}`);
+    }
+
+    // Handle --setEnv flag to write credentials to .env file
+    if (process.argv.includes('--setEnv')) {
+      const apiEnvPath = join(
+        BrightDbApplication.distDir,
+        '..', // Go up from dist
+        '{{prefix}}-api',
+        '.env',
+      );
+      debugLog(
+        env.detailedDebug,
+        'log',
+        `Writing environment to: ${apiEnvPath}`,
+      );
+    }
+
+    // Disconnect the BrightDb instance
+    if (result.backend.db) {
+      await result.backend.db.disconnect();
+    }
+
+    exitCode = 0;
+  } else {
+    console.error(
+      getSuiteCoreTranslation(
+        SuiteCoreStringKey.Admin_Error_FailedToInitializeUserDatabase,
+      ),
+      result.error,
+    );
+    exitCode++;
+  }
+
+  process.exit(exitCode);
+}
+
+main().catch((err) => {
+  console.error(
+    getSuiteCoreTranslation(
+      SuiteCoreStringKey.Admin_Error_UnhandledErrorInMain,
+    ),
+    err,
+  );
+  process.exit(1);
+});

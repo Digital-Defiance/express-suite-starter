@@ -8,7 +8,7 @@ import {
   GeneratorConfig,
   ProjectConfigBuilder,
 } from '../src/index';
-import { writeState } from './e2e-shared-state';
+import { writeState, E2ESharedState } from './e2e-shared-state';
 
 const WORKSPACE_NAME = 'e2e-test-app';
 const NAMESPACE = `@${WORKSPACE_NAME}`;
@@ -57,6 +57,7 @@ export default async function globalSetup(): Promise<void> {
   try {
     // Step 2: Build GeneratorConfig
     const config: GeneratorConfig = {
+      stackType: 'mern',
       workspace: {
         name: WORKSPACE_NAME,
         prefix: WORKSPACE_NAME,
@@ -250,6 +251,245 @@ export default async function globalSetup(): Promise<void> {
       console.log('[e2e-setup] Admin mnemonic captured from server init output.');
     }
 
+    // ─── BrightStack workspace generation (optional) ─────────────────────
+    let brightstack: E2ESharedState['brightstack'] = undefined;
+
+    const enableBrightStack = process.env.E2E_BRIGHTSTACK !== 'false';
+    if (enableBrightStack) {
+      console.log('[e2e-setup] Generating BrightStack workspace...');
+      const bsTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'starter-e2e-bs-'));
+      const bsWorkspaceName = 'e2e-bs-app';
+      const bsNamespace = `@${bsWorkspaceName}`;
+      const bsProjectDir = path.join(bsTmpDir, bsWorkspaceName);
+
+      try {
+        const bsConfig: GeneratorConfig = {
+          workspace: {
+            name: bsWorkspaceName,
+            prefix: bsWorkspaceName,
+            namespace: bsNamespace,
+            parentDir: bsTmpDir,
+          },
+          stackType: 'brightstack',
+          projects: ProjectConfigBuilder.build(bsWorkspaceName, bsNamespace, {
+            includeReactLib: true,
+            includeApiLib: true,
+            includeInitUserDb: true,
+            includeE2e: false,
+          }),
+          packages: {
+            dev: [
+              '@typescript-eslint/eslint-plugin',
+              '@typescript-eslint/parser',
+              'eslint-config-prettier',
+              'eslint-plugin-prettier',
+              'eslint-plugin-react',
+              'eslint-plugin-react-hooks',
+              'eslint-plugin-import',
+              'eslint-plugin-jsx-a11y',
+              'eslint-plugin-playwright',
+              'mongodb-memory-server',
+              '@types/cors',
+              '@types/express',
+              '@types/jsonwebtoken',
+              '@types/node',
+              '@types/react',
+              '@types/react-dom',
+            ],
+            prod: [
+              '@aws-sdk/client-ses',
+              '@brightchain/node-express-suite@latest',
+              '@brightchain/db@latest',
+              '@brightchain/brightchain-lib@latest',
+              '@digitaldefiance/node-express-suite@latest',
+              '@digitaldefiance/branded-interface@latest',
+              '@digitaldefiance/branded-enum@latest',
+              '@digitaldefiance/secrets@latest',
+              '@digitaldefiance/ecies-lib@latest',
+              '@digitaldefiance/node-ecies-lib@latest',
+              '@digitaldefiance/i18n-lib@latest',
+              '@digitaldefiance/suite-core-lib@latest',
+              '@digitaldefiance/mongoose-types@latest',
+              '@digitaldefiance/reed-solomon-erasure.wasm@latest',
+              '@digitaldefiance/express-suite-react-components@latest',
+              '@ethereumjs/wallet',
+              '@noble/hashes',
+              '@scure/bip32',
+              '@scure/bip39',
+              'blakejs',
+              'currency-codes',
+              'elliptic',
+              'email-addresses',
+              'mongodb',
+              'mongoose',
+              'otpauth',
+              'paillier-bigint',
+              'postal-mime',
+              'qrcode',
+              'secp256k1',
+              'ts-brand',
+              'uuid',
+              'validator',
+              '@emotion/react',
+              '@emotion/styled',
+              '@mui/icons-material',
+              '@mui/material',
+              '@mui/system',
+              '@mui/x-date-pickers',
+              'argon2',
+              'axios',
+              'bip39',
+              'cors',
+              'date-fns',
+              'dotenv',
+              'ejs',
+              'express',
+              'express-validator',
+              'helmet',
+              'jsonwebtoken',
+              'react-router-dom',
+              'reflect-metadata',
+              'sass',
+              'zod',
+            ],
+          },
+          templates: { engine: 'mustache' },
+          nx: {
+            linter: 'eslint',
+            unitTestRunner: 'jest',
+            e2eTestRunner: 'playwright',
+            style: 'css',
+            bundler: 'vite',
+            ciProvider: 'github',
+          },
+          node: {
+            version: '20.11.0',
+            yarnVersion: '4.11.0',
+          },
+        };
+
+        await generateMonorepo({
+          config: bsConfig,
+          inMemoryDb: { enabled: true, databaseName: 'e2e_bs_test' },
+          skipSystemCheck: true,
+          createInitialCommit: false,
+          installPlaywright: false,
+          devcontainer: { type: 'none' },
+        });
+        console.log('[e2e-setup] BrightStack monorepo generated.');
+
+        console.log('[e2e-setup] Running yarn install for BrightStack...');
+        execSync('yarn install', {
+          cwd: bsProjectDir,
+          stdio: 'inherit',
+          timeout: YARN_INSTALL_TIMEOUT_MS,
+        });
+
+        // Patch @brightchain/brightchain-lib exports to expose subpath imports
+        // required by @brightchain/db (the published npm version is missing these)
+        console.log('[e2e-setup] Patching @brightchain/brightchain-lib exports...');
+        const bclPkgPath = path.join(bsProjectDir, 'node_modules', '@brightchain', 'brightchain-lib', 'package.json');
+        if (fs.existsSync(bclPkgPath)) {
+          const bclPkg = JSON.parse(fs.readFileSync(bclPkgPath, 'utf-8'));
+          const subpaths = ['cursor', 'updateEngine', 'transaction', 'inMemoryHeadRegistry', 'indexing'];
+          for (const mod of subpaths) {
+            const key = `./lib/db/${mod}`;
+            if (!bclPkg.exports?.[key]) {
+              bclPkg.exports = bclPkg.exports || {};
+              bclPkg.exports[key] = {
+                types: `./src/lib/db/${mod}.d.ts`,
+                import: `./src/lib/db/${mod}.js`,
+                require: `./src/lib/db/${mod}.js`,
+              };
+            }
+          }
+          fs.writeFileSync(bclPkgPath, JSON.stringify(bclPkg, null, 2));
+          console.log('[e2e-setup] Patched brightchain-lib exports for subpath imports.');
+        }
+
+        const bsApiName = `${bsWorkspaceName}-api`;
+        const bsReactName = `${bsWorkspaceName}-react`;
+
+        console.log('[e2e-setup] Building BrightStack API...');
+        execSync(`npx nx run ${bsApiName}:build`, {
+          cwd: bsProjectDir,
+          stdio: 'inherit',
+          timeout: BUILD_TIMEOUT_MS,
+        });
+
+        console.log('[e2e-setup] Building BrightStack React...');
+        execSync(`npx nx run ${bsReactName}:build`, {
+          cwd: bsProjectDir,
+          stdio: 'inherit',
+          timeout: BUILD_TIMEOUT_MS,
+        });
+
+        const bsPort = getRandomPort();
+        const bsApiDistDir = path.join(bsProjectDir, 'dist', bsApiName);
+        const bsReactDistDir = path.join(bsProjectDir, 'dist', bsReactName);
+        const bsEnvPath = path.join(bsProjectDir, bsApiName, '.env');
+
+        let bsEnvContent = fs.readFileSync(bsEnvPath, 'utf-8');
+        bsEnvContent = bsEnvContent.replace(/DEV_DATABASE=.*/g, `DEV_DATABASE=e2e_bs_test`);
+        bsEnvContent = bsEnvContent.replace(/API_DIST_DIR=.*/g, `API_DIST_DIR=${bsApiDistDir}`);
+        bsEnvContent = bsEnvContent.replace(/REACT_DIST_DIR=.*/g, `REACT_DIST_DIR=${bsReactDistDir}`);
+        if (/^PORT=.*/m.test(bsEnvContent)) {
+          bsEnvContent = bsEnvContent.replace(/^PORT=.*/gm, `PORT=${bsPort}`);
+        } else {
+          bsEnvContent = `PORT=${bsPort}\n${bsEnvContent}`;
+        }
+        fs.writeFileSync(bsEnvPath, bsEnvContent);
+        fs.copyFileSync(bsEnvPath, path.join(bsApiDistDir, '.env'));
+
+        console.log(`[e2e-setup] Starting BrightStack server on port ${bsPort}...`);
+        let bsServerOutput = '';
+        const bsServerProcess = spawn('node', [path.join('dist', bsApiName, 'main.js')], {
+          cwd: bsProjectDir,
+          env: { ...process.env, DEV_DATABASE: 'e2e_bs_test' },
+          stdio: 'pipe',
+          detached: true,
+        });
+
+        bsServerProcess.stdout.on('data', (data: Buffer) => {
+          const text = data.toString();
+          bsServerOutput += text;
+          console.log(`[e2e-bs-server] ${text.trim()}`);
+        });
+        bsServerProcess.stderr.on('data', (data: Buffer) => {
+          console.error(`[e2e-bs-server:err] ${data.toString().trim()}`);
+        });
+        bsServerProcess.unref();
+
+        const bsBaseURL = `http://localhost:${bsPort}`;
+        console.log(`[e2e-setup] Waiting for BrightStack server at ${bsBaseURL}...`);
+        await waitForServer(bsBaseURL, SERVER_POLL_TIMEOUT_MS, SERVER_POLL_INTERVAL_MS);
+        console.log('[e2e-setup] BrightStack server is ready.');
+
+        const bsAdminMnemonicMatch = bsServerOutput.match(/Admin Mnemonic:\s*(.+)/i);
+        const bsAdminMnemonic = bsAdminMnemonicMatch ? bsAdminMnemonicMatch[1].trim() : '';
+
+        brightstack = {
+          projectDir: bsProjectDir,
+          tmpDir: bsTmpDir,
+          port: bsPort,
+          serverPid: bsServerProcess.pid!,
+          baseURL: bsBaseURL,
+          workspaceName: bsWorkspaceName,
+          prefix: bsWorkspaceName,
+          adminMnemonic: bsAdminMnemonic,
+          adminUsername: 'admin',
+        };
+      } catch (bsError) {
+        console.warn(`[e2e-setup] BrightStack setup failed (non-fatal): ${bsError instanceof Error ? bsError.message : String(bsError)}`);
+        console.warn('[e2e-setup] BrightStack Playwright tests will be skipped.');
+        try {
+          fs.rmSync(bsTmpDir, { recursive: true, force: true });
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+    }
+
     writeState({
       projectDir,
       tmpDir,
@@ -260,6 +500,7 @@ export default async function globalSetup(): Promise<void> {
       prefix: WORKSPACE_NAME,
       adminMnemonic,
       adminUsername: 'admin',
+      brightstack,
     });
     console.log('[e2e-setup] Shared state written. Setup complete.');
   } catch (error) {

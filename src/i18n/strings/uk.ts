@@ -243,6 +243,38 @@ export const ukTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.DEVCONTAINER_MONGODB]: 'З MongoDB',
   [StarterStringKey.DEVCONTAINER_MONGODB_REPLICASET]:
     'З Набором Реплік MongoDB',
+
+  // Stack Selection
+  [StarterStringKey.PROMPT_STACK_TYPE]:
+    'Виберіть стек вашого додатку',
+  [StarterStringKey.STACK_MERN]: 'MERN (MongoDB)',
+  [StarterStringKey.STACK_BRIGHTSTACK]: 'BrightStack (BrightDB)',
+
+  // BrightStack Storage
+  [StarterStringKey.PROMPT_BLOCKSTORE_PATH]:
+    'Введіть шлях до сховища блоків для постійного зберігання',
+  [StarterStringKey.PROMPT_MEMBER_POOL_NAME]:
+    'Введіть назву пулу учасників',
+  [StarterStringKey.VALIDATION_INVALID_BLOCKSTORE_PATH]:
+    'Недійсний шлях до сховища блоків: має бути непорожнім з допустимими символами файлової системи',
+
+  // Section Headers (BrightStack)
+  [StarterStringKey.SECTION_STACK_SELECTION]: 'Вибір Стеку',
+  [StarterStringKey.SECTION_BRIGHTSTACK_STORAGE]:
+    'Конфігурація Сховища BrightStack',
+
+  // DevContainer (BrightStack)
+  [StarterStringKey.DEVCONTAINER_SIMPLE_BRIGHTSTACK]:
+    'Простий (тільки Node.js)',
+
+  // Validation (BrightStack)
+  [StarterStringKey.VALIDATION_STACK_MISMATCH]:
+    'Виявлено невідповідність стеку у згенерованих файлах',
+  [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
+    'Відсутні необхідні змінні середовища BrightStack',
+  [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
+    'Виявлено міжстековий імпорт',
+
   [StarterStringKey.SYSTEM_CHECK_UBUNTU_DEBIAN]:
     'Ubuntu/Debian: sudo apt-get install build-essential python3',
   [StarterStringKey.SYSTEM_CHECK_FEDORA_RHEL]:

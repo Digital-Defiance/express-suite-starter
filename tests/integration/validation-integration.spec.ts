@@ -11,6 +11,8 @@ describe('Validation Integration', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Default: readdirSync returns empty array so collectTsFiles doesn't fail
+    mockFs.readdirSync.mockReturnValue([] as any);
   });
 
   it('validates complete generated project', async () => {

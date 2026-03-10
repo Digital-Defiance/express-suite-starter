@@ -14,4 +14,5 @@ export interface GeneratorConfig {
   nx: NxConfig;
   node: NodeConfig;
   devcontainer?: DevContainerConfig;
+  stackType: 'mern' | 'brightstack';
 }
