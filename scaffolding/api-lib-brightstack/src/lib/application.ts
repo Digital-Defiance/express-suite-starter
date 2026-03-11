@@ -1,11 +1,11 @@
 import {
   BrightDbApplication,
   BrightDbDatabasePlugin,
+  BrightDbApiRouter,
 } from '@brightchain/node-express-suite';
 import {
   DummyEmailService,
   emailServiceRegistry,
-  BaseRouter,
   IApplication,
 } from '@digitaldefiance/node-express-suite';
 import { Environment } from './environment';
@@ -64,7 +64,7 @@ export class App<
       // The factory runs during start(), after BrightDbDatabasePlugin.init() has set up
       // the application. For custom API routes, extend ApiRouter or use
       // decorator-based controllers (see routers/api.ts for examples).
-      (app: IApplication<TID>): BaseRouter<TID> => {
+      (app: IApplication<TID>): BrightDbApiRouter<TID> => {
         return new ApiRouter(app);
       },
       undefined, // Default CSP config

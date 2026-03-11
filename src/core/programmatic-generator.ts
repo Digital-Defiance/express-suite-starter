@@ -1053,11 +1053,6 @@ function configureApiProjectJson(
           glob: '**/*',
           output: 'assets',
         },
-        {
-          input: `${apiProject.name}/src/views`,
-          glob: '**/*',
-          output: 'views',
-        },
       ];
     }
   }

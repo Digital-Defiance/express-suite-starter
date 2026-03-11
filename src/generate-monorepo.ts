@@ -836,30 +836,7 @@ async function main() {
                 output: 'assets',
               });
 
-              // Add views directory with proper object notation
-              newAssets.push({
-                input: `${apiProject.name}/src/views`,
-                glob: '**/*',
-                output: 'views',
-              });
-
               projectJson.targets.build.options.assets = newAssets;
-            } else {
-              // Check if views is already configured
-              const hasViews = existingAssets.some(
-                (asset: any) =>
-                  (typeof asset === 'string' && asset.includes('/views')) ||
-                  (typeof asset === 'object' &&
-                    asset.input?.includes('/views')),
-              );
-
-              if (!hasViews) {
-                existingAssets.push({
-                  input: `${apiProject.name}/src/views`,
-                  glob: '**/*',
-                  output: 'views',
-                });
-              }
             }
           }
 
