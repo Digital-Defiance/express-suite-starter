@@ -1,7 +1,5 @@
-import {
-  createUserSchema,
-  IConstants,
-} from '@digitaldefiance/node-express-suite';
+import { createUserSchema } from '@digitaldefiance/node-express-suite-mongo';
+import { IConstants } from '@digitaldefiance/node-express-suite';
 import { Constants } from '../constants';
 import { Schema } from '@digitaldefiance/mongoose-types';
 import { IUserDocument } from '../documents';

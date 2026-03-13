@@ -5,7 +5,8 @@ import { Brand } from 'ts-brand';
 import type { IUserDocument } from './documents/user';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 import { IKeyPairBufferWithUnEncryptedPrivateKey, ISigningKeyPrivateKeyInfo, ISimplePublicKeyOnly, ISimpleKeyPairBuffer, ISimplePublicKeyOnlyBuffer } from '@digitaldefiance/node-ecies-lib'
-import {IApiErrorResponse, IApiMessageResponse, ISchema, IStatusCodeResponse, IApiExpressValidationErrorResponse, IApiMongoValidationErrorResponse, UserRoleDocument, UsedDirectLoginTokenDocument, RoleDocument, MnemonicDocument, EmailTokenDocument } from '@digitaldefiance/node-express-suite';
+import { IApiErrorResponse, IApiMessageResponse, IStatusCodeResponse, IApiExpressValidationErrorResponse } from '@digitaldefiance/node-express-suite';
+import { ISchema, IApiMongoValidationErrorResponse, UserRoleDocument, UsedDirectLoginTokenDocument, RoleDocument, MnemonicDocument, EmailTokenDocument } from '@digitaldefiance/node-express-suite-mongo';
 
 export type DefaultBackendIdType = Types.ObjectId;
 

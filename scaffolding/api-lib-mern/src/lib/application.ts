@@ -1,15 +1,17 @@
 import {
   Application,
-  MongoDatabasePlugin,
   DummyEmailService,
   emailServiceRegistry,
   BaseRouter,
   IApplication,
+} from '@digitaldefiance/node-express-suite';
+import {
+  MongoDatabasePlugin,
   IMongoApplication,
   ApiRouter as LibraryApiRouter,
   IServerInitResult,
-  IFailableResult,
-} from '@digitaldefiance/node-express-suite';
+} from '@digitaldefiance/node-express-suite-mongo';
+import { IFailableResult } from '@digitaldefiance/suite-core-lib';
 import { Environment } from './environment';
 import { IConstants } from './interfaces/constants';
 import { Constants } from './constants';

@@ -40,6 +40,7 @@
     ],
     "prod": [
       "@digitaldefiance/node-express-suite",
+      "@digitaldefiance/node-express-suite-mongo",
       "@digitaldefiance/ecies-lib",
       "@digitaldefiance/node-ecies-lib",
       "@digitaldefiance/i18n-lib",

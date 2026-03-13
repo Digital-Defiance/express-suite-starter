@@ -1,11 +1,13 @@
 import {
   BaseApplication,
+  Environment,
+} from '@digitaldefiance/node-express-suite';
+import {
   MongoDatabasePlugin,
   DatabaseInitializationService,
-  Environment,
   IServerInitResult,
   getSchemaMap,
-} from '@digitaldefiance/node-express-suite';
+} from '@digitaldefiance/node-express-suite-mongo';
 
 // Simple debugLog implementation
 function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {

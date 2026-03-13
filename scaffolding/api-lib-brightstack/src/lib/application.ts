@@ -4,6 +4,7 @@ import {
   BrightDbApiRouter,
 } from '@brightchain/node-express-suite';
 import {
+  BaseRouter,
   DummyEmailService,
   emailServiceRegistry,
   IApplication,

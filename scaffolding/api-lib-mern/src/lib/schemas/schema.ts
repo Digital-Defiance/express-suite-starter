@@ -1,5 +1,5 @@
 import { Connection, Types } from '@digitaldefiance/mongoose-types';
-import { BaseModelName, createEmailTokenSchema, createMnemonicSchema, createRoleSchema, createUsedDirectLoginTokenSchema, createUserRoleSchema, MnemonicSchema, RoleSchema, SchemaCollection, SchemaMap, UsedDirectLoginTokenSchema, UserRoleSchema } from '@digitaldefiance/node-express-suite';
+import { BaseModelName, createEmailTokenSchema, createMnemonicSchema, createRoleSchema, createUsedDirectLoginTokenSchema, createUserRoleSchema, MnemonicSchema, RoleSchema, SchemaCollection, SchemaMap, UsedDirectLoginTokenSchema, UserRoleSchema } from '@digitaldefiance/node-express-suite-mongo';
 import EmailTokenModel from '../models/email-token';
 import MnemonicModel from '../models/mnemonic';
 import RoleModel from '../models/role';

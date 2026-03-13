@@ -1,4 +1,4 @@
-import { SchemaCollection, UserRoleDocument, UserRoleSchema, BaseModelName } from '@digitaldefiance/node-express-suite';
+import { SchemaCollection, UserRoleDocument, UserRoleSchema, BaseModelName } from '@digitaldefiance/node-express-suite-mongo';
 import { Connection, Model } from '@digitaldefiance/mongoose-types';
 
 export default function UserRoleModel(

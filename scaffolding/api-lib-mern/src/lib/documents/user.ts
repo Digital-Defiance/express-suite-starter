@@ -1,6 +1,6 @@
 import { Types } from '@digitaldefiance/mongoose-types';
 import { AccountStatus, IUserBase } from '@digitaldefiance/suite-core-lib';
-import { BaseDocument } from '@digitaldefiance/node-express-suite';
+import { BaseDocument } from '@digitaldefiance/node-express-suite-mongo';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 

@@ -1,4 +1,4 @@
-import { BaseModelName, SchemaCollection, MnemonicDocument, MnemonicSchema } from '@digitaldefiance/node-express-suite';
+import { BaseModelName, SchemaCollection, MnemonicDocument, MnemonicSchema } from '@digitaldefiance/node-express-suite-mongo';
 import { Connection } from '@digitaldefiance/mongoose-types';
 
 export function MnemonicModel(connection: Connection) {
