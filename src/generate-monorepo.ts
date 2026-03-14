@@ -1233,6 +1233,7 @@ async function main() {
         isUk: selectedLanguage === LanguageCodes.UK,
         // Stack-specific template variables
         stackType: resolvedStackType,
+        stackLabel: resolvedStackType === 'brightstack' ? 'BrightStack' : 'MERN',
         isMern: resolvedStackType === 'mern',
         isBrightStack: resolvedStackType === 'brightstack',
         blockStorePath: blockStorePath ?? '',

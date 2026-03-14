@@ -22,7 +22,7 @@ const SplashPage = () => {
           Welcome to @WORKSPACENAME@
         </Typography>
         <Typography variant="h5" color="text.secondary" paragraph>
-          A modern MERN stack application built with Express Suite
+          A modern @STACKLABEL@ express application built with Express Suite
         </Typography>
         <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
           {isAuthenticated ? (
