@@ -1,7 +1,7 @@
 import {
   Application,
   DummyEmailService,
-  emailServiceRegistry,
+  ServiceKeys,
   BaseRouter,
   IApplication,
 } from '@digitaldefiance/node-express-suite';
@@ -113,6 +113,6 @@ export class App<
     // Register the DummyEmailService - users should replace this with their own email service
     const emailService = new DummyEmailService<Types.ObjectId>(this);
     // const emailService = new EmailService(this);
-    emailServiceRegistry.setService(emailService);
+    this.services.register(ServiceKeys.EMAIL, () => emailService);
   }
 }

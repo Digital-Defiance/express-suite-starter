@@ -1,18 +1,16 @@
 import { SecureString } from '@digitaldefiance/ecies-lib';
 import { BrightDbEnvironment } from '@brightchain/node-express-suite';
-import { emailServiceRegistry } from '@digitaldefiance/node-express-suite';
 import { IEnvironment } from './interfaces/environment';
 import { IEnvironmentAws } from './interfaces/environment-aws';
 import { Constants } from './constants';
 import { getSuiteCoreTranslation, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
-import { EmailService } from './services/email';
 import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 import { DefaultBackendIdType } from './shared-types';
 
 export class Environment<TID extends PlatformID = DefaultBackendIdType> extends BrightDbEnvironment<TID> implements IEnvironment<TID> {
   private _aws: IEnvironmentAws;
 
-  constructor(path?: string, initialization = false, override = true) {
+  constructor(path?: string, initialization = false, override = true, requireAwsCredentials = false) {
     super(path, initialization, override, Constants);
     const envObj = this.getObject();
 
@@ -24,7 +22,7 @@ export class Environment<TID extends PlatformID = DefaultBackendIdType> extends 
 
     if (process.env['NODE_ENV'] !== 'test' &&
         process.env['NODE_ENV'] !== 'development' &&
-        emailServiceRegistry.isServiceType(EmailService) && // only enforce if real EmailService is used
+        requireAwsCredentials &&
        this._aws.accessKeyId.length === 0) {
       throw new Error(
         getSuiteCoreTranslation(SuiteCoreStringKey.Admin_EnvNotSetTemplate, {
@@ -34,7 +32,7 @@ export class Environment<TID extends PlatformID = DefaultBackendIdType> extends 
     }
     if (process.env['NODE_ENV'] !== 'test' &&
         process.env['NODE_ENV'] !== 'development' &&
-        emailServiceRegistry.isServiceType(EmailService) && // only enforce if real EmailService is used
+        requireAwsCredentials &&
       this._aws.secretAccessKey.length === 0) {
       throw new Error(
         getSuiteCoreTranslation(SuiteCoreStringKey.Admin_EnvNotSetTemplate, {
