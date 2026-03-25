@@ -1478,13 +1478,13 @@ export {};
       const apiProject = projects.find((p) => p.type === 'api');
       if (apiProject) {
         addScripts['serve'] =
-          `npx nx serve ${apiProject.name} --configuration production`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${apiProject.name} --configuration production`;
         addScripts['serve:stream'] =
-          `npx nx serve ${apiProject.name} --configuration production --output-style=stream`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${apiProject.name} --configuration production --output-style=stream`;
         addScripts['serve:dev'] =
-          `npx nx serve ${apiProject.name} --configuration development`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${apiProject.name} --configuration development`;
         addScripts['serve:dev:stream'] =
-          `npx nx serve ${apiProject.name} --configuration development --output-style=stream`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${apiProject.name} --configuration development --output-style=stream`;
         addScripts['build:api'] = `npx nx build ${apiProject.name}`;
       }
 
@@ -1496,13 +1496,13 @@ export {};
       const initUserDbProject = projects.find((p) => p.type === 'inituserdb');
       if (initUserDbProject) {
         addScripts['inituserdb'] =
-          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false yarn build:dev && NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${initUserDbProject.name} --output-style=stream`;
         addScripts['inituserdb:drop'] =
-          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args=--drop`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false yarn build:dev && NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${initUserDbProject.name} --output-style=stream --args=--drop`;
         addScripts['inituserdb:setenv'] =
-          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args=--setEnv`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false yarn build:dev && NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${initUserDbProject.name} --output-style=stream --args=--setEnv`;
         addScripts['inituserdb:drop:setenv'] =
-          `yarn build:dev && npx nx serve ${initUserDbProject.name} --output-style=stream --args="--drop --setEnv"`;
+          `NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false yarn build:dev && NX_TUI=false NX_NATIVE_COMMAND_RUNNER=false npx nx serve ${initUserDbProject.name} --output-style=stream --args="--drop --setEnv"`;
       }
 
       const interpolatedScripts: Record<string, string> = {};
