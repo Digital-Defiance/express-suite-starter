@@ -101,3 +101,15 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+
+@font-face {
+    font-family: 'Conneqt';
+    src: url('./assets/fonts/ConneqtRegular.eot');
+    src: local('Conneqt'), local('ConneqtRegular'),
+        url('./assets/fonts/ConneqtRegular.eot?#iefix') format('embedded-opentype'),
+        url('./assets/fonts/ConneqtRegular.woff2') format('woff2'),
+        url('./assets/fonts/ConneqtRegular.woff') format('woff'),
+        url('./assets/fonts/ConneqtRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
