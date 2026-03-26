@@ -106,20 +106,38 @@ export function copyDir(srcDir: string, destDir: string, variables?: Record<stri
           throw new Error(`Failed to render template ${path.relative(destDir, srcPath)}: ${error instanceof Error ? error.message : String(error)}`);
         }
       } else {
-        // Direct copy with simple placeholder replacement
-        let content = fs.readFileSync(srcPath, 'utf8');
-        if (variables) {
-          // Replace all @VARIABLE@ placeholders with their values
-          Object.keys(variables).forEach(key => {
-            const placeholder = `@${key.toUpperCase()}@`;
-            const value = variables[key];
-            if (typeof value === 'string') {
-              content = content.replace(new RegExp(placeholder, 'g'), value);
-            }
-          });
-        }
-        if (!dryRun) {
-          fs.writeFileSync(destPath, content, 'utf8');
+        // Binary file extensions that must be copied without text encoding
+        const binaryExtensions = new Set([
+          '.woff', '.woff2', '.ttf', '.otf', '.eot',
+          '.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg',
+          '.webp', '.avif', '.bmp',
+          '.pdf', '.zip', '.gz', '.tar', '.br',
+          '.wasm', '.mp3', '.mp4', '.webm', '.ogg',
+        ]);
+        const ext = path.extname(entry.name).toLowerCase();
+        const isBinary = binaryExtensions.has(ext);
+
+        if (isBinary) {
+          // Direct binary copy — no text encoding or placeholder replacement
+          if (!dryRun) {
+            fs.copyFileSync(srcPath, destPath);
+          }
+        } else {
+          // Text copy with simple placeholder replacement
+          let content = fs.readFileSync(srcPath, 'utf8');
+          if (variables) {
+            // Replace all @VARIABLE@ placeholders with their values
+            Object.keys(variables).forEach(key => {
+              const placeholder = `@${key.toUpperCase()}@`;
+              const value = variables[key];
+              if (typeof value === 'string') {
+                content = content.replace(new RegExp(placeholder, 'g'), value);
+              }
+            });
+          }
+          if (!dryRun) {
+            fs.writeFileSync(destPath, content, 'utf8');
+          }
         }
         Logger.dim(`  ${dryRun ? '[DRY RUN] Would copy' : 'Copied'}: ${path.relative(destDir, destPath)}`);
       }
