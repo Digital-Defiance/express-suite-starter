@@ -426,6 +426,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           '@noble/hashes': '1.8.0',
           '@scure/bip32': '1.7.0',
           '@scure/bip39': '1.6.0',
+          '@ethereumjs/wallet': '2.0.4',
         };
         fs.writeFileSync(
           packageJsonPath,

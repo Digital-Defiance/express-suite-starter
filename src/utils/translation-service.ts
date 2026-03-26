@@ -235,7 +235,7 @@ export class AwsTranslateProvider implements TranslationProvider {
     try {
       // Dynamic require — not a hard dependency.
       // Jest needs @aws-sdk in transformIgnorePatterns to avoid VM issues.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
+       
       const { TranslateClient, TranslateTextCommand } = require('@aws-sdk/client-translate');
 
       const clientConfig: Record<string, unknown> = { region: this.region };
