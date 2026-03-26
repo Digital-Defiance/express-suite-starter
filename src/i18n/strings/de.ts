@@ -293,4 +293,37 @@ export const deTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
   [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
     'Windows: Visual Studio Build Tools installieren',
+
+  // Translation
+  [StarterStringKey.PROMPT_AUTO_TRANSLATE]:
+    'Website-Zeichenketten automatisch in andere Sprachen übersetzen?',
+  [StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE]:
+    'Google Translate (kostenlos, kein API key)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS]:
+    'AWS Translate (verwendet vorhandene AWS-Anmeldedaten, kann Kosten verursachen)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS]:
+    'AWS Translate (Anmeldedaten eingeben, kann Kosten verursachen)',
+  [StarterStringKey.TRANSLATION_PROVIDER_SKIP]:
+    'Überspringen (Originaltext mit TODO-Markierungen verwenden)',
+  [StarterStringKey.TRANSLATION_TRANSLATING]:
+    'Website-Zeichenketten werden mit {provider} übersetzt...',
+  [StarterStringKey.TRANSLATION_SUCCESS]:
+    'Website-Zeichenketten erfolgreich in {count} Sprachen übersetzt.',
+  [StarterStringKey.TRANSLATION_PARTIAL_FAILURE]:
+    'Übersetzung für die meisten Sprachen erfolgreich. Fehlgeschlagen für: {languages}',
+  [StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT]:
+    '{provider} fehlgeschlagen: {error}',
+  [StarterStringKey.TRANSLATION_FAILED_FALLBACK]:
+    'Übersetzung nicht verfügbar. Originaltext wird mit [TODO: translate]-Markierungen für andere Sprachen verwendet.',
+  [StarterStringKey.TRANSLATION_SKIPPED]:
+    'Übersetzung übersprungen. Originaltext wird mit [TODO: translate]-Markierungen für andere Sprachen verwendet.',
+  [StarterStringKey.PROMPT_AWS_REGION]: 'AWS-Region:',
+  [StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID]: 'AWS Access Key ID:',
+  [StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY]: 'AWS Secret Access Key:',
+  [StarterStringKey.PROMPT_TRY_AWS_TRANSLATE]:
+    'Möchten Sie stattdessen AWS Translate ausprobieren? (kann Kosten verursachen)',
+  [StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED]:
+    'Übersetzungen wurden automatisch generiert. Überprüfen Sie die Datei strings-collection.ts, um die Qualität zu verifizieren.',
+  [StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES]:
+    'Die folgenden Sprachen benötigen manuelle Übersetzung: {languages}. Suchen Sie nach [TODO: translate] im generierten Projekt.',
 };

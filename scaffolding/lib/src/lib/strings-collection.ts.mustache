@@ -9,43 +9,43 @@ import { {{WorkspaceName}}StringKey } from './enumerations/{{workspaceName}}-str
  */
 export const Strings: BrandedMasterStringsCollection<typeof {{WorkspaceName}}StringKey, CoreLanguageCode> = {
   [LanguageCodes.EN_US]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isEnUs}}{{siteTitle}}{{/isEnUs}}{{^isEnUs}}Your Site Title{{/isEnUs}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isEnUs}}{{siteDescription}}{{/isEnUs}}{{^isEnUs}}Your description here{{/isEnUs}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isEnUs}}{{siteTagline}}{{/isEnUs}}{{^isEnUs}}Your tagline here{{/isEnUs}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleEnUs}}',
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionEnUs}}',
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineEnUs}}',
   },
   [LanguageCodes.EN_GB]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isEnGb}}{{siteTitle}}{{/isEnGb}}{{^isEnGb}}Your Site Title{{/isEnGb}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isEnGb}}{{siteDescription}}{{/isEnGb}}{{^isEnGb}}Your description here{{/isEnGb}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isEnGb}}{{siteTagline}}{{/isEnGb}}{{^isEnGb}}Your tagline here{{/isEnGb}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleEnGb}}',
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionEnGb}}',
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineEnGb}}',
   },
   [LanguageCodes.FR]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isFr}}{{siteTitle}}{{/isFr}}{{^isFr}}Titre de votre site{{/isFr}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isFr}}{{siteDescription}}{{/isFr}}{{^isFr}}Votre description ici{{/isFr}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isFr}}{{siteTagline}}{{/isFr}}{{^isFr}}Votre slogan ici{{/isFr}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleFr}}', {{#needsTranslationFr}}// TODO: translate{{/needsTranslationFr}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionFr}}', {{#needsTranslationFr}}// TODO: translate{{/needsTranslationFr}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineFr}}', {{#needsTranslationFr}}// TODO: translate{{/needsTranslationFr}}
   },
   [LanguageCodes.ES]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isEs}}{{siteTitle}}{{/isEs}}{{^isEs}}Título de su sitio{{/isEs}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isEs}}{{siteDescription}}{{/isEs}}{{^isEs}}Su descripción aquí{{/isEs}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isEs}}{{siteTagline}}{{/isEs}}{{^isEs}}Su eslogan aquí{{/isEs}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleEs}}', {{#needsTranslationEs}}// TODO: translate{{/needsTranslationEs}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionEs}}', {{#needsTranslationEs}}// TODO: translate{{/needsTranslationEs}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineEs}}', {{#needsTranslationEs}}// TODO: translate{{/needsTranslationEs}}
   },
   [LanguageCodes.DE]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isDe}}{{siteTitle}}{{/isDe}}{{^isDe}}Ihr Seitentitel{{/isDe}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isDe}}{{siteDescription}}{{/isDe}}{{^isDe}}Ihre Beschreibung hier{{/isDe}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isDe}}{{siteTagline}}{{/isDe}}{{^isDe}}Ihr Slogan hier{{/isDe}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleDe}}', {{#needsTranslationDe}}// TODO: translate{{/needsTranslationDe}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionDe}}', {{#needsTranslationDe}}// TODO: translate{{/needsTranslationDe}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineDe}}', {{#needsTranslationDe}}// TODO: translate{{/needsTranslationDe}}
   },
   [LanguageCodes.ZH_CN]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isZhCn}}{{siteTitle}}{{/isZhCn}}{{^isZhCn}}您的网站标题{{/isZhCn}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isZhCn}}{{siteDescription}}{{/isZhCn}}{{^isZhCn}}您的描述在这里{{/isZhCn}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isZhCn}}{{siteTagline}}{{/isZhCn}}{{^isZhCn}}您的标语在这里{{/isZhCn}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleZhCn}}', {{#needsTranslationZhCn}}// TODO: translate{{/needsTranslationZhCn}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionZhCn}}', {{#needsTranslationZhCn}}// TODO: translate{{/needsTranslationZhCn}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineZhCn}}', {{#needsTranslationZhCn}}// TODO: translate{{/needsTranslationZhCn}}
   },
   [LanguageCodes.JA]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isJa}}{{siteTitle}}{{/isJa}}{{^isJa}}サイトのタイトル{{/isJa}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isJa}}{{siteDescription}}{{/isJa}}{{^isJa}}ここに説明を入力{{/isJa}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isJa}}{{siteTagline}}{{/isJa}}{{^isJa}}ここにキャッチフレーズを入力{{/isJa}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleJa}}', {{#needsTranslationJa}}// TODO: translate{{/needsTranslationJa}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionJa}}', {{#needsTranslationJa}}// TODO: translate{{/needsTranslationJa}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineJa}}', {{#needsTranslationJa}}// TODO: translate{{/needsTranslationJa}}
   },
   [LanguageCodes.UK]: {
-    [{{WorkspaceName}}StringKey.SiteTitle]: '{{#isUk}}{{siteTitle}}{{/isUk}}{{^isUk}}Назва вашого сайту{{/isUk}}',
-    [{{WorkspaceName}}StringKey.SiteDescription]: '{{#isUk}}{{siteDescription}}{{/isUk}}{{^isUk}}Ваш опис тут{{/isUk}}',
-    [{{WorkspaceName}}StringKey.SiteTagline]: '{{#isUk}}{{siteTagline}}{{/isUk}}{{^isUk}}Ваш слоган тут{{/isUk}}',
+    [{{WorkspaceName}}StringKey.SiteTitle]: '{{siteTitleUk}}', {{#needsTranslationUk}}// TODO: translate{{/needsTranslationUk}}
+    [{{WorkspaceName}}StringKey.SiteDescription]: '{{siteDescriptionUk}}', {{#needsTranslationUk}}// TODO: translate{{/needsTranslationUk}}
+    [{{WorkspaceName}}StringKey.SiteTagline]: '{{siteTaglineUk}}', {{#needsTranslationUk}}// TODO: translate{{/needsTranslationUk}}
   },
 };

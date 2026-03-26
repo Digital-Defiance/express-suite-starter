@@ -28,6 +28,16 @@ import {
 import { TranslatableGenericError } from '@digitaldefiance/i18n-lib';
 import { LanguageCodes } from '@digitaldefiance/i18n-lib';
 import { PostGenerationValidator } from './core/validators/post-generation-validator';
+import {
+  GoogleTranslateProvider,
+  AwsTranslateProvider,
+  translateSiteStrings,
+  buildFallbackTranslations,
+  translationsToMustacheVars,
+  isSameFamily,
+  ALL_TARGET_LANGUAGES,
+} from './utils/translation-service';
+import type { TranslationProvider } from './utils/translation-service';
 
 async function main() {
   printBanner();
@@ -129,74 +139,206 @@ async function main() {
       getStarterTranslation(StarterStringKey.VALIDATION_INVALID_HOSTNAME),
   });
 
-  // Get default strings based on selected language
-  const defaultStrings = {
-    [LanguageCodes.EN_US]: {
-      siteTitle: 'Your Site Title',
-      siteDescription: 'Your description here',
-      siteTagline: 'Your tagline here',
-    },
-    [LanguageCodes.EN_GB]: {
-      siteTitle: 'Your Site Title',
-      siteDescription: 'Your description here',
-      siteTagline: 'Your tagline here',
-    },
-    [LanguageCodes.FR]: {
-      siteTitle: 'Titre de votre site',
-      siteDescription: 'Votre description ici',
-      siteTagline: 'Votre slogan ici',
-    },
-    [LanguageCodes.ES]: {
-      siteTitle: 'Título de su sitio',
-      siteDescription: 'Su descripción aquí',
-      siteTagline: 'Su eslogan aquí',
-    },
-    [LanguageCodes.DE]: {
-      siteTitle: 'Ihr Seitentitel',
-      siteDescription: 'Ihre Beschreibung hier',
-      siteTagline: 'Ihr Slogan hier',
-    },
-    [LanguageCodes.ZH_CN]: {
-      siteTitle: '您的网站标题',
-      siteDescription: '您的描述在这里',
-      siteTagline: '您的标语在这里',
-    },
-    [LanguageCodes.JA]: {
-      siteTitle: 'サイトのタイトル',
-      siteDescription: 'ここに説明を入力',
-      siteTagline: 'ここにキャッチフレーズを入力',
-    },
-    [LanguageCodes.UK]: {
-      siteTitle: 'Назва вашого сайту',
-      siteDescription: 'Ваш опис тут',
-      siteTagline: 'Ваш слоган тут',
-    },
-  };
-
-  const currentDefaults =
-    defaultStrings[selectedLanguage as keyof typeof defaultStrings] ||
-    defaultStrings[LanguageCodes.EN_US];
-
+  // Collect site metadata strings
   const siteTitle = await input({
     message: getStarterTranslation(StarterStringKey.PROMPT_SITE_TITLE),
-    default: currentDefaults.siteTitle,
+    default: 'Your Site Title',
   });
 
   const siteDescription = await input({
     message: getStarterTranslation(StarterStringKey.PROMPT_SITE_DESCRIPTION),
-    default: currentDefaults.siteDescription,
+    default: 'Your description here',
   });
 
   const siteTagline = await input({
     message: getStarterTranslation(StarterStringKey.PROMPT_SITE_TAGLINE),
-    default: currentDefaults.siteTagline,
+    default: 'Your tagline here',
   });
 
-  Logger.info(
-    getStarterTranslation(
-      StarterStringKey.NOTICE_SITE_TITLE_TAGLINE_DESCRIPTIONS,
-    ),
+  // Auto-translate site strings to other languages
+  let siteTranslations = buildFallbackTranslations(
+    selectedLanguage,
+    siteTitle,
+    siteDescription,
+    siteTagline,
   );
+
+  const wantsTranslation = await confirm({
+    message: getStarterTranslation(StarterStringKey.PROMPT_AUTO_TRANSLATE),
+    default: true,
+  });
+
+  if (wantsTranslation) {
+    // Build provider choices based on availability
+    const awsProvider = new AwsTranslateProvider();
+    const awsAvailable = await awsProvider.isAvailable();
+
+    type ProviderChoice = 'google' | 'aws-existing' | 'aws-enter' | 'skip';
+    const providerChoices: { name: string; value: ProviderChoice }[] = [
+      {
+        name: getStarterTranslation(StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE),
+        value: 'google',
+      },
+    ];
+    if (awsAvailable) {
+      providerChoices.push({
+        name: getStarterTranslation(StarterStringKey.TRANSLATION_PROVIDER_AWS),
+        value: 'aws-existing',
+      });
+    }
+    providerChoices.push({
+      name: getStarterTranslation(StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS),
+      value: 'aws-enter',
+    });
+    providerChoices.push({
+      name: getStarterTranslation(StarterStringKey.TRANSLATION_PROVIDER_SKIP),
+      value: 'skip',
+    });
+
+    const providerChoice = await select({
+      message: getStarterTranslation(StarterStringKey.PROMPT_AUTO_TRANSLATE),
+      choices: providerChoices,
+    });
+
+    if (providerChoice !== 'skip') {
+      let provider: TranslationProvider | undefined;
+
+      if (providerChoice === 'google') {
+        provider = new GoogleTranslateProvider();
+      } else if (providerChoice === 'aws-existing') {
+        provider = awsProvider;
+      } else if (providerChoice === 'aws-enter') {
+        const awsRegion = await input({
+          message: getStarterTranslation(StarterStringKey.PROMPT_AWS_REGION),
+          default: 'us-east-1',
+        });
+        const awsAccessKeyId = await input({
+          message: getStarterTranslation(StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID),
+        });
+        const awsSecretAccessKey = await input({
+          message: getStarterTranslation(StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY),
+        });
+        provider = new AwsTranslateProvider({
+          region: awsRegion,
+          accessKeyId: awsAccessKeyId,
+          secretAccessKey: awsSecretAccessKey,
+        });
+      }
+
+      if (provider) {
+        Logger.info(
+          getStarterTranslation(StarterStringKey.TRANSLATION_TRANSLATING, {
+            provider: provider.displayName,
+          }),
+        );
+
+        try {
+          siteTranslations = await translateSiteStrings(
+            provider,
+            selectedLanguage,
+            siteTitle,
+            siteDescription,
+            siteTagline,
+          );
+
+          if (siteTranslations.failedLanguages.length > 0) {
+            Logger.warning(
+              getStarterTranslation(StarterStringKey.TRANSLATION_PARTIAL_FAILURE, {
+                languages: siteTranslations.failedLanguages.join(', '),
+              }),
+            );
+          } else {
+            const translatedCount = ALL_TARGET_LANGUAGES.filter(
+              (l) => l !== selectedLanguage && !isSameFamily(selectedLanguage, l),
+            ).length;
+            Logger.info(
+              getStarterTranslation(StarterStringKey.TRANSLATION_SUCCESS, {
+                count: translatedCount,
+              }),
+            );
+          }
+        } catch (err) {
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          Logger.warning(
+            getStarterTranslation(StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT, {
+              provider: provider.displayName,
+              error: errorMsg,
+            }),
+          );
+
+          // If Google failed, offer AWS as fallback
+          if (providerChoice === 'google') {
+            const tryAws = await confirm({
+              message: getStarterTranslation(StarterStringKey.PROMPT_TRY_AWS_TRANSLATE),
+              default: false,
+            });
+
+            if (tryAws) {
+              const awsRegion = await input({
+                message: getStarterTranslation(StarterStringKey.PROMPT_AWS_REGION),
+                default: 'us-east-1',
+              });
+              const awsAccessKeyId = await input({
+                message: getStarterTranslation(StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID),
+              });
+              const awsSecretAccessKey = await input({
+                message: getStarterTranslation(StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY),
+              });
+              const fallbackProvider = new AwsTranslateProvider({
+                region: awsRegion,
+                accessKeyId: awsAccessKeyId,
+                secretAccessKey: awsSecretAccessKey,
+              });
+
+              try {
+                siteTranslations = await translateSiteStrings(
+                  fallbackProvider,
+                  selectedLanguage,
+                  siteTitle,
+                  siteDescription,
+                  siteTagline,
+                );
+              } catch {
+                Logger.warning(
+                  getStarterTranslation(StarterStringKey.TRANSLATION_FAILED_FALLBACK),
+                );
+              }
+            } else {
+              Logger.info(
+                getStarterTranslation(StarterStringKey.TRANSLATION_FAILED_FALLBACK),
+              );
+            }
+          } else {
+            Logger.warning(
+              getStarterTranslation(StarterStringKey.TRANSLATION_FAILED_FALLBACK),
+            );
+          }
+        }
+      }
+    } else {
+      Logger.info(
+        getStarterTranslation(StarterStringKey.TRANSLATION_SKIPPED),
+      );
+    }
+  } else {
+    Logger.info(
+      getStarterTranslation(StarterStringKey.TRANSLATION_SKIPPED),
+    );
+  }
+
+  // Show notice about translations
+  if (siteTranslations.providerUsed !== 'none') {
+    Logger.info(
+      getStarterTranslation(StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED),
+    );
+  }
+  if (siteTranslations.failedLanguages.length > 0) {
+    Logger.warning(
+      getStarterTranslation(StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES, {
+        languages: siteTranslations.failedLanguages.join(', '),
+      }),
+    );
+  }
 
   // Stack selection
   Logger.section(getStarterTranslation(StarterStringKey.SECTION_STACK_SELECTION));
@@ -637,10 +779,10 @@ async function main() {
 
         // Add resolutions to ensure consistent @noble package versions
         packageJson.resolutions = {
-          '@noble/curves': '1.4.2',
-          '@noble/hashes': '1.4.0',
-          '@scure/bip32': '1.4.0',
-          '@scure/bip39': '1.3.0',
+          '@noble/curves': '1.9.0',
+          '@noble/hashes': '1.8.0',
+          '@scure/bip32': '1.7.0',
+          '@scure/bip39': '1.6.0',
         };
 
         fs.writeFileSync(
@@ -1208,7 +1350,7 @@ async function main() {
 
       // Template variables for scaffolding
       const resolvedStackType = config.stackType ?? 'mern';
-      const scaffoldingVars: Record<string, any> = {
+      const scaffoldingVars: Record<string, string | boolean> = {
         workspaceName,
         WorkspaceName:
           workspaceName.charAt(0).toUpperCase() +
@@ -1222,6 +1364,8 @@ async function main() {
         siteTitle: escapeForTypeScript(siteTitle),
         siteDescription: escapeForTypeScript(siteDescription),
         siteTagline: escapeForTypeScript(siteTagline),
+        // Per-language translated site strings
+        ...translationsToMustacheVars(siteTranslations, escapeForTypeScript),
         // Language-specific boolean flags for conditional rendering
         isEnUs: selectedLanguage === LanguageCodes.EN_US,
         isEnGb: selectedLanguage === LanguageCodes.EN_GB,

@@ -236,4 +236,37 @@ export const zhCnTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.VALIDATION_MISSING_BRIGHTSTACK_ENV]:
     '缺少必需的 BrightStack 环境变量',
   [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]: '检测到跨技术栈导入',
+
+  // Translation
+  [StarterStringKey.PROMPT_AUTO_TRANSLATE]:
+    '自动将网站字符串翻译为其他语言？',
+  [StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE]:
+    'Google Translate（免费，无需 API key）',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS]:
+    'AWS Translate（使用现有 AWS 凭证，可能产生费用）',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS]:
+    'AWS Translate（输入凭证，可能产生费用）',
+  [StarterStringKey.TRANSLATION_PROVIDER_SKIP]:
+    '跳过（使用带有 TODO 标记的原始文本）',
+  [StarterStringKey.TRANSLATION_TRANSLATING]:
+    '正在使用 {provider} 翻译网站字符串...',
+  [StarterStringKey.TRANSLATION_SUCCESS]:
+    '已成功将网站字符串翻译为 {count} 种语言。',
+  [StarterStringKey.TRANSLATION_PARTIAL_FAILURE]:
+    '大多数语言翻译成功。以下语言失败：{languages}',
+  [StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT]:
+    '{provider} 失败：{error}',
+  [StarterStringKey.TRANSLATION_FAILED_FALLBACK]:
+    '翻译不可用。其他语言将使用带有 [TODO: translate] 标记的原始文本。',
+  [StarterStringKey.TRANSLATION_SKIPPED]:
+    '已跳过翻译。其他语言将使用带有 [TODO: translate] 标记的原始文本。',
+  [StarterStringKey.PROMPT_AWS_REGION]: 'AWS 区域：',
+  [StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID]: 'AWS Access Key ID：',
+  [StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY]: 'AWS Secret Access Key：',
+  [StarterStringKey.PROMPT_TRY_AWS_TRANSLATE]:
+    '您想改用 AWS Translate 吗？（可能产生费用）',
+  [StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED]:
+    '翻译是自动生成的。请检查 strings-collection.ts 文件以验证质量。',
+  [StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES]:
+    '以下语言需要手动翻译：{languages}。请在生成的项目中搜索 [TODO: translate]。',
 };

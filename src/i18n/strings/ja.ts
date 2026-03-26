@@ -285,4 +285,37 @@ export const jaTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
   [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
     'Windows: Visual Studio Build Tools をインストール',
+
+  // Translation
+  [StarterStringKey.PROMPT_AUTO_TRANSLATE]:
+    'サイトの文字列を他の言語に自動翻訳しますか？',
+  [StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE]:
+    'Google Translate（無料、API key 不要）',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS]:
+    'AWS Translate（既存の AWS 認証情報を使用、料金が発生する場合があります）',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS]:
+    'AWS Translate（認証情報を入力、料金が発生する場合があります）',
+  [StarterStringKey.TRANSLATION_PROVIDER_SKIP]:
+    'スキップ（TODO マーカー付きの原文を使用）',
+  [StarterStringKey.TRANSLATION_TRANSLATING]:
+    '{provider} を使用してサイトの文字列を翻訳中...',
+  [StarterStringKey.TRANSLATION_SUCCESS]:
+    'サイトの文字列を {count} 言語に正常に翻訳しました。',
+  [StarterStringKey.TRANSLATION_PARTIAL_FAILURE]:
+    'ほとんどの言語で翻訳に成功しました。失敗した言語：{languages}',
+  [StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT]:
+    '{provider} が失敗しました：{error}',
+  [StarterStringKey.TRANSLATION_FAILED_FALLBACK]:
+    '翻訳を利用できません。他の言語では [TODO: translate] マーカー付きの原文が使用されます。',
+  [StarterStringKey.TRANSLATION_SKIPPED]:
+    '翻訳をスキップしました。他の言語では [TODO: translate] マーカー付きの原文が使用されます。',
+  [StarterStringKey.PROMPT_AWS_REGION]: 'AWS リージョン：',
+  [StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID]: 'AWS Access Key ID：',
+  [StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY]: 'AWS Secret Access Key：',
+  [StarterStringKey.PROMPT_TRY_AWS_TRANSLATE]:
+    '代わりに AWS Translate を試しますか？（料金が発生する場合があります）',
+  [StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED]:
+    '翻訳は自動生成されました。品質を確認するには strings-collection.ts ファイルを確認してください。',
+  [StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES]:
+    '以下の言語は手動翻訳が必要です：{languages}。生成されたプロジェクトで [TODO: translate] を検索してください。',
 };

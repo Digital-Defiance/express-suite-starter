@@ -286,4 +286,37 @@ export const esTranslations: Record<StarterStringKey, string> = {
     'Faltan variables de entorno requeridas de BrightStack',
   [StarterStringKey.VALIDATION_CROSS_STACK_IMPORT]:
     'Importación entre stacks detectada',
+
+  // Translation
+  [StarterStringKey.PROMPT_AUTO_TRANSLATE]:
+    '¿Traducir automáticamente las cadenas del sitio a otros idiomas?',
+  [StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE]:
+    'Google Translate (gratuito, sin API key)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS]:
+    'AWS Translate (usa credenciales AWS existentes, puede generar cargos)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS]:
+    'AWS Translate (ingresar credenciales, puede generar cargos)',
+  [StarterStringKey.TRANSLATION_PROVIDER_SKIP]:
+    'Omitir (usar texto original con marcadores TODO)',
+  [StarterStringKey.TRANSLATION_TRANSLATING]:
+    'Traduciendo cadenas del sitio usando {provider}...',
+  [StarterStringKey.TRANSLATION_SUCCESS]:
+    'Cadenas del sitio traducidas exitosamente a {count} idiomas.',
+  [StarterStringKey.TRANSLATION_PARTIAL_FAILURE]:
+    'La traducción tuvo éxito para la mayoría de los idiomas. Falló para: {languages}',
+  [StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT]:
+    '{provider} falló: {error}',
+  [StarterStringKey.TRANSLATION_FAILED_FALLBACK]:
+    'Traducción no disponible. Se usará el texto original con marcadores [TODO: translate] para otros idiomas.',
+  [StarterStringKey.TRANSLATION_SKIPPED]:
+    'Traducción omitida. Se usará el texto original con marcadores [TODO: translate] para otros idiomas.',
+  [StarterStringKey.PROMPT_AWS_REGION]: 'Región de AWS:',
+  [StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID]: 'AWS Access Key ID:',
+  [StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY]: 'AWS Secret Access Key:',
+  [StarterStringKey.PROMPT_TRY_AWS_TRANSLATE]:
+    '¿Le gustaría probar AWS Translate en su lugar? (puede generar cargos)',
+  [StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED]:
+    'Las traducciones fueron generadas automáticamente. Revise el archivo strings-collection.ts para verificar la calidad.',
+  [StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES]:
+    'Los siguientes idiomas necesitan traducción manual: {languages}. Busque [TODO: translate] en el proyecto generado.',
 };

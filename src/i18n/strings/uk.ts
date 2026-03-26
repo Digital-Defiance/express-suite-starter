@@ -282,4 +282,37 @@ export const ukTranslations: Record<StarterStringKey, string> = {
   [StarterStringKey.SYSTEM_CHECK_MACOS]: 'macOS: xcode-select --install',
   [StarterStringKey.SYSTEM_CHECK_WINDOWS]:
     'Windows: Встановити Visual Studio Build Tools',
+
+  // Translation
+  [StarterStringKey.PROMPT_AUTO_TRANSLATE]:
+    'Автоматично перекласти рядки сайту іншими мовами?',
+  [StarterStringKey.TRANSLATION_PROVIDER_GOOGLE_FREE]:
+    'Google Translate (безкоштовно, без API key)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS]:
+    'AWS Translate (використовує наявні облікові дані AWS, може стягувати плату)',
+  [StarterStringKey.TRANSLATION_PROVIDER_AWS_ENTER_CREDS]:
+    'AWS Translate (ввести облікові дані, може стягувати плату)',
+  [StarterStringKey.TRANSLATION_PROVIDER_SKIP]:
+    'Пропустити (використовувати оригінальний текст з маркерами TODO)',
+  [StarterStringKey.TRANSLATION_TRANSLATING]:
+    'Переклад рядків сайту за допомогою {provider}...',
+  [StarterStringKey.TRANSLATION_SUCCESS]:
+    'Рядки сайту успішно перекладено на {count} мов.',
+  [StarterStringKey.TRANSLATION_PARTIAL_FAILURE]:
+    'Переклад вдався для більшості мов. Не вдалося для: {languages}',
+  [StarterStringKey.TRANSLATION_FAILED_TRYING_NEXT]:
+    '{provider} не вдалося: {error}',
+  [StarterStringKey.TRANSLATION_FAILED_FALLBACK]:
+    'Переклад недоступний. Для інших мов буде використано оригінальний текст з маркерами [TODO: translate].',
+  [StarterStringKey.TRANSLATION_SKIPPED]:
+    'Переклад пропущено. Для інших мов буде використано оригінальний текст з маркерами [TODO: translate].',
+  [StarterStringKey.PROMPT_AWS_REGION]: 'Регіон AWS:',
+  [StarterStringKey.PROMPT_AWS_ACCESS_KEY_ID]: 'AWS Access Key ID:',
+  [StarterStringKey.PROMPT_AWS_SECRET_ACCESS_KEY]: 'AWS Secret Access Key:',
+  [StarterStringKey.PROMPT_TRY_AWS_TRANSLATE]:
+    'Бажаєте спробувати AWS Translate замість цього? (може стягувати плату)',
+  [StarterStringKey.NOTICE_TRANSLATIONS_AUTO_GENERATED]:
+    'Переклади були згенеровані автоматично. Перевірте файл strings-collection.ts для контролю якості.',
+  [StarterStringKey.WARNING_TRANSLATE_TODO_LANGUAGES]:
+    'Наступні мови потребують ручного перекладу: {languages}. Шукайте [TODO: translate] у згенерованому проекті.',
 };

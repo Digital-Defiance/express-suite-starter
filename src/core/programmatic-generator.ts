@@ -18,6 +18,10 @@ import { interpolateTemplateStrings } from '../../scripts/templateUtils';
 import { LanguageCodes, CommonLanguageCode } from '@digitaldefiance/i18n-lib';
 import { TranslatableGenericError } from '@digitaldefiance/i18n-lib';
 import {
+  buildFallbackTranslations,
+  translationsToMustacheVars,
+} from '../utils/translation-service';
+import {
   getStarterTranslation,
   StarterStringKey,
   StarterComponentId,
@@ -418,10 +422,10 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           fs.readFileSync(packageJsonPath, 'utf-8'),
         );
         packageJson.resolutions = {
-          '@noble/curves': '1.4.2',
-          '@noble/hashes': '1.4.0',
-          '@scure/bip32': '1.4.0',
-          '@scure/bip39': '1.3.0',
+          '@noble/curves': '1.9.0',
+          '@noble/hashes': '1.8.0',
+          '@scure/bip32': '1.7.0',
+          '@scure/bip39': '1.6.0',
         };
         fs.writeFileSync(
           packageJsonPath,
@@ -693,6 +697,11 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
         siteTitle: escapeForTypeScript(siteTitle),
         siteDescription: escapeForTypeScript(siteDescription),
         siteTagline: escapeForTypeScript(siteTagline),
+        // Per-language translated site strings (fallback: original text with TODO markers)
+        ...translationsToMustacheVars(
+          buildFallbackTranslations(language, siteTitle, siteDescription, siteTagline),
+          escapeForTypeScript,
+        ),
         isEnUs: language === LanguageCodes.EN_US,
         isEnGb: language === LanguageCodes.EN_GB,
         isFr: language === LanguageCodes.FR,
