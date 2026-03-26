@@ -1,6 +1,6 @@
 {
   "name": "@digitaldefiance/express-suite-starter",
-  "version": "4.25.1",
+  "version": "4.25.2",
   "license": "MIT",
   "bin": {
     "create-express-suite": "./dist/src/cli.js"

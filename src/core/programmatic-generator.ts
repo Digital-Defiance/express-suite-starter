@@ -427,6 +427,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           '@scure/bip32': '1.7.0',
           '@scure/bip39': '1.6.0',
           '@ethereumjs/wallet': '2.0.4',
+          'ethereum-cryptography': '3.2.0',
         };
         fs.writeFileSync(
           packageJsonPath,
