@@ -962,6 +962,9 @@ async function main() {
             // Set bundle to true to properly resolve dependencies
             projectJson.targets.build.options.bundle = true;
 
+            // Disable generatePackageJson - no longer supported with current TS setup
+            projectJson.targets.build.options.generatePackageJson = false;
+
             // Convert any existing string-format assets to object notation
             const existingAssets =
               projectJson.targets.build.options.assets || [];
@@ -1156,14 +1159,14 @@ async function main() {
             outputs: [`{workspaceRoot}/dist/${reactProject.name}`],
             options: {
               cwd: reactProject.name,
-              command: 'vite build --mode development',
+              command: 'npx vite build --mode development',
             },
             configurations: {
               development: {
-                command: 'vite build --mode development',
+                command: 'npx vite build --mode development',
               },
               production: {
-                command: 'vite build --mode production',
+                command: 'npx vite build --mode production',
               },
             },
           };

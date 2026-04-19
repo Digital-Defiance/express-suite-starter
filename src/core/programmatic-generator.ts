@@ -1050,6 +1050,7 @@ function configureApiProjectJson(
   if (projectJson.targets?.build?.options) {
     projectJson.targets.build.options.skipTypeCheck = true;
     projectJson.targets.build.options.bundle = true;
+    projectJson.targets.build.options.generatePackageJson = false;
 
     const existingAssets = projectJson.targets.build.options.assets || [];
     const hasObjectAssets = existingAssets.some(
@@ -1229,11 +1230,11 @@ function configureReactProjectJson(
     outputs: [`{workspaceRoot}/dist/${reactProject.name}`],
     options: {
       cwd: reactProject.name,
-      command: 'vite build --mode development',
+      command: 'npx vite build --mode development',
     },
     configurations: {
-      development: { command: 'vite build --mode development' },
-      production: { command: 'vite build --mode production' },
+      development: { command: 'npx vite build --mode development' },
+      production: { command: 'npx vite build --mode production' },
     },
   };
 
