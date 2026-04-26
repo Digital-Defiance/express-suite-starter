@@ -26,6 +26,7 @@ export const extraMenuConfig: IMenuConfig = {
       icon: <Email />,
       link: '/admin/emails',
       requiresAuth: true,
+      requiresAdmin: true,
       includeOnMenus: [ExtraMenu, MenuTypes.SideMenu],
       index: 1,
     },
