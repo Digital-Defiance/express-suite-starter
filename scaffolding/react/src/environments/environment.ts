@@ -12,4 +12,5 @@ export const environment: IEnvironment = {
   production: false,
   siteUrl: server ?? 'http://localhost:3000',
   apiUrl: server !== undefined ? `${server}/api` : 'http://localhost:3000/api',
+  emailDomain: 'localhost.localdomain',
 };

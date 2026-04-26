@@ -13,4 +13,5 @@ export const environment: IEnvironment = {
   siteUrl: server ?? 'https://{{hostname}}',
   apiUrl:
     server !== undefined ? `${server}/api` : 'https://{{hostname}}/api',
+  emailDomain: '{{hostname}}',
 };
