@@ -1,7 +1,5 @@
 import {
   Application,
-  DummyEmailService,
-  ServiceKeys,
   BaseRouter,
   IApplication,
 } from '@digitaldefiance/node-express-suite';
@@ -57,9 +55,15 @@ import { ModelDocMap } from './shared-types';
  * ```
  */
 export class App<
-  TInitResults extends IServerInitResult<Types.ObjectId> = IServerInitResult<Types.ObjectId>,
+  TInitResults extends IServerInitResult<Types.ObjectId> =
+    IServerInitResult<Types.ObjectId>,
   TConstants extends IConstants = IConstants,
-> extends Application<Types.ObjectId, Environment<Types.ObjectId>, TConstants, AppRouter> {
+> extends Application<
+  Types.ObjectId,
+  Environment<Types.ObjectId>,
+  TConstants,
+  AppRouter
+> {
   /**
    * The Mongo database plugin for accessing Mongoose-specific features.
    */
@@ -89,14 +93,15 @@ export class App<
         if (!mongoApp) {
           throw new Error(
             'MongoDatabasePlugin has not been initialized yet. ' +
-            'Ensure useDatabasePlugin() is called before start().',
+              'Ensure useDatabasePlugin() is called before start().',
           );
         }
         return new LibraryApiRouter(mongoApp);
       },
       undefined, // Default CSP config
       constants,
-      (apiRouter: BaseRouter<Types.ObjectId>): AppRouter => new AppRouter(apiRouter),
+      (apiRouter: BaseRouter<Types.ObjectId>): AppRouter =>
+        new AppRouter(apiRouter),
       initMiddleware,
     );
 
@@ -109,10 +114,5 @@ export class App<
       constants,
     });
     this.useDatabasePlugin(this.mongoPlugin);
-
-    // Register the DummyEmailService - users should replace this with their own email service
-    const emailService = new DummyEmailService<Types.ObjectId>(this);
-    // const emailService = new EmailService(this);
-    this.services.register(ServiceKeys.EMAIL, () => emailService);
   }
 }

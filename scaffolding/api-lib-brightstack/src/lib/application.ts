@@ -3,12 +3,7 @@ import {
   BrightDbDatabasePlugin,
   BrightDbApiRouter,
 } from '@brightchain/node-express-suite';
-import {
-  BaseRouter,
-  DummyEmailService,
-  ServiceKeys,
-  IApplication,
-} from '@digitaldefiance/node-express-suite';
+import { BaseRouter, IApplication } from '@digitaldefiance/node-express-suite';
 import { Environment } from './environment';
 import { IConstants } from './interfaces/constants';
 import { Constants } from './constants';
@@ -77,10 +72,5 @@ export class App<
     // Register the BrightDbDatabasePlugin
     this.brightDbPlugin = new BrightDbDatabasePlugin<TID>(environment);
     this.useDatabasePlugin(this.brightDbPlugin);
-
-    // Register the DummyEmailService - users should replace this with their own email service
-    const emailService = new DummyEmailService<TID>(this);
-    // const emailService = new EmailService(this);
-    this.services.register(ServiceKeys.EMAIL, () => emailService);
   }
 }
