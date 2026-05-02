@@ -201,6 +201,13 @@ export default async function globalSetup(): Promise<void> {
       envContent = `PORT=${port}\n${envContent}`;
     }
 
+    // Enable TOTP feature flag so the UI renders TOTP controls
+    if (/^TOTP_AVAILABLE=.*/m.test(envContent)) {
+      envContent = envContent.replace(/^TOTP_AVAILABLE=.*/gm, 'TOTP_AVAILABLE=true');
+    } else {
+      envContent += '\nTOTP_AVAILABLE=true\n';
+    }
+
     fs.writeFileSync(envPath, envContent);
     console.log(`[e2e-setup] Patched .env with PORT=${port}`);
 
