@@ -92,6 +92,7 @@ export default async function globalSetup(): Promise<void> {
         prod: [
           '@aws-sdk/client-ses',
           '@digitaldefiance/node-express-suite@latest',
+          '@digitaldefiance/node-express-suite-mongo@latest',
           '@digitaldefiance/ecies-lib@latest',
           '@digitaldefiance/node-ecies-lib@latest',
           '@digitaldefiance/i18n-lib@latest',

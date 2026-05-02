@@ -37,8 +37,19 @@ const getEmailDomain = () => {
   return environment.emailDomain;
 };
 
+const getTotpAvailable = (): boolean => {
+  if (
+    typeof window !== 'undefined' &&
+    (window as any).APP_CONFIG
+  ) {
+    return !!(window as any).APP_CONFIG.totpAvailable;
+  }
+  return false;
+};
+
 const API_BASE_URL = getApiBaseUrl();
 const EMAIL_DOMAIN = getEmailDomain();
+const TOTP_AVAILABLE = getTotpAvailable();
 
 const AuthProviderWithNavigation: FC<{ children: React.ReactNode }> = ({
   children,
@@ -186,7 +197,12 @@ const InnerApp: FC = () => {
             path="/user-settings"
             element={
               <PrivateRoute>
-                <UserSettingsFormWrapper />
+                <UserSettingsFormWrapper
+                  constants={AppConstants}
+                  eciesConfig={EciesConfig}
+                  emailDomain={EMAIL_DOMAIN}
+                  totpAvailable={TOTP_AVAILABLE}
+                />
               </PrivateRoute>
             }
           />

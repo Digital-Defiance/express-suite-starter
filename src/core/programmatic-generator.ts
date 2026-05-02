@@ -323,7 +323,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
     description: getStarterTranslation(StarterStringKey.STEP_CREATE_MONOREPO),
     execute: (ctx) => {
       runCommand(
-        `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider}`,
+        `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider} --analytics=false`,
         { cwd: parentDir, dryRun: ctx.dryRun },
       );
     },

@@ -671,7 +671,7 @@ async function main() {
     description: getStarterTranslation(StarterStringKey.STEP_CREATE_MONOREPO),
     execute: (context) => {
       runCommand(
-        `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider}`,
+        `npx create-nx-workspace@latest "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider} --analytics=false`,
         { cwd: parentDir, dryRun: context.dryRun },
       );
     },
