@@ -2,7 +2,7 @@ import { Box, CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { FC, useCallback } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router';
 import '../styles.scss';
 import SplashPage from './pages/SplashPage';
 import { createAppTheme } from './theme.tsx';

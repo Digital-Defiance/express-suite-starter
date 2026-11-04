@@ -717,7 +717,7 @@ create-express-suite
 - ✅ Added missing dependencies to standard.json preset:
   - @mui/x-date-pickers (prod)
   - date-fns (prod)
-  - react, react-dom, react-router-dom (prod)
+  - react, react-dom, react-router (prod)
   - sass (dev)
 - ✅ Fixed build error where @mui/x-date-pickers was missing from generated projects
 - ✅ Removed test-utils project generation (using published package instead)

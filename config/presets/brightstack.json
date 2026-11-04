@@ -79,7 +79,7 @@
       "date-fns",
       "react",
       "react-dom",
-      "react-router-dom",
+      "react-router",
       "cors",
       "dotenv",
       "express",

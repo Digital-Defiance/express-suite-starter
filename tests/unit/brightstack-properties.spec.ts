@@ -100,7 +100,7 @@ describe('Feature: starter-brightstack-support, Property 5: BrightStack preset e
  * Validates: Requirements 6.5
  *
  * For any shared dependency in {express, helmet, cors, jsonwebtoken, dotenv,
- * react, react-dom, react-router-dom, axios}, both the MERN preset and the
+ * react, react-dom, react-router, axios}, both the MERN preset and the
  * BrightStack preset SHALL include that dependency in their prod package list.
  */
 
@@ -120,7 +120,7 @@ const sharedDeps = [
   'dotenv',
   'react',
   'react-dom',
-  'react-router-dom',
+  'react-router',
   'axios',
 ];
 
