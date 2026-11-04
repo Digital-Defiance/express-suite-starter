@@ -520,6 +520,12 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 4.28.0
+
+- Generated React apps now use `react-router` v8 instead of `react-router-dom`
+- Pinned `create-nx-workspace` to `24.0.4` so generated workspaces get a fixed Nx version
+- Generated projects install `@digitaldefiance/express-suite-react-components` as `latest`, which must be 5.0.0 or later
+
 ### Version 4.19.11
 
 - Version sync release (no substantive changes)
