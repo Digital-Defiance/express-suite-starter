@@ -520,6 +520,10 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 5.0.1
+
+- Fixed workspace generation hanging on an interactive `npx` prompt by passing `--yes` to `create-nx-workspace`
+
 ### Version 5.0.0
 
 - Version sync for Express Suite 5.0.0
