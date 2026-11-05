@@ -34,12 +34,14 @@
       "@types/node",
       "@types/react",
       "@types/react-dom",
-      "sass"
+      "sass",
+      "vite-plugin-node-polyfills"
     ],
     "prod": [
       "@brightchain/node-express-suite",
       "@brightchain/db",
       "@brightchain/brightchain-lib",
+      "bcrypt@^5.1.1",
       "@digitaldefiance/node-express-suite",
       "@digitaldefiance/branded-interface",
       "@digitaldefiance/branded-enum",

@@ -520,6 +520,16 @@ MIT © Digital Defiance
 
 ## ChangeLog
 
+### Version 5.0.2
+
+- Fixed workspace generation hanging on the "push to GitHub?" prompt by passing `--skipGitHubPush --interactive=false` to `create-nx-workspace`
+- Fixed the generated API/initUserDb build failing with `INVALID_TLA_FORMAT` by forcing the rolldown bundle to ESM output (the crypto dependency chain uses top-level await, which the generator's default CJS output cannot bundle)
+- Fixed the generated API/initUserDb build failing to parse transitive dependencies (e.g. `nat-upnp`) by externalizing all bare module specifiers in the rolldown bundle instead of only the project's direct dependencies
+- Fixed the generated React app failing to mount in the browser (`Class extends value undefined`): the crypto dependency chain imports Node built-ins (e.g. `events`) that Vite externalizes for the browser. Added `vite-plugin-node-polyfills` to the generated React app and its Vite config so those built-ins are shimmed.
+- Excluded the workspace's own internal libraries and rolldown's injected `@oxc-project/*` runtime helpers from API-bundle externalization, so the generated server resolves them at runtime.
+- Pinned Playwright (`@playwright/test` / `playwright-core`) to `1.64.1` in generated projects: `1.65.0` was published depending on a `playwright-core@1.65.0` that is not available as a stable release, breaking `yarn` resolution.
+- Pinned `bcrypt` to `^5.1.1` in the BrightStack stack and made the native-module rebuild step reliably compile native bindings (bcrypt, argon2) by enabling build scripts directly in `.yarnrc.yml` and force-rebuilding the named packages.
+
 ### Version 5.0.1
 
 - Fixed workspace generation hanging on an interactive `npx` prompt by passing `--yes` to `create-nx-workspace`

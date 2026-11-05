@@ -48,6 +48,22 @@ function waitForServer(url: string, timeoutMs: number, intervalMs: number): Prom
 }
 
 export default async function globalSetup(): Promise<void> {
+  // Disable Yarn's package minimum-age gate for all yarn invocations during
+  // generation and install. The e2e must verify the just-published suite
+  // packages, but Yarn (4.18+) defaults to a 24h cooldown and would otherwise
+  // silently resolve the previous major (e.g. 4.28.3 instead of 5.x) until the
+  // new release ages. This only affects the throwaway e2e workspace, not the
+  // generator's output or real users.
+  process.env.YARN_NPM_MINIMAL_AGE_GATE = '0';
+  // Native modules (e.g. bcrypt in the BrightStack stack) must run build
+  // scripts to compile their bindings. Yarn enables "hardened mode" when it
+  // detects CI, which force-disables build scripts and ignores
+  // YARN_ENABLE_SCRIPTS. Clearing CI for this setup process (and enabling
+  // scripts) lets those bindings compile so the generated server can start.
+  delete process.env.CI;
+  process.env.YARN_ENABLE_SCRIPTS = '1';
+  process.env.YARN_ENABLE_HARDENED_MODE = '0';
+
   // Step 1: Create a unique temp directory
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'starter-e2e-'));
   const projectDir = path.join(tmpDir, WORKSPACE_NAME);
@@ -88,6 +104,7 @@ export default async function globalSetup(): Promise<void> {
           '@types/node',
           '@types/react',
           '@types/react-dom',
+          'vite-plugin-node-polyfills',
         ],
         prod: [
           '@aws-sdk/client-ses',
@@ -303,12 +320,14 @@ export default async function globalSetup(): Promise<void> {
               '@types/node',
               '@types/react',
               '@types/react-dom',
+          'vite-plugin-node-polyfills',
             ],
             prod: [
               '@aws-sdk/client-ses',
               '@brightchain/node-express-suite@latest',
               '@brightchain/db@latest',
               '@brightchain/brightchain-lib@latest',
+              'bcrypt@^5.1.1',
               '@digitaldefiance/node-express-suite@latest',
               '@digitaldefiance/branded-interface@latest',
               '@digitaldefiance/branded-enum@latest',

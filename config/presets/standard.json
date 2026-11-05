@@ -36,7 +36,8 @@
       "@types/node",
       "@types/react",
       "@types/react-dom",
-      "sass"
+      "sass",
+      "vite-plugin-node-polyfills"
     ],
     "prod": [
       "@digitaldefiance/node-express-suite",

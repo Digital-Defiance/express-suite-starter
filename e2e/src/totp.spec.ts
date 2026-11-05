@@ -49,11 +49,22 @@ async function registerTestUser(
   request: APIRequestContext,
   suffix: string,
 ): Promise<{ username: string; email: string; mnemonic: string }> {
-  const username = `totp-test-${suffix}`;
+  // UsernameRegex is /^[A-Za-z0-9]{3,30}$/ — strip non-alphanumerics from the
+  // suffix and cap length so generated usernames are always valid.
+  const alnumSuffix = suffix.replace(/[^A-Za-z0-9]/g, '');
+  const username = `totptest${alnumSuffix}`.slice(0, 30);
   const email = `totp-test-${suffix}@example.com`;
 
+  // displayName is required when the app's Constants.EnableDisplayName is true
+  // (the default), matching the scaffolded RegisterForm. Its regex allows
+  // letters, numbers, spaces, hyphens, apostrophes and periods.
   const response = await request.post(`${state.baseURL}/api/user/register`, {
-    data: { username, email, timezone: 'UTC' },
+    data: {
+      username,
+      email,
+      timezone: 'UTC',
+      displayName: `TOTP Test ${suffix}`,
+    },
   });
 
   if (!response.ok()) {
@@ -68,6 +79,63 @@ async function registerTestUser(
   }
 
   return { username, email, mnemonic };
+}
+
+/**
+ * Verify a freshly-registered user's email so they can log in.
+ *
+ * Self-registered users start in PendingEmailVerification status and the suite
+ * blocks their login until verified. In dev/e2e the app uses the in-memory
+ * FakeEmailService, which captures the verification email; the admin-only
+ * route GET /api/admin/emails/:address exposes it. This helper logs in as the
+ * pre-verified admin (via the UI, to obtain a bearer token the same way the
+ * app does), reads the captured verification email, extracts the token, and
+ * calls POST /api/user/verify-email. It then clears the admin session so the
+ * caller can log in as the test user from a clean state.
+ */
+async function verifyUserEmailAsAdmin(
+  page: import('@playwright/test').Page,
+  email: string,
+): Promise<void> {
+  // Log in as admin through the UI so localStorage holds a valid auth token.
+  await uiLoginWithMnemonic(page, state.adminUsername, state.adminMnemonic);
+  await page.waitForURL('**/dashboard**', { timeout: 15_000 });
+  const token = await page.evaluate(() => localStorage.getItem('authToken'));
+  if (!token) {
+    throw new Error('Admin login did not store an auth token');
+  }
+
+  // Read the captured verification email for this user (admin-only route).
+  const emailsResp = await page.request.get(
+    `${state.baseURL}/api/admin/emails/${encodeURIComponent(email)}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!emailsResp.ok()) {
+    throw new Error(
+      `Could not read captured emails for ${email} (${emailsResp.status()})`,
+    );
+  }
+  const emails = await emailsResp.json();
+  const bodies = (Array.isArray(emails) ? emails : [])
+    .map((e: { text?: string; html?: string }) => `${e.html ?? ''}${e.text ?? ''}`)
+    .join('\n');
+  const tokenMatch = bodies.match(/verify-email\?token=([A-Fa-f0-9]+)/i);
+  if (!tokenMatch) {
+    throw new Error(`No verification token found in emails for ${email}`);
+  }
+
+  const verifyResp = await page.request.post(
+    `${state.baseURL}/api/user/verify-email`,
+    { data: { token: tokenMatch[1] } },
+  );
+  if (!verifyResp.ok()) {
+    throw new Error(
+      `Email verification failed for ${email} (${verifyResp.status()})`,
+    );
+  }
+
+  // Clear the admin session so the caller logs in as the test user cleanly.
+  await page.evaluate(() => localStorage.clear());
 }
 
 /**
@@ -129,9 +197,14 @@ test.describe('TOTP two-factor authentication', () => {
     page,
     request,
   }) => {
-    // ── Step 1: Register a test user ────────────────────────────────────────
+    // ── Step 1: Register a test user and verify their email ─────────────────
     const suffix = Date.now().toString(36);
-    const { username, mnemonic } = await registerTestUser(request, suffix);
+    const { username, email, mnemonic } = await registerTestUser(
+      request,
+      suffix,
+    );
+    // Self-registered users must verify email before they can log in.
+    await verifyUserEmailAsAdmin(page, email);
 
     // ── Step 2: Log in via the UI (no TOTP yet — normal flow) ────────────────
     await uiLoginWithMnemonic(page, username, mnemonic);
@@ -265,9 +338,14 @@ test.describe('TOTP two-factor authentication', () => {
     page,
     request,
   }) => {
-    // Register a fresh user
+    // Register a fresh user and verify their email
     const suffix = `inv-${Date.now().toString(36)}`;
-    const { username, mnemonic } = await registerTestUser(request, suffix);
+    const { username, email, mnemonic } = await registerTestUser(
+      request,
+      suffix,
+    );
+    // Self-registered users must verify email before they can log in.
+    await verifyUserEmailAsAdmin(page, email);
 
     // Log in via UI to get an authenticated session
     await uiLoginWithMnemonic(page, username, mnemonic);

@@ -323,7 +323,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
     description: getStarterTranslation(StarterStringKey.STEP_CREATE_MONOREPO),
     execute: (ctx) => {
       runCommand(
-        `npx --yes create-nx-workspace@24.0.4 "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider} --analytics=false`,
+        `npx --yes create-nx-workspace@24.0.4 "${workspaceName}" --package-manager=yarn --preset=apps --ci=${config.nx?.ciProvider} --analytics=false --interactive=false --skipGitHubPush`,
         { cwd: parentDir, dryRun: ctx.dryRun },
       );
     },
@@ -428,6 +428,11 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           '@scure/bip39': '1.6.0',
           '@ethereumjs/wallet': '2.0.4',
           'ethereum-cryptography': '3.2.0',
+          // Pin Playwright to a known-good stable. 1.65.0 was published with a
+          // dependency on playwright-core@1.65.0 that is not available as a
+          // stable release (prerelease-only), which breaks `yarn` resolution.
+          '@playwright/test': '1.64.1',
+          'playwright-core': '1.64.1',
         };
         fs.writeFileSync(
           packageJsonPath,
@@ -777,6 +782,52 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
 
 
   executor.addStep({
+    name: 'addReactNodePolyfills',
+    description: 'Adding browser Node polyfills to the React Vite config',
+    execute: () => {
+      // The suite's crypto dependency chain (ecies -> @ethereumjs/util) imports
+      // Node built-ins such as `events`. Vite externalizes those for the
+      // browser, leaving `class AsyncEventEmitter extends events.EventEmitter`
+      // extending `undefined`, which throws at load and prevents React from
+      // mounting. vite-plugin-node-polyfills supplies browser-safe shims. Run
+      // AFTER generation + install so the plugin is resolvable and the project
+      // graph is not re-evaluated against an unresolvable import mid-generation.
+      const reactProject = projects.find(
+        (p) => p.type === 'react' && p.enabled,
+      );
+      if (!reactProject) {
+        return;
+      }
+      const viteConfigPath = ['vite.config.mts', 'vite.config.ts']
+        .map((name) => path.join(monorepoPath, reactProject.name, name))
+        .find((candidate) => fs.existsSync(candidate));
+      if (!viteConfigPath) {
+        return;
+      }
+      const original = fs.readFileSync(viteConfigPath, 'utf-8');
+      if (original.includes('vite-plugin-node-polyfills')) {
+        return;
+      }
+      let patched = original.replace(
+        /(import react from '@vitejs\/plugin-react';\n)/,
+        "$1import { nodePolyfills } from 'vite-plugin-node-polyfills';\n",
+      );
+      patched = patched.replace(
+        /plugins:\s*\[/,
+        'plugins: [nodePolyfills(), ',
+      );
+      if (patched !== original) {
+        fs.writeFileSync(viteConfigPath, patched);
+        Logger.info(
+          getStarterTranslation(StarterStringKey.PROJECT_ADDED_TARGETS, {
+            name: reactProject.name,
+          }),
+        );
+      }
+    },
+  });
+
+  executor.addStep({
     name: 'fixPlaywrightPlugin',
     description: 'Configuring Nx Playwright plugin to avoid daemon issues',
     skip: () => !includeE2e,
@@ -959,14 +1010,51 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
       Logger.info(
         getStarterTranslation(StarterStringKey.COMMAND_REBUILDING_NATIVE),
       );
-      runCommand('yarn config set enableScripts true', {
+      // Enable build scripts so native modules (bcrypt, argon2) compile their
+      // bindings. `yarn config set enableScripts true` is unreliable here (some
+      // Yarn 4.x contexts silently store `false`), so write the setting
+      // directly into .yarnrc.yml, which always takes precedence.
+      if (!context.dryRun) {
+        const yarnrcPath = path.join(monorepoPath, '.yarnrc.yml');
+        let yarnrc = fs.existsSync(yarnrcPath)
+          ? fs.readFileSync(yarnrcPath, 'utf-8')
+          : '';
+        if (/^enableScripts:/m.test(yarnrc)) {
+          yarnrc = yarnrc.replace(/^enableScripts:.*$/m, 'enableScripts: true');
+        } else {
+          yarnrc = `enableScripts: true\n${yarnrc}`;
+        }
+        fs.writeFileSync(yarnrcPath, yarnrc);
+      }
+      // Reinstall, then force-rebuild native modules. A plain `yarn rebuild`
+      // can skip packages Yarn thinks are already built; explicitly naming the
+      // native deps (and clearing CI, which triggers Yarn's build-script-
+      // disabling hardened mode) reliably compiles their bindings.
+      const nativeEnv = { ...process.env, YARN_ENABLE_SCRIPTS: '1' };
+      delete (nativeEnv as Record<string, string | undefined>).CI;
+      runCommand('yarn install', {
         cwd: monorepoPath,
         dryRun: context.dryRun,
+        env: nativeEnv,
       });
       runCommand('yarn rebuild', {
         cwd: monorepoPath,
         dryRun: context.dryRun,
+        env: nativeEnv,
       });
+      // Explicitly rebuild known native deps that may still be skipped.
+      for (const nativePkg of ['bcrypt', 'argon2']) {
+        try {
+          runCommand(`yarn rebuild ${nativePkg}`, {
+            cwd: monorepoPath,
+            dryRun: context.dryRun,
+            env: nativeEnv,
+            silent: true,
+          });
+        } catch {
+          // Package may not be present in this stack; ignore.
+        }
+      }
     },
   });
 
