@@ -27,6 +27,8 @@
       "eslint-plugin-playwright",
       "supertest",
       "patch-package",
+      "prettier@~3.6.2",
+      "@testing-library/jest-dom@^6.9.1",
       "@types/cors",
       "@types/express",
       "@types/jsonwebtoken",

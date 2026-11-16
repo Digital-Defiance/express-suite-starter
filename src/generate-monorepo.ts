@@ -1436,9 +1436,13 @@ async function main() {
       // Stack-dependent project types use suffixed directories (e.g., api-mern, api-lib-mern, inituserdb-mern)
       const stackDependentTypes = ['api', 'api-lib', 'inituserdb'];
       projects.forEach((project) => {
+        // The API e2e project gets its own scaffolding (health check spec);
+        // the react e2e project keeps the Nx Playwright defaults.
         const scaffoldingDirName = stackDependentTypes.includes(project.type)
           ? `${project.type}-${resolvedStackType}`
-          : project.type;
+          : project.type === 'e2e' && project.name.endsWith('-api-e2e')
+            ? 'api-e2e'
+            : project.type;
         const projectSrc = path.join(scaffoldingDir, scaffoldingDirName);
         if (fs.existsSync(projectSrc)) {
           copyDir(
@@ -1692,6 +1696,13 @@ export {};
         addScripts['build:api'] = `npx nx build ${apiProject.name}`;
       }
 
+      const apiE2eProject = projects.find(
+        (p) => p.type === 'e2e' && p.name.endsWith('-api-e2e'),
+      );
+      if (apiE2eProject) {
+        addScripts['test:e2e'] =
+          `NODE_ENV=development npx nx e2e ${apiE2eProject.name}`;
+      }
       const reactProject = projects.find((p) => p.type === 'react');
       if (reactProject) {
         addScripts['build:react'] = `npx nx build ${reactProject.name}`;
