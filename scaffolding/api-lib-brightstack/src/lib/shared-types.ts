@@ -1,18 +1,10 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ValidationChain } from 'express-validator';
 import { Brand } from 'ts-brand';
-import type { IUserDocument } from './documents/user';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
-import { IKeyPairBufferWithUnEncryptedPrivateKey, ISigningKeyPrivateKeyInfo, ISimplePublicKeyOnly, ISimpleKeyPairBuffer, ISimplePublicKeyOnlyBuffer, PlatformID } from '@digitaldefiance/node-ecies-lib';
+import { IKeyPairBufferWithUnEncryptedPrivateKey, ISigningKeyPrivateKeyInfo, ISimplePublicKeyOnly, ISimpleKeyPairBuffer, ISimplePublicKeyOnlyBuffer } from '@digitaldefiance/node-ecies-lib';
 import { IApiErrorResponse, IApiMessageResponse, IStatusCodeResponse, IApiExpressValidationErrorResponse } from '@digitaldefiance/node-express-suite';
-import {
-  DefaultBackendIdType,
-  IBlockStorageSchema,
-  IBlockStorageModel,
-  IBlockStorageSchemaEntry,
-  SchemaMap as BrightDbSchemaMap,
-  BrightDbCollection,
-} from '@brightchain/node-express-suite';
+import { SchemaMap as BrightDbSchemaMap } from '@brightchain/node-express-suite';
 
 export type { DefaultBackendIdType } from '@brightchain/node-express-suite';
 

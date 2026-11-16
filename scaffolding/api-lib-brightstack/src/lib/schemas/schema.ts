@@ -1,7 +1,4 @@
-import {
-  IBlockStorageSchemaEntry,
-  SchemaMap,
-} from '@brightchain/node-express-suite';
+import { SchemaMap } from '@brightchain/node-express-suite';
 import { UserSchema } from './user';
 import { IConstants } from '../interfaces/constants';
 import { Constants } from '../constants';
@@ -13,7 +10,7 @@ import { Constants } from '../constants';
  * BrightDB uses declarative schema entries that describe the collection structure.
  * The BrightDbDatabasePlugin uses this map to initialize collections.
  */
-export function getSchemaMap(constants: IConstants = Constants): SchemaMap {
+export function getSchemaMap(_constants: IConstants = Constants): SchemaMap {
   return {
     User: {
       collection: 'users',
