@@ -152,18 +152,11 @@ scaffolding/                     ✅ Original scaffolding preserved
 
 ### Backward Compatibility
 
-The original `scripts/generate-monorepo.ts` is preserved. Users can:
+The original `scripts/generate-monorepo.ts` was removed in 6.0.0 (the `create-express-suite` bin never ran it). Use:
 
-1. **Use new version:**
-   ```bash
-   yarn start  # Uses src/generate-monorepo.ts
-   ```
-
-2. **Use old version:**
-   ```bash
-   npx tsc scripts/generate-monorepo.ts --outDir scripts/dist
-   node scripts/dist/generate-monorepo.js
-   ```
+```bash
+yarn start  # Uses src/generate-monorepo.ts
+```
 
 ### Gradual Migration
 

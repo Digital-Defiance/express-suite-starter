@@ -12,7 +12,7 @@
   },
   "node": {
     "version": "22",
-    "yarnVersion": "4.9.1"
+    "yarnVersion": "4.11.0"
   },
   "packages": {
     "dev": [
@@ -79,9 +79,9 @@
       "bip39",
       "currency-codes",
       "date-fns",
-      "react",
-      "react-dom",
-      "react-router",
+      "react@^19",
+      "react-dom@^19",
+      "react-router@^8",
       "cors",
       "dotenv",
       "express",

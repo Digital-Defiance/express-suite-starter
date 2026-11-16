@@ -12,7 +12,7 @@
   },
   "node": {
     "version": "22",
-    "yarnVersion": "4.9.1"
+    "yarnVersion": "4.11.0"
   },
   "packages": {
     "dev": [
@@ -23,8 +23,8 @@
       "@types/react-dom"
     ],
     "prod": [
-      "react",
-      "react-dom",
+      "react@^19",
+      "react-dom@^19",
       "express",
       "dotenv"
     ]

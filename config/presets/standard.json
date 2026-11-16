@@ -12,11 +12,11 @@
   },
   "node": {
     "version": "22",
-    "yarnVersion": "4.9.1"
+    "yarnVersion": "4.11.0"
   },
   "packages": {
     "dev": [
-      "@digitaldefiance/express-suite-test-utils",
+      "@digitaldefiance/express-suite-test-utils@^1.1.2",
       "@typescript-eslint/eslint-plugin",
       "@typescript-eslint/parser",
       "eslint-config-prettier",
@@ -40,14 +40,14 @@
       "vite-plugin-node-polyfills"
     ],
     "prod": [
-      "@digitaldefiance/node-express-suite",
-      "@digitaldefiance/node-express-suite-mongo",
-      "@digitaldefiance/ecies-lib",
-      "@digitaldefiance/node-ecies-lib",
-      "@digitaldefiance/i18n-lib",
-      "@digitaldefiance/suite-core-lib",
-      "@digitaldefiance/mongoose-types",
-      "@digitaldefiance/express-suite-react-components",
+      "@digitaldefiance/node-express-suite@^6.0.0",
+      "@digitaldefiance/node-express-suite-mongo@^6.0.0",
+      "@digitaldefiance/ecies-lib@^5.2.3",
+      "@digitaldefiance/node-ecies-lib@^5.2.3",
+      "@digitaldefiance/i18n-lib@^4.8.0",
+      "@digitaldefiance/suite-core-lib@^5.0.1",
+      "@digitaldefiance/mongoose-types@^8.20.9",
+      "@digitaldefiance/express-suite-react-components@^5.1.0",
       "@emotion/react",
       "@emotion/styled",
       "@mui/icons-material",
@@ -59,16 +59,15 @@
       "bip39",
       "currency-codes",
       "date-fns",
-      "react",
-      "react-dom",
-      "react-router",
+      "react@^19",
+      "react-dom@^19",
+      "react-router@^8",
       "cors",
       "dotenv",
       "express",
       "helmet",
       "jsonwebtoken",
-      "mongodb",
-      "mongoose"
+      "mongoose@^8.20.0"
     ]
   }
 }

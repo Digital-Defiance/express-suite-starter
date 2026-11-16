@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:20
+FROM mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
 
 # Install MongoDB tools
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

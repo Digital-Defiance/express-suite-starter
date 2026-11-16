@@ -38,6 +38,7 @@ import {
   ALL_TARGET_LANGUAGES,
 } from './utils/translation-service';
 import type { TranslationProvider } from './utils/translation-service';
+import { getPackageRange } from './utils/package-range';
 
 async function main() {
   printBanner();
@@ -755,7 +756,7 @@ async function main() {
     name: 'yarnBerrySetup',
     description: getStarterTranslation(StarterStringKey.STEP_YARN_BERRY_SETUP),
     execute: () => {
-      runCommand('yarn set version berry', {
+      runCommand(`yarn set version ${config.node?.yarnVersion ?? 'berry'}`, {
         cwd: monorepoPath,
         dryRun: context.dryRun,
       });
@@ -1291,7 +1292,10 @@ async function main() {
         projectPackageJson.dependencies = projectPackageJson.dependencies || {};
         projectPackageJson.dependencies[
           '@digitaldefiance/express-suite-react-components'
-        ] = 'latest';
+        ] = getPackageRange(
+          config.packages?.prod,
+          '@digitaldefiance/express-suite-react-components',
+        );
         fs.writeFileSync(
           projectPackageJsonPath,
           JSON.stringify(projectPackageJson, null, 2) + '\n',

@@ -85,7 +85,7 @@ Now using node v22.21.1 (npm v10.9.4)
 ✔ Select language: English (US)
 
 ╔═════════════════════════════════════════════════════════════════════════════╗
-║ Node Express Suite Starter v2.2.1                                           ║
+║ Node Express Suite Starter v6.0.0                                           ║
 ║ Formerly Project Albatross                                                  ║
 ╠═════════════════════════════════════════════════════════════════════════════╣
 ║ Node Express Suite Starter generates an NX monorepo MERN stack with React   ║
@@ -264,7 +264,7 @@ yarn inituserdb:full:drop  # Initialize database
 
 ## Architecture
 
-### Structure (v2.1.40)
+### Structure
 
 ```
 src/
@@ -365,6 +365,7 @@ Automatically checked before generation:
 ### Express Suite (Core)
 
 - `@digitaldefiance/node-express-suite` - Backend framework with BaseApplication, BaseRouter
+- `@digitaldefiance/node-express-suite-mongo` - MongoDB/Mongoose plugin (MongoDatabasePlugin, schemas, database initialization)
 - `@digitaldefiance/suite-core-lib` - Core utilities and constants
 - `@digitaldefiance/ecies-lib` - Browser ECIES encryption
 - `@digitaldefiance/node-ecies-lib` - Node.js ECIES encryption
@@ -504,7 +505,7 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 
 ## Version
 
-**Current**: 2.1.45
+**Current**: 6.0.0
 
 **Status**: Beta
 
@@ -519,6 +520,21 @@ The `.env` file is automatically copied to `dist/` during build via `post-build`
 MIT © Digital Defiance
 
 ## ChangeLog
+
+### Version 6.0.0
+Generated projects now target Express Suite 6.0. This is a major version because the generated dependencies and the code the generator writes both change major versions, and the starter has tracked the suite's major version since 5.0.0.
+
+- MERN preset pins the suite packages to explicit ranges instead of unpinned installs: `node-express-suite` and `node-express-suite-mongo` `^6.0.0`, `ecies-lib` and `node-ecies-lib` `^5.2.3`, `i18n-lib` `^4.8.0`, `suite-core-lib` `^5.0.1`, `express-suite-react-components` `^5.1.0`, `mongoose-types` `^8.20.9`, `express-suite-test-utils` `^1.1.2`. React is pinned to `^19` and `react-router` to `^8`.
+- The MERN preset no longer installs `mongodb` directly. Generated code does not import it, and `node-express-suite-mongo` depends on it. `mongoose` stays because `mongoose-types` and `express-suite-test-utils` peer on it.
+- The generated react-lib depends on the react-components range from the preset instead of `latest`.
+- Generated projects use Yarn 4.11.0 (`yarn set version` now uses the preset's `node.yarnVersion` instead of the floating `berry`). This is the only change to generator behavior. Prompts and CLI flags are unchanged.
+- Generated GitHub Actions workflow and devcontainers use Node 22. `recover-yarn.sh` defaults to Yarn 4.11.0.
+- Scaffolding updated for the 6.0 interfaces: the generated `EmailService` reads its environment through `IEnvironmentPort`/`IEmailSenderEnvironment` instead of casting `application.environment`, and the inituserdb entry point types its no-op database as `IDatabase` instead of casting to `never`.
+- Generated api-lib `constants.ts` no longer passes the hostname as two string arguments to `createExpressConstants` (it takes an optional overrides object, so the call did not typecheck and `SiteHostname` was never set). It now sets `SiteHostname` explicitly.
+- Generated React app: removed the `future` prop from `BrowserRouter` (react-router 8 dropped it), added a jest config and ESM transformer so react-router 8 loads under jest, and replaced Nx's default `app.spec.tsx`, which imported `react-router-dom`.
+- BrightStack: `@brightchain/node-express-suite@0.33.0` still peers on `node-express-suite` 4.28.3, `i18n-lib` 4.7.5 and `suite-core-lib` 4.28.2, so the BrightStack preset keeps its `@digitaldefiance/*` packages unpinned and cannot move to the 6.0 line until `@brightchain` republishes. Only React, `react-router` and the Yarn version were updated there.
+- Removed the legacy generator `scripts/generate-monorepo.ts` and its helpers `scripts/fsUtils.ts` and `scripts/shellUtils.ts`. The `create-express-suite` bin never ran them. `scripts/monorepoConfig.ts` keeps only `NVM_USE_VERSION`; its stale 2.1.x package lists were never installed by the live generator.
+- Package: `@digitaldefiance/i18n-lib` `^4.8.0`; added the `@inquirer/input`, `select`, `confirm` and `checkbox` packages the source imports directly; `@aws-sdk/client-translate` (used only by the optional AWS auto-translate provider) is now an optional dependency; `express-suite-test-utils` `^1.1.2`.
 
 ### Version 5.0.2
 

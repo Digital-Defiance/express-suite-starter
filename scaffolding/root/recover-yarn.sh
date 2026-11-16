@@ -14,8 +14,8 @@ if [ -f ".nvmrc" ]; then
   nvm use
 fi
 
-# Set the desired Yarn version (default to 4.9.2 if not set)
-DEFAULT_YARN_VERSION=${DEFAULT_YARN_VERSION:-4.9.2}
+# Set the desired Yarn version (default to 4.11.0 if not set)
+DEFAULT_YARN_VERSION=${DEFAULT_YARN_VERSION:-4.11.0}
 
 echo "Clearing .yarnrc, .yarnrc.yml, and .yarn"
 rm -rf .yarnrc .yarnrc.yml .yarn

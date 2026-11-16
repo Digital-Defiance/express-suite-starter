@@ -429,8 +429,7 @@ yarn sync-templates    # Sync templates from reference project
 
 ### References
 
-- Original generator: `scripts/generate-monorepo.ts`
-- Original config: `scripts/monorepoConfig.ts`
+- Original generator and config (`scripts/generate-monorepo.ts`, package lists in `scripts/monorepoConfig.ts`): removed in 6.0.0; package lists now live in `config/presets/*.json`
 - Example app: `../digitaldefiance-express-suite-example/`
 - Express suite packages: `../digitaldefiance-node-express-suite/`
 

@@ -10,7 +10,7 @@ import {
 } from '@digitaldefiance/node-express-suite-mongo';
 
 // Simple debugLog implementation
-function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
+function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: unknown[]): void {
   if (debug) {
     console[type](...args);
   }
@@ -22,7 +22,7 @@ import { ECIESService } from '@digitaldefiance/node-ecies-lib';
 import {
   CoreLanguageCode,
 } from '@digitaldefiance/i18n-lib';
-import { getSuiteCoreI18nEngine, getSuiteCoreTranslation, IFailableResult, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
+import { getSuiteCoreI18nEngine, getSuiteCoreTranslation, IDatabase, IFailableResult, SuiteCoreStringKey } from '@digitaldefiance/suite-core-lib';
 import { randomBytes } from 'crypto';
 import { join } from 'path';
 
@@ -96,7 +96,7 @@ async function main() {
   });
 
   // Create a no-op IDatabase since MongoDatabasePlugin manages its own connection
-  const noOpDb = {
+  const noOpDb: IDatabase = {
     collection() { throw new Error('Use MongoDatabasePlugin'); },
     startSession() { throw new Error('Use MongoDatabasePlugin'); },
     withTransaction() { throw new Error('Use MongoDatabasePlugin'); },
@@ -107,7 +107,7 @@ async function main() {
     isConnected() { return false; },
   };
 
-  const app = new BaseApplication(env, noOpDb as never, AppConstants);
+  const app = new BaseApplication(env, noOpDb, AppConstants);
   context.languageContextSpace = 'admin';
   const shouldDropDatabase = process.argv.includes('--drop');
   debugLog(
@@ -125,7 +125,7 @@ async function main() {
 
   // Connect the plugin
   await mongoPlugin.connect();
-  await mongoPlugin.init(app as never);
+  await mongoPlugin.init(app);
   app.authProvider = mongoPlugin.authenticationProvider;
 
   if (shouldDropDatabase) {

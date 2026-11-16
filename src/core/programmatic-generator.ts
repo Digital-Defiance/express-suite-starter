@@ -27,6 +27,7 @@ import {
   StarterComponentId,
 } from '../i18n';
 import { PostGenerationValidator } from './validators/post-generation-validator';
+import { getPackageRange } from '../utils/package-range';
 
 /**
  * Options for programmatic (headless) monorepo generation.
@@ -398,7 +399,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
     name: 'yarnBerrySetup',
     description: getStarterTranslation(StarterStringKey.STEP_YARN_BERRY_SETUP),
     execute: () => {
-      runCommand('yarn set version berry', {
+      runCommand(`yarn set version ${config.node?.yarnVersion ?? 'berry'}`, {
         cwd: monorepoPath,
         dryRun: context.dryRun,
       });
@@ -622,7 +623,10 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           projectPackageJson.dependencies || {};
         projectPackageJson.dependencies[
           '@digitaldefiance/express-suite-react-components'
-        ] = 'latest';
+        ] = getPackageRange(
+          config.packages?.prod,
+          '@digitaldefiance/express-suite-react-components',
+        );
         fs.writeFileSync(
           projectPackageJsonPath,
           JSON.stringify(projectPackageJson, null, 2) + '\n',

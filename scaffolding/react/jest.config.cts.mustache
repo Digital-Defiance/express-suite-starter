@@ -1,0 +1,19 @@
+module.exports = {
+  displayName: '{{prefix}}-react',
+  preset: '../jest.preset.js',
+  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  transform: {
+    '^(?!.*\\.(js|jsx|mjs|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
+    '^.+\\.(ts|tsx)$': ['babel-jest', { presets: ['@nx/react/babel'] }],
+    // react-router v8 (and the allowlisted ESM deps below) ship as ESM with a
+    // dead `import.meta.hot` HMR guard; neutralize it and downlevel to CJS.
+    '^.+\\.(js|jsx|mjs)$': '<rootDir>/src/esm-js-transformer.js',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'mjs'],
+  // react-router v8 is ESM-only; let jest transform it (and its ESM helpers)
+  // instead of its default "ignore everything in node_modules".
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|react-router|@remix-run|cookie-es|@digitaldefiance|uuid)/)',
+  ],
+  coverageDirectory: '../coverage/{{prefix}}-react',
+};

@@ -26,7 +26,7 @@ RUN git clone https://github.com/FiloSottile/mkcert && cd mkcert && go build -ld
 # Install global npm packages and setup corepack
 RUN npm install -g nx @angular/cli typescript ts-node nodemon && \
     corepack enable && \
-    corepack prepare yarn@4.9.2 --activate
+    corepack prepare yarn@4.11.0 --activate
 
 # Copy and set up custom entrypoint for better signal handling
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

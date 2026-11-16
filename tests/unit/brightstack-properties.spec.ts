@@ -112,6 +112,10 @@ const standardPreset = JSON.parse(
   fs.readFileSync(standardPresetPath, 'utf-8'),
 );
 
+// Preset entries may carry a version range ("react@^19"); compare package names only.
+const packageNames = (entries: string[]): string[] =>
+  entries.map((entry) => entry.replace(/(?<=.)@.*$/, ''));
+
 const sharedDeps = [
   'express',
   'helmet',
@@ -128,8 +132,8 @@ describe('Feature: starter-brightstack-support, Property 6: Shared dependencies 
   it('every shared dependency is present in both MERN and BrightStack prod lists', () => {
     fc.assert(
       fc.property(fc.constantFrom(...sharedDeps), (dep) => {
-        expect(standardPreset.packages.prod).toContain(dep);
-        expect(brightstackPreset.packages.prod).toContain(dep);
+        expect(packageNames(standardPreset.packages.prod)).toContain(dep);
+        expect(packageNames(brightstackPreset.packages.prod)).toContain(dep);
       }),
       { numRuns: 100 },
     );

@@ -323,11 +323,7 @@ yarn install
 yarn start
 ```
 
-3. Old generator still available:
-```bash
-npx tsc scripts/generate-monorepo.ts --outDir scripts/dist
-node scripts/dist/generate-monorepo.js
-```
+3. The old `scripts/generate-monorepo.ts` generator was removed in 6.0.0; `yarn start` is the only generator.
 
 ### Next Steps (Phase 3 - Future)
 

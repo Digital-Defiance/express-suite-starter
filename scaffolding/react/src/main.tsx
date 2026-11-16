@@ -13,9 +13,7 @@ context.languageContextSpace = 'user';
 
 root.render(
   <StrictMode>
-    <BrowserRouter
-      future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-    >
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </StrictMode>,

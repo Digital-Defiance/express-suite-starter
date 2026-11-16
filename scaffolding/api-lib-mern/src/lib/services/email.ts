@@ -1,14 +1,25 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { IApplication } from '@digitaldefiance/node-express-suite';
+import {
+  IEmailSenderEnvironment,
+  IEnvironmentPort,
+} from '@digitaldefiance/node-express-suite';
 
 // Simple debugLog implementation
-function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: any[]): void {
+function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: unknown[]): void {
   if (debug) {
     console[type](...args);
   }
 }
-import { Environment } from '../environment';
+import { IEnvironmentAws } from '../interfaces/environment-aws';
 import { PlatformID } from '@digitaldefiance/node-ecies-lib';
+
+/**
+ * The environment members the email service reads: the sender settings from
+ * the suite plus the AWS credentials from this application's environment.
+ */
+export type IEmailServiceEnvironment = IEmailSenderEnvironment & {
+  aws: IEnvironmentAws;
+};
 
 /**
  * A generic service for sending emails using Amazon SES.
@@ -18,15 +29,15 @@ export class EmailService<TID extends PlatformID> {
   private readonly emailSender: string;
   private readonly disableEmailSend: boolean;
   private readonly debug: boolean;
-  private readonly application: IApplication<TID>;
+  private readonly application: IEnvironmentPort<IEmailServiceEnvironment>;
 
   /**
    * Constructs an instance of EmailService.
-   * @param config Configuration object containing AWS credentials, region, sender email, and debug/disable flags.
+   * @param application Anything exposing an environment with AWS credentials, sender email, and debug/disable flags.
    */
-  constructor(application: IApplication<TID>) {
+  constructor(application: IEnvironmentPort<IEmailServiceEnvironment>) {
     this.application = application;
-    const environment = application.environment as Environment<TID>;
+    const environment = application.environment;
     this.emailSender = environment.emailSender;
     this.disableEmailSend = environment.disableEmailSend;
     this.debug = environment.debug;
