@@ -20,6 +20,8 @@ const reactConfigs = nx.configs['flat/react'].map((config) =>
 );
 
 export default [
+  // Build config outside the TS project's include; skip type-aware lint.
+  { ignores: ['vite.config.mts'] },
   ...baseConfig,
   ...reactConfigs,
   {
