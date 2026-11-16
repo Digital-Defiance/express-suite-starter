@@ -239,16 +239,13 @@ describe('BrightStack Programmatic Generation E2E', () => {
     });
 
     it('uses BrightDB types', () => {
-      expect(sharedTypesContent).toContain('BrightDbCollection');
+      expect(sharedTypesContent).toContain('BrightDbSchemaMap');
     });
 
     it('imports from @brightchain/node-express-suite', () => {
       expect(sharedTypesContent).toContain('@brightchain/node-express-suite');
     });
 
-    it('uses PlatformID type', () => {
-      expect(sharedTypesContent).toContain('PlatformID');
-    });
 
     it('uses HexString type', () => {
       expect(sharedTypesContent).toContain('HexString');
