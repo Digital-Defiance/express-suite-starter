@@ -1,4 +1,4 @@
-import { test, expect, type ConsoleMessage, type Page } from '@playwright/test';
+import { test, expect, type ConsoleMessage } from '@playwright/test';
 import { readState, E2ESharedState } from '../e2e-shared-state';
 
 let state: E2ESharedState;

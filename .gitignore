@@ -45,3 +45,7 @@ Thumbs.db
 test-results/
 playwright-report/
 blob-report/
+
+# Playwright harness state and logs
+e2e/.e2e-state.json
+*.log

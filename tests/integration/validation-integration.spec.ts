@@ -1,7 +1,6 @@
 import { PostGenerationValidator } from '../../src/core/validators/post-generation-validator';
 import { GeneratorContext } from '../../src/core/interfaces';
 import * as fs from 'fs';
-import * as path from 'path';
 
 jest.mock('fs');
 jest.mock('../../src/cli/logger');

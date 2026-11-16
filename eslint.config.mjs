@@ -7,11 +7,11 @@ export default [
     ignores: ['**/dist', '**/node_modules', '**/templates', '**/scaffolding', '**/coverage'],
   },
   {
-    files: ['src/**/*.ts'],
+    files: ['src/**/*.ts', 'tests/**/*.ts', 'e2e/**/*.ts', 'tools/**/*.ts', 'scripts/**/*.ts'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
         ecmaVersion: 2023,
         sourceType: 'module',
       },

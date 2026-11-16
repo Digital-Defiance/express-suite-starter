@@ -1,4 +1,7 @@
-import { ProjectGenerator } from '../../src/core/project-generator';
+import {
+  ProjectGenerator,
+  patchRolldownConfig,
+} from '../../src/core/project-generator';
 import * as shellUtils from '../../src/utils/shell-utils';
 
 jest.mock('../../src/utils/shell-utils');
@@ -169,4 +172,93 @@ describe('ProjectGenerator', () => {
       );
     });
   });
+});
+
+describe('patchRolldownConfig', () => {
+  // Unpatched @nx/rolldown:configuration output for a node app with
+  // format: 'cjs' (template in @nx/rolldown generators/configuration), as
+  // formatted by prettier.
+  const unpatched = `import { defineConfig } from 'rolldown';
+import packageJson from './package.json' with { type: 'json' };
+
+// Installed at runtime instead of bundled (native addons, dynamic requires).
+const dependencies = Object.keys(packageJson.dependencies);
+
+export default defineConfig([
+  {
+    input: 'src/main.ts',
+    platform: 'node',
+    tsconfig: 'tsconfig.app.json',
+    external: (id) =>
+      dependencies.some((dep) => id === dep || id.startsWith(\`\${dep}/\`)),
+    output: {
+      dir: '../dist/my-api',
+      cleanDir: true,
+      format: 'cjs',
+      sourcemap: true,
+    },
+  },
+]);
+`;
+
+  it('switches to esm, adds the banner and externalizes bare specifiers', () => {
+    const patched = patchRolldownConfig(unpatched, '@scope');
+    expect(patched).toContain("format: 'esm'");
+    expect(patched).not.toContain("format: 'cjs'");
+    expect(patched).toContain('banner:');
+    expect(patched).toContain('isBareDependency(id)');
+    expect(patched).toContain("const WORKSPACE_SCOPE = '@scope';");
+    expect(patched).not.toContain('const dependencies');
+    expect(patched).not.toContain('packageJson');
+    expect(patched).not.toContain('Installed at runtime');
+  });
+
+  it('is idempotent on patched input', () => {
+    const once = patchRolldownConfig(unpatched, '@scope');
+    expect(patchRolldownConfig(once, '@scope')).toBe(once);
+  });
+
+  it.each([
+    ['cjs format', "format: 'cjs'", "format: 'umd'", "format: 'cjs'"],
+    [
+      'external check',
+      'dependencies.some((dep) => id === dep || id.startsWith(`${dep}/`))',
+      'false',
+      'dependencies.some',
+    ],
+    [
+      'Installed at runtime comment',
+      '// Installed at runtime instead of bundled (native addons, dynamic requires).\n',
+      '',
+      'Installed at runtime',
+    ],
+    [
+      'dependencies constant',
+      'const dependencies = Object.keys(packageJson.dependencies);\n',
+      '',
+      'const dependencies',
+    ],
+    [
+      'package.json import',
+      "import packageJson from './package.json' with { type: 'json' };\n",
+      '',
+      'package.json',
+    ],
+    [
+      'default export',
+      'export default defineConfig',
+      'export const config = defineConfig',
+      'export default defineConfig',
+    ],
+  ])(
+    'throws when the %s anchor is missing',
+    (_name, anchor, replacement, named) => {
+      const drifted = unpatched.replace(anchor, replacement);
+      expect(drifted).not.toBe(unpatched);
+      expect(() => patchRolldownConfig(drifted, '@scope')).toThrow(
+        /template changed/,
+      );
+      expect(() => patchRolldownConfig(drifted, '@scope')).toThrow(named);
+    },
+  );
 });

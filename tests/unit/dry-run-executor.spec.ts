@@ -42,7 +42,7 @@ describe('DryRunExecutor', () => {
     executor.addStep({
       name: 'testStep',
       description: 'Test step',
-      execute: (ctx) => {
+      execute: () => {
         executor.recordAction({
           type: 'create',
           target: '/test/file.txt',
@@ -62,7 +62,7 @@ describe('DryRunExecutor', () => {
     executor.addStep({
       name: 'testStep',
       description: 'Test step',
-      execute: (ctx) => {
+      execute: () => {
         executor.recordAction({ type: 'create', target: 'file1', description: 'Create' });
         executor.recordAction({ type: 'modify', target: 'file2', description: 'Modify' });
         executor.recordAction({ type: 'command', target: 'yarn', description: 'Run yarn' });

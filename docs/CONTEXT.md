@@ -7,7 +7,7 @@
 **Phase 3:** Post-Generation Validation ✅
 **Phase 3 Long-term:** Advanced Features ✅
 **Phase 4:** DevContainer & Template Sync 🚧
-**Test Suite:** 18 test suites, 118+ tests passing with 95%+ coverage ✅
+**Test Suite:** run with `yarn test` (all jest suites; counts change, see README Quality gates) ✅
 
 ### What We've Done
 
@@ -205,9 +205,9 @@ Make it **optional** via configuration:
 - plugin-integration.spec.ts
 - validation-integration.spec.ts
 
-**Coverage:** 95%+ on all core components, 100% on critical paths
+**Coverage:** run `yarn test:coverage` for current figures
 
-**Latest Test Run:** 18 test suites, 118+ tests passing
+**Latest Test Run:** see `yarn test` (historical 18-suite figures removed)
 
 **Phase 2: Plugin System** ✅
 
@@ -239,7 +239,7 @@ Make it **optional** via configuration:
 - ✅ Documentation generation (README, ARCHITECTURE, API)
 - ✅ Dry-run mode with diff viewer
 - ✅ Interactive confirmation
-- ✅ All tests passing with 95%+ coverage
+- ✅ All tests passing
 
 **Phase 4: DevContainer & Template Sync** 🚧
 
@@ -405,7 +405,7 @@ yarn sync-templates    # Sync templates from reference project
    - Properly mocked createEngine to return engine object with render method
    - Fixed "Cannot read properties of undefined" errors
 
-**Result:** All 17 tests passing (14 unit + 3 integration)
+**Result:** All tests passing at the time (historical)
 
 ### Implementation Complete
 
@@ -449,9 +449,7 @@ yarn sync-templates    # Sync templates from reference project
    - Centralized dependency injection
 
 2. **Comprehensive Testing**
-   - 18 test files (16 unit + 3 integration)
-   - 118+ tests passing
-   - 95%+ code coverage
+   - Test counts: see README Quality gates
    - 100% coverage on critical components
    - All TypeScript strict mode compliant
 
@@ -464,7 +462,7 @@ yarn sync-templates    # Sync templates from reference project
 
 4. **Production Ready** ✅
    - All phases complete
-   - All tests passing (18 suites, 118+ tests)
+   - All tests passing (see README Quality gates)
    - NPX executable working
    - Full end-to-end generation working
    - System checks implemented

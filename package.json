@@ -18,10 +18,12 @@
     "build": "npx tsc && chmod +x dist/src/cli.js",
     "build:prod": "NODE_ENV=production npx nx build digitaldefiance-express-suite-starter --configuration=production",
     "build:logged": "npx tsc 2>&1 | ansifilter -o build.log && chmod +x dist/src/cli.js",
-    "lint": "npx eslint 'src/**/*.ts'",
-    "lint:fix": "npx eslint 'src/**/*.ts' --fix",
-    "test": "npx jest --testPathIgnorePatterns='(i18n|step-executor|plugin-manager|dry-run|system-check|package-resolver|full-generation|plugin-integration).spec.ts'",
-    "test:all": "npx jest",
+    "lint": "npx eslint 'src/**/*.ts' 'tests/**/*.ts' 'e2e/**/*.ts' 'tools/**/*.ts' 'scripts/**/*.ts'",
+    "lint:fix": "npx eslint 'src/**/*.ts' 'tests/**/*.ts' 'e2e/**/*.ts' 'tools/**/*.ts' 'scripts/**/*.ts' --fix",
+    "typecheck": "npx tsc --noEmit -p tsconfig.typecheck.json",
+    "test": "npx jest",
+    "test:all": "yarn typecheck && yarn test",
+    "test:network": "RUN_TRANSLATION_TESTS=true NODE_OPTIONS=--experimental-vm-modules npx jest tests/integration/translation-providers.spec.ts",
     "test:unit": "npx jest tests/unit",
     "test:integration": "npx jest tests/integration",
     "test:e2e": "npx playwright test --config=e2e/playwright.config.ts",
@@ -29,7 +31,7 @@
     "test:coverage": "npx jest --coverage",
     "test:logged": "npx jest 2>&1 | ansifilter -o test.log",
     "sync-templates": "npx ts-node tools/sync-templates.ts",
-    "prepublishOnly": "yarn build && yarn test",
+    "prepublishOnly": "yarn build && yarn lint && yarn typecheck && yarn test",
     "publish:public": "npm publish --access public"
   },
   "dependencies": {
@@ -48,6 +50,8 @@
     "@aws-sdk/client-translate": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
     "@digitaldefiance/express-suite-test-utils": "^1.1.2",
     "@nx/js": "22.0.2",
     "@nx/workspace": "22.0.2",

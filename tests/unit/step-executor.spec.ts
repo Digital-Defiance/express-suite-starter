@@ -1,7 +1,6 @@
 import { StepExecutor } from '../../src/core/step-executor';
 import { GeneratorContext, Step } from '../../src/core/interfaces';
 import * as fs from 'fs';
-import * as path from 'path';
 
 jest.mock('fs');
 jest.mock('../../src/cli/logger');

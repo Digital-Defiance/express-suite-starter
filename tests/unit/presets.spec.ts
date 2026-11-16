@@ -56,6 +56,66 @@ describe('presets', () => {
     });
   });
 
+  const stripRange = (entry: string): string =>
+    entry.replace(/(?<=.)@.*$/, '');
+
+  describe.each(['standard', 'brightstack'])(
+    '%s generator-dependent dev entries',
+    (name) => {
+      const preset = loadPreset(name);
+      it.each([
+        'prettier',
+        '@testing-library/jest-dom',
+        '@babel/core',
+        '@babel/preset-env',
+        'vite-plugin-node-polyfills',
+        'eslint-plugin-playwright',
+      ])('lists %s', (pkg) => {
+        expect(preset.packages.dev.map(stripRange)).toContain(pkg);
+      });
+    },
+  );
+
+  it('standard lists mongodb-memory-server (BrightStack uses BrightDB, not MongoDB)', () => {
+    expect(
+      loadPreset('standard').packages.dev.map(stripRange),
+    ).toContain('mongodb-memory-server');
+  });
+
+  describe('brightstack @digitaldefiance pins', () => {
+    const standard = loadPreset('standard');
+    const brightstack = loadPreset('brightstack');
+    const scoped = (entries: string[]): string[] =>
+      entries.filter((entry) => entry.startsWith('@digitaldefiance/'));
+
+    it('pins every @digitaldefiance entry', () => {
+      const entries = scoped([
+        ...brightstack.packages.prod,
+        ...brightstack.packages.dev,
+      ]);
+      expect(entries.length).toBeGreaterThan(0);
+      for (const entry of entries) {
+        expect(getPackageRange([entry], stripRange(entry), 'unpinned')).toMatch(
+          /^\^\d/,
+        );
+      }
+    });
+
+    it('uses the same ranges as standard for shared packages', () => {
+      const standardEntries = scoped(standard.packages.prod);
+      const shared = scoped(brightstack.packages.prod).filter((entry) =>
+        standardEntries.some((s) => stripRange(s) === stripRange(entry)),
+      );
+      expect(shared.length).toBeGreaterThan(0);
+      for (const entry of shared) {
+        const name = stripRange(entry);
+        expect(getPackageRange(brightstack.packages.prod, name)).toBe(
+          getPackageRange(standard.packages.prod, name),
+        );
+      }
+    });
+  });
+
   describe.each(['standard', 'brightstack', 'minimal'])('%s', (name) => {
     it('uses Yarn 4.11.0 and Node 22', () => {
       const preset = loadPreset(name);

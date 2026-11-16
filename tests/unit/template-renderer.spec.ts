@@ -1,6 +1,5 @@
 import { renderTemplates, copyDir } from '../../src/utils/template-renderer';
 import * as fs from 'fs';
-import * as path from 'path';
 
 jest.mock('fs');
 jest.mock('../../src/templates', () => ({

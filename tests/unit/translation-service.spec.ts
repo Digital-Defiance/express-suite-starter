@@ -13,7 +13,6 @@ import type {
   SiteStringsTranslations,
 } from '../../src/utils/translation-service';
 import { LanguageCodes } from '@digitaldefiance/i18n-lib';
-import * as https from 'https';
 
 jest.mock('https');
 

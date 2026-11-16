@@ -31,6 +31,8 @@
       "patch-package",
       "prettier@~3.6.2",
       "@testing-library/jest-dom@^6.9.1",
+      "@babel/core@^7.28.0",
+      "@babel/preset-env@^7.28.0",
       "@types/cors",
       "@types/express",
       "@types/jsonwebtoken",

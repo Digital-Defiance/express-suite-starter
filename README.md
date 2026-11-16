@@ -340,7 +340,11 @@ yarn build             # TypeScript compilation
 ### Test
 
 ```bash
-yarn test              # Run all tests (21 suites, 137 tests)
+yarn lint              # ESLint over src, tests, e2e, tools and scripts
+yarn typecheck         # tsc --noEmit over src, tests, e2e, tools and scripts
+yarn test              # Run every jest suite (no ignore list)
+yarn test:all          # typecheck + test
+yarn test:network      # Live translation-provider tests (see Quality gates)
 yarn test:watch        # Watch mode
 yarn test:coverage     # Coverage report
 yarn test:e2e          # Generate MERN + BrightStack apps, build, serve, run Playwright (~6 min, needs network)
@@ -479,10 +483,24 @@ Logger.command('cmd')        // $ Gray
 
 ## Testing
 
-- **21 test suites** (18 unit + 3 integration)
-- **96 tests** passing
-- **95%+ coverage** on core components
-- **100% coverage** on critical paths
+- Unit, integration and programmatic-generation suites under `tests/`, all run by `yarn test`
+- Generate-build-serve Playwright harness under `e2e/` (`yarn test:e2e`)
+- See [Quality gates](#quality-gates) for what each script covers
+
+## Quality gates
+
+`prepublishOnly` runs `yarn build && yarn lint && yarn typecheck && yarn test`.
+
+- **`yarn test`** runs every jest suite. The old `testPathIgnorePatterns` list (introduced in 2.3.11) is gone: the seven specs it excluded (`i18n`, `step-executor`, `plugin-manager`, `system-check`, `package-resolver`, `full-generation`, `plugin-integration`) all pass in about a second, none touches the network, and the `dry-run` entry matched no file, so `prepublishOnly` had been gating only part of the suite.
+- **`yarn test:network`** runs `tests/integration/translation-providers.spec.ts` with `RUN_TRANSLATION_TESTS=true`. It calls the live Google Translate provider, and the AWS provider only when AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_PROFILE` or `~/.aws/credentials`) are present (the script sets `NODE_OPTIONS=--experimental-vm-modules`). Without the variable those tests are skipped, which is the 6 skips in a normal `yarn test` run. It needs network access and is not part of `prepublishOnly`.
+- **`yarn typecheck`** type-checks `src`, `tests`, `e2e`, `tools` and `scripts` through `tsconfig.typecheck.json`. ts-jest runs with `isolatedModules`, so jest alone never type-checks the tests. The config adds the DOM lib because the Playwright specs reference browser globals.
+- **`yarn lint`** lints `src`, `tests`, `e2e`, `tools` and `scripts` through `tsconfig.eslint.json`. `scaffolding/` and `templates/` are not linted here because they are Mustache sources that only become valid TypeScript after rendering. They are linted, type-checked and Prettier-checked in the generated project (`yarn lint:all`, `yarn prettier:check`).
+- **`yarn test:e2e`** is the generate-build-serve harness. It installs real packages and takes several minutes, so it is not part of `prepublishOnly` or CI. Run it before publishing.
+- **CI** (`.github/workflows/ci.yml`) runs install, build, lint, typecheck and test on Node 22 with Yarn 4. The harness is not in CI.
+
+### Preset pins
+
+Both presets pin `@digitaldefiance/*` packages to caret ranges. BrightStack uses the same ranges as MERN for the packages they share, and the current major for the ones only BrightStack installs (`secrets`, `branded-interface`, `branded-enum`, `reed-solomon-erasure.wasm`), so a new major cannot be picked up silently. `tests/unit/presets.spec.ts` asserts this. `@brightchain/*` entries stay unpinned. `@brightchain/node-express-suite@0.33.0` peers on `node-express-suite` 4.28.3, `i18n-lib` 4.7.5 and `suite-core-lib` 4.28.2, so yarn prints peer-dependency warnings (YN0060) for BrightStack projects. The starter cannot fix those; they go away when `@brightchain` republishes against 6.0. The harness shows BrightStack builds, serves and passes its routes with the warnings present.
 
 ## Environment Configuration
 
@@ -540,7 +558,9 @@ Generated projects now target Express Suite 6.0. This is a major version because
 - Generated workspaces now pass `yarn lint:all`, `yarn prettier:check`, `yarn test:jest` and `yarn test:e2e` as generated. The generator runs Prettier over the generated TypeScript before the initial commit (new `formatGeneratedCode` step), installs `prettier` and `@testing-library/jest-dom`, defines the `test:e2e` script that `test:all` already called, and the root ESLint config ignores `_`-prefixed unused names. The React and react-lib ESLint configs register `@typescript-eslint` inside Nx's `flat/react` objects, which ESLint 9 otherwise rejects. Unused imports and generics were removed from the api-lib scaffolding, and the rolldown config patch no longer leaves an unused `dependencies` constant.
 - The generated API serves `GET /api/health` (the Dockerfile `HEALTHCHECK` already requested it, but no route existed). The API e2e project tests it instead of Nx's `Hello API` stub, and its teardown no longer kills the port, which made Nx report the `serve` task as failed after the tests passed.
 - Generated workspaces no longer contain `react-router-dom`. Nx's react generator adds it next to `react-router` v8, which left two router copies, so a new `removeReactRouterDom` step runs `yarn remove react-router-dom` after the projects are generated. The `formatGeneratedCode` step now skips Prettier, with a log message, when the workspace has no `prettier` dependency (the minimal preset), and still fails on real formatting errors when Prettier is present.
-- BrightStack: `@brightchain/node-express-suite@0.33.0` still peers on `node-express-suite` 4.28.3, `i18n-lib` 4.7.5 and `suite-core-lib` 4.28.2, so the BrightStack preset keeps its `@digitaldefiance/*` packages unpinned and cannot move to the 6.0 line until `@brightchain` republishes. Only React, `react-router` and the Yarn version were updated there.
+- BrightStack: `@brightchain/node-express-suite@0.33.0` still peers on `node-express-suite` 4.28.3, `i18n-lib` 4.7.5 and `suite-core-lib` 4.28.2. The BrightStack preset now pins its `@digitaldefiance/*` packages to the same caret ranges as MERN (and the current major for BrightStack-only packages), and yarn prints YN0060 peer warnings until `@brightchain` republishes. See Quality gates.
+- Quality gates: `yarn test` runs every jest suite (the stale `testPathIgnorePatterns` list is removed), `yarn typecheck` covers tests, e2e and tools, `yarn lint` covers tests, e2e, tools and scripts, `yarn test:network` runs the live translation tests, and `prepublishOnly` runs build, lint, typecheck and test. The starter CI workflow now runs those instead of Nx boilerplate.
+- Presets list `@babel/core` and `@babel/preset-env` (needed by the generated jest ESM transformer). The transformer now rewrites only `import.meta.hot` instead of every `import.meta`. The rolldown config patch is the exported `patchRolldownConfig`, which throws when the `@nx/node` template changes instead of silently skipping.
 - Removed the legacy generator `scripts/generate-monorepo.ts` and its helpers `scripts/fsUtils.ts` and `scripts/shellUtils.ts`. The `create-express-suite` bin never ran them. `scripts/monorepoConfig.ts` keeps only `NVM_USE_VERSION`; its stale 2.1.x package lists were never installed by the live generator.
 - Package: `@digitaldefiance/i18n-lib` `^4.8.0`; added the `@inquirer/input`, `select`, `confirm` and `checkbox` packages the source imports directly; `@aws-sdk/client-translate` (used only by the optional AWS auto-translate provider) is now an optional dependency; `express-suite-test-utils` `^1.1.2`.
 
