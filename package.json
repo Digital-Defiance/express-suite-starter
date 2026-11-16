@@ -24,6 +24,7 @@
     "test:all": "npx jest",
     "test:unit": "npx jest tests/unit",
     "test:integration": "npx jest tests/integration",
+    "test:e2e": "npx playwright test --config=e2e/playwright.config.ts",
     "test:watch": "npx jest --watch",
     "test:coverage": "npx jest --coverage",
     "test:logged": "npx jest 2>&1 | ansifilter -o test.log",

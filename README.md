@@ -343,7 +343,12 @@ yarn build             # TypeScript compilation
 yarn test              # Run all tests (21 suites, 137 tests)
 yarn test:watch        # Watch mode
 yarn test:coverage     # Coverage report
+yarn test:e2e          # Generate MERN + BrightStack apps, build, serve, run Playwright (~6 min, needs network)
 ```
+
+Run `yarn test:e2e` before publishing. It is not part of `prepublishOnly` because it
+installs real packages from the registry and takes several minutes. Set
+`E2E_BRIGHTSTACK=false` to skip the BrightStack workspace.
 
 ### System Requirements
 
