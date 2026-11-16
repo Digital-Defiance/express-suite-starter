@@ -13,6 +13,10 @@ import { GeneratorContext } from './core/interfaces';
 import { ProjectConfigBuilder } from './core/project-config-builder';
 import { ProjectGenerator } from './core/project-generator';
 import { runCommand } from './utils/shell-utils';
+import {
+  formatGeneratedCode,
+  removeReactRouterDom,
+} from './utils/generated-workspace';
 import { renderTemplates, copyDir } from './utils/template-renderer';
 import { obfuscatePassword } from '../scripts/passwordObfuscator';
 import { checkAndUseNode } from '../scripts/nodeSetup';
@@ -1229,6 +1233,13 @@ async function main() {
   });
 
   executor.addStep({
+    name: 'removeReactRouterDom',
+    description: 'Removing react-router-dom (react-router v8 replaces it)',
+    execute: () => {
+      removeReactRouterDom(monorepoPath, context.dryRun);
+    },
+  });
+  executor.addStep({
     name: 'updateTsConfigAppFiles',
     description: 'Updating tsconfig.app.json files with skipLibCheck',
     execute: () => {
@@ -2034,12 +2045,7 @@ export {};
     name: 'formatGeneratedCode',
     description: 'Formatting generated TypeScript with Prettier',
     execute: () => {
-      // Scaffolding is not stored in Prettier style, and `yarn prettier:check`
-      // and the Prettier ESLint rule fail on it. Format it once up front.
-      runCommand("yarn prettier --write '**/*.{ts,tsx}'", {
-        cwd: monorepoPath,
-        dryRun: context.dryRun,
-      });
+      formatGeneratedCode(monorepoPath, context.dryRun);
     },
   });
   executor.addStep({
