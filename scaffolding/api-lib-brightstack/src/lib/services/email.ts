@@ -11,7 +11,6 @@ function debugLog(debug: boolean, type: 'log' | 'warn' | 'error', ...args: unkno
   }
 }
 import { IEnvironmentAws } from '../interfaces/environment-aws';
-import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 
 /**
  * The environment members the email service reads: the sender settings from
@@ -24,7 +23,7 @@ export type IEmailServiceEnvironment = IEmailSenderEnvironment & {
 /**
  * A generic service for sending emails using Amazon SES.
  */
-export class EmailService<TID extends PlatformID> {
+export class EmailService {
   private readonly sesClient: SESClient;
   private readonly emailSender: string;
   private readonly disableEmailSend: boolean;

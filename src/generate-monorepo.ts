@@ -2031,6 +2031,18 @@ export {};
   });
 
   executor.addStep({
+    name: 'formatGeneratedCode',
+    description: 'Formatting generated TypeScript with Prettier',
+    execute: () => {
+      // Scaffolding is not stored in Prettier style, and `yarn prettier:check`
+      // and the Prettier ESLint rule fail on it. Format it once up front.
+      runCommand("yarn prettier --write '**/*.{ts,tsx}'", {
+        cwd: monorepoPath,
+        dryRun: context.dryRun,
+      });
+    },
+  });
+  executor.addStep({
     name: 'initialCommit',
     description: getStarterTranslation(StarterStringKey.STEP_INITIAL_COMMIT),
     execute: async () => {

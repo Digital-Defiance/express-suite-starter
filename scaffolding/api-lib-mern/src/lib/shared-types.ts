@@ -13,9 +13,9 @@ export type DefaultBackendIdType = Types.ObjectId;
 export type MongooseDocument = Document;
 export type MongooseModel<
   TRawDocType,
-  TQueryHelpers = {},
-  TInstanceMethods = {},
-  TVirtuals = {},
+  TQueryHelpers = Record<string, never>,
+  TInstanceMethods = Record<string, never>,
+  TVirtuals = Record<string, never>,
 > = Model<TRawDocType, TQueryHelpers, TInstanceMethods, TVirtuals>;
 
 /**

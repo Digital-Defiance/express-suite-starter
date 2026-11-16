@@ -16,7 +16,6 @@ import { Constants } from './constants';
 import { AppRouter } from './routers/app';
 import { getSchemaMap } from './schemas/schema';
 import { initMiddleware } from './middlewares';
-import { EmailService } from './services/email';
 import { Types } from '@digitaldefiance/mongoose-types';
 import { ModelDocMap } from './shared-types';
 
@@ -96,7 +95,13 @@ export class App<
               'Ensure useDatabasePlugin() is called before start().',
           );
         }
-        return new LibraryApiRouter(mongoApp);
+        const apiRouter = new LibraryApiRouter(mongoApp);
+        // Unauthenticated liveness probe (GET /api/health) used by the
+        // Dockerfile HEALTHCHECK and the API e2e project.
+        apiRouter.router.get('/health', (_req, res) => {
+          res.json({ status: 'ok', timestamp: new Date().toISOString() });
+        });
+        return apiRouter;
       },
       undefined, // Default CSP config
       constants,

@@ -13,10 +13,7 @@ import {
   Paginated,
   IApplication,
 } from '@digitaldefiance/node-express-suite';
-import { ITokenRole, ITokenUser, IUserBase } from '@digitaldefiance/suite-core-lib';
 import { PlatformID } from '@digitaldefiance/node-ecies-lib';
-import { Environment } from '../environment';
-import { IConstants } from '../interfaces/constants';
 import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 
 /**
@@ -73,14 +70,7 @@ import { CoreLanguageCode } from '@digitaldefiance/i18n-lib';
 @RequireAuth()
 export class CustomApiController<
   TID extends PlatformID = PlatformID,
-  TDate extends Date = Date,
   TLanguage extends CoreLanguageCode = CoreLanguageCode,
-  TAccountStatus extends string = string,
-  TUser extends IUserBase<TID, TDate, TLanguage, TAccountStatus> = IUserBase<TID, TDate, TLanguage, TAccountStatus>,
-  TTokenRole extends ITokenRole<TID, TDate> = ITokenRole<TID, TDate>,
-  TTokenUser extends ITokenUser = ITokenUser,
-  TEnvironment extends Environment<TID> = Environment<TID>,
-  TConstants extends IConstants = IConstants,
   TApplication extends IApplication<TID> = IApplication<TID>,
 > extends DecoratorBaseController<TLanguage, TID> {
   constructor(app: TApplication) {

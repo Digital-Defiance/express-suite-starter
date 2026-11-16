@@ -65,6 +65,21 @@ export class ProjectGenerator {
         'dependencies.some((dep) => id === dep || id.startsWith(`${dep}/`))',
         'isBareDependency(id)',
       );
+      // The direct-dependency list is no longer referenced; drop it and the
+      // package.json import that only fed it so lint (no-unused-vars) passes.
+      patched = patched
+        .replace(
+          /\/\/ Installed at runtime[^\n]*\n/,
+          '',
+        )
+        .replace(
+          /const dependencies = Object\.keys\(packageJson\.dependencies\);\n/,
+          '',
+        )
+        .replace(
+          /import packageJson from '\.\/package\.json' with \{ type: 'json' \};\n/,
+          '',
+        );
       // Insert the helper just before the default export.
       const helper = `// Externalize real dependencies (node_modules + node: builtins) but keep
 // the workspace's own internal libraries (${scope}/*), rolldown's injected

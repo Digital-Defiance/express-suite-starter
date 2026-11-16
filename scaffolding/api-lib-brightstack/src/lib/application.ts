@@ -61,7 +61,13 @@ export class App<
       // the application. For custom API routes, extend ApiRouter or use
       // decorator-based controllers (see routers/api.ts for examples).
       (app: IApplication<TID>): BrightDbApiRouter<TID> => {
-        return new ApiRouter(app);
+        const apiRouter = new ApiRouter(app);
+        // Unauthenticated liveness probe (GET /api/health) used by the
+        // Dockerfile HEALTHCHECK and the API e2e project.
+        apiRouter.router.get('/health', (_req, res) => {
+          res.json({ status: 'ok', timestamp: new Date().toISOString() });
+        });
+        return apiRouter;
       },
       undefined, // Default CSP config
       constants,
