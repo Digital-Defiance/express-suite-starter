@@ -11,12 +11,36 @@ function getBaseURL(): string {
   return state?.baseURL ?? 'http://localhost:3000';
 }
 
+/**
+ * Extra browsers for the harness specs, opt-in with E2E_BROWSERS=all.
+ * See the README ("Starter e2e harness") for why they are not the default.
+ */
+const extraBrowsers =
+  process.env.E2E_BROWSERS === 'all'
+    ? [
+        {
+          name: 'firefox',
+          testIgnore: /generated-e2e-scripts\.spec\.ts$/,
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'webkit',
+          testIgnore: /generated-e2e-scripts\.spec\.ts$/,
+          use: { ...devices['Desktop Safari'] },
+        },
+      ]
+    : [];
+
+const GENERATED_SCRIPTS_SPEC = /generated-e2e-scripts\.spec\.ts$/;
+
 export default defineConfig({
   globalSetup: './global-setup.ts',
   globalTeardown: './global-teardown.ts',
   testDir: './src',
   timeout: 30_000,
-  globalTimeout: 600_000,
+  // Setup builds two workspaces and the last project runs the generated
+  // workspaces' own e2e scripts (two stacks, each up to 15 minutes).
+  globalTimeout: 2_400_000,
   retries: 0,
   use: {
     baseURL: getBaseURL(),
@@ -25,6 +49,15 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: GENERATED_SCRIPTS_SPEC,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    ...extraBrowsers,
+    // Runs after the browser specs: the generated web script rebuilds dist/.
+    {
+      name: 'generated-e2e-scripts',
+      testMatch: GENERATED_SCRIPTS_SPEC,
+      dependencies: ['chromium', ...extraBrowsers.map((b) => b.name)],
       use: { ...devices['Desktop Chrome'] },
     },
   ],

@@ -10,6 +10,17 @@ import {
 } from '../src/index';
 import { writeState, E2ESharedState } from './e2e-shared-state';
 
+/** Subset of config/presets/*.json that the harness feeds to the generator. */
+type PresetConfig = Pick<
+  GeneratorConfig,
+  'packages' | 'templates' | 'nx' | 'node'
+>;
+
+function loadPreset(name: 'standard' | 'brightstack'): PresetConfig {
+  const file = path.resolve(__dirname, '../config/presets', name + '.json');
+  return JSON.parse(fs.readFileSync(file, 'utf-8')) as PresetConfig;
+}
+
 const WORKSPACE_NAME = 'e2e-test-app';
 const NAMESPACE = `@${WORKSPACE_NAME}`;
 const DEV_DATABASE_NAME = 'e2e_test';
@@ -64,9 +75,16 @@ export default async function globalSetup(): Promise<void> {
   process.env.YARN_ENABLE_SCRIPTS = '1';
   process.env.YARN_ENABLE_HARDENED_MODE = '0';
 
+  const mernPreset = loadPreset('standard');
+  const bsPreset = loadPreset('brightstack');
+
   // Step 1: Create a unique temp directory
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'starter-e2e-'));
   const projectDir = path.join(tmpDir, WORKSPACE_NAME);
+
+  // Detached servers started so far; killed if setup fails, because
+  // Playwright does not run globalTeardown after a failed globalSetup.
+  const spawnedPids: number[] = [];
 
   console.log(`[e2e-setup] Temp directory: ${tmpDir}`);
 
@@ -84,80 +102,12 @@ export default async function globalSetup(): Promise<void> {
         includeReactLib: true,
         includeApiLib: true,
         includeInitUserDb: true,
-        includeE2e: false,
+        includeE2e: true,
       }),
-      packages: {
-        dev: [
-          '@typescript-eslint/eslint-plugin',
-          '@typescript-eslint/parser',
-          'eslint-config-prettier',
-          'eslint-plugin-prettier',
-          'eslint-plugin-react',
-          'eslint-plugin-react-hooks',
-          'eslint-plugin-import',
-          'eslint-plugin-jsx-a11y',
-          'eslint-plugin-playwright',
-          'mongodb-memory-server',
-          '@types/cors',
-          '@types/express',
-          '@types/jsonwebtoken',
-          '@types/node',
-          '@types/react',
-          '@types/react-dom',
-          'vite-plugin-node-polyfills',
-        ],
-        prod: [
-          '@aws-sdk/client-ses',
-          '@digitaldefiance/node-express-suite@latest',
-          '@digitaldefiance/node-express-suite-mongo@latest',
-          '@digitaldefiance/ecies-lib@latest',
-          '@digitaldefiance/node-ecies-lib@latest',
-          '@digitaldefiance/i18n-lib@latest',
-          '@digitaldefiance/suite-core-lib@latest',
-          '@digitaldefiance/mongoose-types@latest',
-          '@digitaldefiance/express-suite-react-components@latest',
-          '@digitaldefiance/branded-interface@latest',
-          '@digitaldefiance/branded-enum@latest',
-          '@digitaldefiance/reed-solomon-erasure.wasm@latest',
-          '@emotion/react',
-          '@emotion/styled',
-          '@mui/icons-material',
-          '@mui/material',
-          '@mui/system',
-          '@mui/x-date-pickers',
-          'argon2',
-          'axios',
-          'bip39',
-          'cors',
-          'date-fns',
-          'dotenv',
-          'ejs',
-          'express',
-          'express-validator',
-          'helmet',
-          'jsonwebtoken',
-          'mongodb',
-          'mongoose',
-          'react-router',
-          'reflect-metadata',
-          'sass',
-          'ts-brand',
-          'zod',
-        ],
-      },
-      templates: { engine: 'mustache' },
-      nx: {
-        linter: 'eslint',
-        unitTestRunner: 'jest',
-        e2eTestRunner: 'playwright',
-        style: 'css',
-        bundler: 'vite',
-        ciProvider: 'github',
-      },
-      node: {
-        version: '20.11.0',
-        yarnVersion: '4.11.0',
-      },
+      packages: mernPreset.packages,
+      templates: mernPreset.templates,
+      nx: mernPreset.nx,
+      node: mernPreset.node,
     };
 
     // Step 3: Generate the monorepo
@@ -258,6 +208,7 @@ export default async function globalSetup(): Promise<void> {
     });
 
     serverProcess.unref();
+    if (serverProcess.pid) spawnedPids.push(serverProcess.pid);
 
     // Step 9: Poll until the server responds
     const baseURL = `http://localhost:${port}`;
@@ -300,99 +251,12 @@ export default async function globalSetup(): Promise<void> {
             includeReactLib: true,
             includeApiLib: true,
             includeInitUserDb: true,
-            includeE2e: false,
+            includeE2e: true,
           }),
-          packages: {
-            dev: [
-              '@typescript-eslint/eslint-plugin',
-              '@typescript-eslint/parser',
-              'eslint-config-prettier',
-              'eslint-plugin-prettier',
-              'eslint-plugin-react',
-              'eslint-plugin-react-hooks',
-              'eslint-plugin-import',
-              'eslint-plugin-jsx-a11y',
-              'eslint-plugin-playwright',
-              'mongodb-memory-server',
-              '@types/cors',
-              '@types/express',
-              '@types/jsonwebtoken',
-              '@types/node',
-              '@types/react',
-              '@types/react-dom',
-          'vite-plugin-node-polyfills',
-            ],
-            prod: [
-              '@aws-sdk/client-ses',
-              '@brightchain/node-express-suite@latest',
-              '@brightchain/db@latest',
-              '@brightchain/brightchain-lib@latest',
-              'bcrypt@^5.1.1',
-              '@digitaldefiance/node-express-suite@latest',
-              '@digitaldefiance/branded-interface@latest',
-              '@digitaldefiance/branded-enum@latest',
-              '@digitaldefiance/secrets@latest',
-              '@digitaldefiance/ecies-lib@latest',
-              '@digitaldefiance/node-ecies-lib@latest',
-              '@digitaldefiance/i18n-lib@latest',
-              '@digitaldefiance/suite-core-lib@latest',
-              '@digitaldefiance/mongoose-types@latest',
-              '@digitaldefiance/reed-solomon-erasure.wasm@latest',
-              '@digitaldefiance/express-suite-react-components@latest',
-              '@ethereumjs/wallet',
-              '@noble/hashes',
-              '@scure/bip32',
-              '@scure/bip39',
-              'blakejs',
-              'currency-codes',
-              'elliptic',
-              'email-addresses',
-              'mongodb',
-              'mongoose',
-              'otpauth',
-              'paillier-bigint',
-              'postal-mime',
-              'qrcode',
-              'secp256k1',
-              'ts-brand',
-              'uuid',
-              'validator',
-              '@emotion/react',
-              '@emotion/styled',
-              '@mui/icons-material',
-              '@mui/material',
-              '@mui/system',
-              '@mui/x-date-pickers',
-              'argon2',
-              'axios',
-              'bip39',
-              'cors',
-              'date-fns',
-              'dotenv',
-              'ejs',
-              'express',
-              'express-validator',
-              'helmet',
-              'jsonwebtoken',
-              'react-router',
-              'reflect-metadata',
-              'sass',
-              'zod',
-            ],
-          },
-          templates: { engine: 'mustache' },
-          nx: {
-            linter: 'eslint',
-            unitTestRunner: 'jest',
-            e2eTestRunner: 'playwright',
-            style: 'css',
-            bundler: 'vite',
-            ciProvider: 'github',
-          },
-          node: {
-            version: '20.11.0',
-            yarnVersion: '4.11.0',
-          },
+          packages: bsPreset.packages,
+          templates: bsPreset.templates,
+          nx: bsPreset.nx,
+          node: bsPreset.node,
         };
 
         await generateMonorepo({
@@ -412,8 +276,12 @@ export default async function globalSetup(): Promise<void> {
           timeout: YARN_INSTALL_TIMEOUT_MS,
         });
 
-        // Patch @brightchain/brightchain-lib exports to expose subpath imports
-        // required by @brightchain/db (the published npm version is missing these)
+        // Workaround for an upstream defect, still open: the published
+        // @brightchain/brightchain-lib package.json does not export the
+        // ./lib/db/* subpaths (cursor, updateEngine, transaction,
+        // inMemoryHeadRegistry, indexing) that @brightchain/db imports, so the
+        // BrightStack API fails to build or start without this patch. It has to
+        // be fixed in the BrightChain packages; the starter cannot fix it.
         console.log('[e2e-setup] Patching @brightchain/brightchain-lib exports...');
         const bclPkgPath = path.join(bsProjectDir, 'node_modules', '@brightchain', 'brightchain-lib', 'package.json');
         if (fs.existsSync(bclPkgPath)) {
@@ -486,6 +354,7 @@ export default async function globalSetup(): Promise<void> {
           console.error(`[e2e-bs-server:err] ${data.toString().trim()}`);
         });
         bsServerProcess.unref();
+        if (bsServerProcess.pid) spawnedPids.push(bsServerProcess.pid);
 
         const bsBaseURL = `http://localhost:${bsPort}`;
         console.log(`[e2e-setup] Waiting for BrightStack server at ${bsBaseURL}...`);
@@ -507,13 +376,14 @@ export default async function globalSetup(): Promise<void> {
           adminUsername: 'admin',
         };
       } catch (bsError) {
-        console.warn(`[e2e-setup] BrightStack setup failed (non-fatal): ${bsError instanceof Error ? bsError.message : String(bsError)}`);
-        console.warn('[e2e-setup] BrightStack Playwright tests will be skipped.');
+        // A broken BrightStack generation must fail the run. It is only
+        // skipped when the caller opted out with E2E_BRIGHTSTACK=false.
         try {
           fs.rmSync(bsTmpDir, { recursive: true, force: true });
         } catch {
           // Ignore cleanup errors
         }
+        throw bsError;
       }
     }
 
@@ -533,6 +403,13 @@ export default async function globalSetup(): Promise<void> {
   } catch (error) {
     // Cleanup on failure
     console.error('[e2e-setup] Setup failed, cleaning up...');
+    for (const pid of spawnedPids) {
+      try {
+        process.kill(pid, 'SIGKILL');
+      } catch {
+        // Process may already be dead
+      }
+    }
     try {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     } catch {

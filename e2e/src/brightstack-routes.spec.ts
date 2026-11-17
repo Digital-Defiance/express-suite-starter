@@ -24,8 +24,8 @@ test.describe('BrightStack Routes - API endpoints', () => {
       return;
     }
     const response = await request.get(`${bs.baseURL}/api/health`);
-    // Accept 200 or 404 — the health endpoint may not exist in all configurations
-    expect([200, 404]).toContain(response.status());
+    // The generated app registers /api/health itself (routers/health.ts)
+    expect(response.status()).toBe(200);
   });
 
   test('API user verify endpoint exists', async ({ request }) => {
@@ -35,8 +35,8 @@ test.describe('BrightStack Routes - API endpoints', () => {
       return;
     }
     const response = await request.get(`${bs.baseURL}/api/user/verify`);
-    // Without auth token, expect 401, 403, or 200 (BrightStack may return 200 with error body)
-    expect([200, 401, 403]).toContain(response.status());
+    // Without an auth token the endpoint must refuse the request
+    expect(response.status()).toBe(401);
   });
 });
 
