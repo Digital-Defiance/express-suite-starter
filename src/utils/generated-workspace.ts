@@ -79,3 +79,35 @@ export function formatGeneratedCode(
     dryRun,
   });
 }
+
+/**
+ * Delete Nx's stock Playwright example (`src/example.spec.ts`, which only
+ * checks that the home page says "Welcome") from the react e2e project.
+ *
+ * The starter's own react-e2e scaffolding replaces it. Returns true when a
+ * file was removed.
+ */
+export function removeStockE2eExample(
+  monorepoPath: string,
+  reactE2eName: string,
+  dryRun: boolean,
+): boolean {
+  if (!reactE2eName) {
+    return false;
+  }
+  const examplePath = path.join(
+    monorepoPath,
+    reactE2eName,
+    'src',
+    'example.spec.ts',
+  );
+  if (!fs.existsSync(examplePath)) {
+    return false;
+  }
+  if (dryRun) {
+    Logger.info(`[dry-run] Would remove ${examplePath}`);
+    return false;
+  }
+  fs.rmSync(examplePath);
+  return true;
+}

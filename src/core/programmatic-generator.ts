@@ -13,7 +13,13 @@ import { runCommand } from '../utils/shell-utils';
 import {
   formatGeneratedCode,
   removeReactRouterDom,
+  removeStockE2eExample,
 } from '../utils/generated-workspace';
+import {
+  buildE2eScripts,
+  getE2eProjectNames,
+  resolveScaffoldingDirName,
+} from '../utils/generated-scripts';
 import { renderTemplates, copyDir } from '../utils/template-renderer';
 import { obfuscatePassword } from '../../scripts/passwordObfuscator';
 import { checkAndUseNode } from '../../scripts/nodeSetup';
@@ -736,6 +742,8 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
         stackType: resolvedStackType,
         isMern: resolvedStackType === 'mern',
         isBrightStack: resolvedStackType === 'brightstack',
+        // Project names the generated e2e scaffolding refers to
+        ...getE2eProjectNames(projects),
         blockStorePath: (config as any).blockStorePath ?? '',
         useMemoryDocstore: useInMemoryDb ? 'true' : '',
         memberPoolName: (config as any).memberPoolName ?? 'BrightChain',
@@ -776,15 +784,11 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
 
       // Copy project-specific scaffolding
       // Stack-dependent project types use suffixed directories (e.g., api-mern, api-lib-mern, inituserdb-mern)
-      const stackDependentTypes = ['api', 'api-lib', 'inituserdb'];
       projects.forEach((project) => {
-        // The API e2e project gets its own scaffolding (health check spec);
-        // the react e2e project keeps the Nx Playwright defaults.
-        const scaffoldingDirName = stackDependentTypes.includes(project.type)
-          ? `${project.type}-${resolvedStackType}`
-          : project.type === 'e2e' && project.name.endsWith('-api-e2e')
-            ? 'api-e2e'
-            : project.type;
+        const scaffoldingDirName = resolveScaffoldingDirName(
+          project,
+          resolvedStackType,
+        );
         const projectSrc = path.join(scaffoldingDir, scaffoldingDirName);
         if (fs.existsSync(projectSrc)) {
           copyDir(
@@ -796,6 +800,12 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           );
         }
       });
+      // The react-e2e scaffolding replaces Nx's stock example spec
+      removeStockE2eExample(
+        monorepoPath,
+        getE2eProjectNames(projects).reactE2eName,
+        context.dryRun,
+      );
     },
   });
 
@@ -935,7 +945,6 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
           'NODE_ENV=production npx nx run-many --target=build --all --configuration=production',
         'build:dev':
           'NODE_ENV=development npx nx run-many --target=build --all --configuration=development',
-        'test:all': 'yarn test:jest && yarn test:e2e',
         'test:jest':
           'NODE_ENV=development npx nx run-many --target=test --all --configuration=development',
         'lint:all': 'npx nx run-many --target=lint --all',
@@ -956,13 +965,7 @@ function buildSteps(executor: StepExecutor, params: StepBuildParams): void {
         addScripts['build:api'] = `npx nx build ${apiProject.name}`;
       }
 
-      const apiE2eProject = projects.find(
-        (p) => p.type === 'e2e' && p.name.endsWith('-api-e2e'),
-      );
-      if (apiE2eProject) {
-        addScripts['test:e2e'] =
-          `NODE_ENV=development npx nx e2e ${apiE2eProject.name}`;
-      }
+      Object.assign(addScripts, buildE2eScripts(projects));
       const reactProject = projects.find((p) => p.type === 'react');
       if (reactProject) {
         addScripts['build:react'] = `npx nx build ${reactProject.name}`;

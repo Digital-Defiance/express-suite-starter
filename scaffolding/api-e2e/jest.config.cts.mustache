@@ -1,0 +1,22 @@
+module.exports = {
+  displayName: '{{apiE2eName}}',
+  preset: '../jest.preset.js',
+  globalSetup: '<rootDir>/src/support/global-setup.ts',
+  globalTeardown: '<rootDir>/src/support/global-teardown.ts',
+  setupFiles: ['<rootDir>/src/support/test-setup.ts'],
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.[tj]s$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+      },
+    ],
+  },
+  // uuid (used by the suite crypto libraries that sign the login challenge)
+  // ships ES modules only. Jest has to transform it, which needs allowJs in
+  // tsconfig.spec.json.
+  transformIgnorePatterns: ['/node_modules/(?!(.*/node_modules/)?uuid/)'],
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../coverage/{{apiE2eName}}',
+};

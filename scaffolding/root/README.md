@@ -14,7 +14,7 @@ This example demonstrates:
 - 🌍 **Internationalization** - Multi-language support with i18n-lib
 - ⚛️ **React Integration** - Pre-built auth components, hooks, and providers
 - 🎨 **Material-UI Theming** - Dark/light mode, responsive design
-- 🧪 **Testing** - Unit tests, integration tests, E2E tests with Playwright
+- 🧪 **Testing** - Unit tests, integration tests, API e2e tests and browser e2e tests with Playwright
 - 📦 **Monorepo Structure** - Nx workspace with shared libraries
 
 ## Architecture Overview
@@ -29,7 +29,7 @@ express-suite-example/
 ├── express-suite-example-react-lib/    # Shared React components
 ├── express-suite-example-lib/          # Shared business logic
 ├── express-suite-example-inituserdb/   # Database initialization script
-├── express-suite-example-api-e2e/      # API integration tests
+├── express-suite-example-api-e2e/      # API e2e tests (own server, auth flow)
 └── express-suite-example-react-e2e/    # Frontend E2E tests (Playwright)
 ```
 
@@ -206,25 +206,115 @@ const engine = PluginI18nEngine.createInstance('app', [
 
 ## Testing
 
-### Run All Tests
+### Run the tests
 
 ```bash
-# Unit and integration tests
+# Unit and integration tests of every project (Jest)
 yarn test:jest
 
-# E2E tests (requires running servers)
+# API end-to-end tests (Jest against a real server, see below)
 yarn test:e2e
 
-# All tests
+# Browser end-to-end tests (Playwright, see below)
+yarn test:e2e:web
+
+# All of the above
 yarn test:all
 ```
 
-### Test Coverage
+### API end-to-end tests: `yarn test:e2e`
 
-See individual project test files:
-- API: `apps/express-suite-example-api/src/**/*.spec.ts`
-- React: `apps/express-suite-example-react/src/**/*.spec.tsx`
-- E2E: `apps/express-suite-example-react-e2e/src/**/*.spec.ts`
+Runs the `express-suite-example-api-e2e` project through Nx. It builds the API,
+then its Jest `globalSetup` starts the built API (`dist/express-suite-example-api/main.js`)
+on a free port with an in-memory database and stops it again afterwards. It
+does not need a running dev server, port 3000 or the devcontainer paths in `.env`.
+
+The specs cover:
+
+- `GET /api/health`
+- register a user, reject a duplicate registration
+- an unverified user cannot log in
+- verify the email (the test reads the captured mail through the admin API)
+- log in with the direct-login challenge (sign the challenge with the key
+  derived from the mnemonic) and receive a JWT
+- `GET /api/user/verify` returns 200 with the token, and 401 without a token or
+  with a malformed token
+- a challenge signed with the wrong key is rejected
+
+### Browser end-to-end tests: `yarn test:e2e:web`
+
+Builds the API and the React app, then runs Playwright with
+`express-suite-example-react-e2e/playwright.config.mts` (Chromium, Firefox and
+WebKit). Playwright starts the built API, which also serves the built React app,
+on port 4310 (set `E2E_WEB_PORT` to change it). Install the browsers once:
+
+```bash
+npx playwright install
+```
+
+Extra arguments pass through to Playwright:
+
+```bash
+yarn test:e2e:web --project=chromium
+yarn test:e2e:web --headed
+```
+
+The flow registers a user through the `/register` form, verifies the email
+through the admin API, signs in on `/login` with username and mnemonic, lands on
+`/dashboard`, opens `/user-settings`, logs out, and checks that `/dashboard`
+and `/user-settings` redirect an anonymous visitor to `/login`.
+
+Nx's Playwright plugin is not used. The generator removes it on purpose because
+its daemon is unreliable in this setup, so the browser tests are only run through
+this script.
+
+### Test-only administrator (MERN)
+
+Both e2e projects start the server with a fixed `ADMIN_MNEMONIC`
+(`src/support/e2e-env.ts` in each e2e project), so the tests can log in as
+`admin` without reading the server output. The mnemonic is for the throwaway
+in-memory database of the e2e server only. Never use it, or put it in an `.env`
+file, for a real deployment.
+
+The generated server reads its `.env` with override enabled, so the `.env`
+file wins over process environment variables. For that reason the e2e projects
+do not run `dist/<api>/main.js` directly. They write the e2e settings (free
+port, in-memory database, the test mnemonic, the real `dist` directories) into
+a copy of the bundle and its `.env` under `dist/.e2e/`, and run that copy. The
+deployable output in `dist/<api>` is not modified.
+
+### BrightStack projects
+
+The e2e projects of a BrightStack workspace cover less than the MERN ones. A
+BrightStack server seeds a random administrator and ignores `ADMIN_MNEMONIC`,
+so the tests cannot read the verification mail through the admin API and cannot
+finish a login:
+
+- API e2e: health, registration (which returns a token), `GET /api/user/verify`
+  with that token (200), without a token (401) and with a malformed token
+  (rejected), a refused login for the unverified user, a refused login with the
+  wrong key.
+- Browser e2e: registration through the form, a refused sign in before the email
+  is verified, and the redirect of anonymous visitors from the private pages.
+
+Registering with an `@<EMAIL_DOMAIN>` address (default `example.com`) is
+refused by BrightStack, so the tests use `@e2e-users.test` addresses.
+
+### Known behavior of the Express Suite that the tests work around
+
+- A duplicate registration answers HTTP 500 (MERN) instead of a 4xx, so the test
+  only asserts that it is rejected.
+- WebKit does not exempt `http://localhost` from the `upgrade-insecure-requests`
+  directive in the API's Content-Security-Policy and would load the app over
+  https. `src/support/fixtures.ts` in the browser e2e project removes that one
+  directive from the document response for WebKit only.
+
+### Where the tests live
+
+- API: `express-suite-example-api/src/**/*.spec.ts`
+- React: `express-suite-example-react/src/**/*.spec.tsx`
+- API e2e: `express-suite-example-api-e2e/src/**/*.spec.ts`
+- Browser e2e: `express-suite-example-react-e2e/src/**/*.spec.ts`
 
 ## Development Workflow
 
@@ -375,9 +465,10 @@ yarn build:dev
 - `yarn build:dev` - Development build of all projects
 - `yarn serve:dev` - Start API server in development mode
 - `yarn serve` - Start API server in production mode
-- `yarn test:all` - Run all tests (Jest + E2E)
+- `yarn test:all` - Run all tests (Jest, API e2e and browser e2e)
 - `yarn test:jest` - Run Jest tests only
-- `yarn test:e2e` - Run Playwright E2E tests
+- `yarn test:e2e` - Run the API e2e tests (starts its own server)
+- `yarn test:e2e:web` - Build, then run the Playwright browser e2e tests (`npx playwright install` first; extra arguments pass through)
 - `yarn lint:all` - Lint all projects
 - `yarn prettier:check` - Check code formatting
 - `yarn prettier:fix` - Fix code formatting

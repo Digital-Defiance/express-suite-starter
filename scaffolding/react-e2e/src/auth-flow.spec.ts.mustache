@@ -1,0 +1,118 @@
+import { type Page } from '@playwright/test';
+import { TEST_PASSWORD, uniqueTestUser{{#isMern}}, verifyEmailAsAdmin{{/isMern}} } from './support/auth';
+{{#isMern}}
+import { WEB_BASE_URL } from './support/e2e-env';
+{{/isMern}}
+import { expect, test } from './support/fixtures';
+
+const PRIVATE_ROUTES = ['/dashboard', '/user-settings'];
+
+async function loginWithMnemonic(
+  page: Page,
+  username: string,
+  mnemonic: string,
+): Promise<void> {
+  await page.goto('/login');
+  await page.getByRole('button', { name: /username/i }).click();
+  await page.getByRole('button', { name: /mnemonic/i }).click();
+  await page.locator('#username').fill(username);
+  await page.locator('#mnemonic').fill(mnemonic);
+  await page.getByRole('button', { name: /sign in/i }).click();
+}
+
+/**
+ * Register through the form. Returns the recovery mnemonic that the form
+ * generated in the browser and sent with the request.
+ */
+async function registerThroughForm(
+  page: Page,
+  user: ReturnType<typeof uniqueTestUser>,
+): Promise<string> {
+  await page.goto('/register');
+  await page.locator('#username').fill(user.username);
+  await page.locator('#email').fill(user.email);
+  await page.locator('#displayName').fill(user.displayName);
+  await page.locator('#password').fill(TEST_PASSWORD);
+  await page.locator('#confirmPassword').fill(TEST_PASSWORD);
+  const registered = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/user/register') &&
+      response.request().method() === 'POST',
+  );
+  await page.locator('button[type="submit"]').click();
+  const response = await registered;
+  expect(response.status()).toBe(201);
+  const body: { mnemonic?: string } = response.request().postDataJSON();
+  const mnemonic = body.mnemonic ?? '';
+  expect(mnemonic.split(/\s+/).length).toBeGreaterThanOrEqual(12);
+  return mnemonic;
+}
+
+test.describe('registration and login through the UI', () => {
+{{#isMern}}
+  test('registers, verifies the email, logs in, uses a private page and logs out', async ({
+    page,
+  }) => {
+    const user = uniqueTestUser('ui');
+    const mnemonic = await registerThroughForm(page, user);
+
+    // A new account must verify its email before it can sign in.
+    await verifyEmailAsAdmin(WEB_BASE_URL, user.email);
+
+    // Sign in with username and mnemonic and land on the dashboard.
+    await loginWithMnemonic(page, user.username, mnemonic);
+    await page.waitForURL('**/dashboard**');
+    await expect(page.getByRole('heading').first()).toBeVisible();
+    const storedToken = await page.evaluate(() =>
+      localStorage.getItem('authToken'),
+    );
+    expect(storedToken).toBeTruthy();
+
+    // The signed-in session can open another private page.
+    await page.goto('/user-settings');
+    await expect(page).toHaveURL(/\/user-settings/);
+    await expect(page.getByRole('heading').first()).toBeVisible();
+
+    // Log out; the private pages send an anonymous visitor to /login.
+    await page.goto('/logout');
+    await page.waitForURL('**/login**');
+    for (const route of PRIVATE_ROUTES) {
+      await page.goto(route);
+      await page.waitForURL('**/login**');
+    }
+  });
+{{/isMern}}
+{{#isBrightStack}}
+  // BrightStack seeds a random administrator, so the tests cannot read the
+  // verification mail and finish a login. This test covers registration and
+  // that an account with an unverified email is refused at sign in.
+  test('registers through the form and cannot sign in before the email is verified', async ({
+    page,
+  }) => {
+    const user = uniqueTestUser('ui');
+    const mnemonic = await registerThroughForm(page, user);
+
+    const rejected = page.waitForResponse((response) =>
+      response.url().endsWith('/api/user/direct-challenge'),
+    );
+    await loginWithMnemonic(page, user.username, mnemonic);
+    expect((await rejected).status()).toBeGreaterThanOrEqual(400);
+    await expect(page).toHaveURL(/\/login/);
+    expect(
+      await page.evaluate(() => localStorage.getItem('authToken')),
+    ).toBeNull();
+  });
+{{/isBrightStack}}
+
+  test('keeps an anonymous visitor out of the private pages', async ({
+    page,
+  }) => {
+    for (const route of PRIVATE_ROUTES) {
+      await page.goto(route);
+      await page.waitForURL('**/login**');
+      expect(
+        await page.evaluate(() => localStorage.getItem('authToken')),
+      ).toBeNull();
+    }
+  });
+});

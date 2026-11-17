@@ -1,0 +1,108 @@
+import {
+  generateTestMnemonic,
+  login,
+  registerUser,
+  requestChallenge,
+  signChallenge,
+  submitChallenge,
+  uniqueTestUser,
+{{#isMern}}
+  verifyEmailAsAdmin,
+{{/isMern}}
+  verifyToken,
+} from '../support/auth';
+
+/**
+ * Register, log in with a signed challenge and call an authenticated endpoint.
+ * The tests run in order and share one user.
+ {{#isBrightStack}}
+ *
+ * BrightStack: this spec stops short of email verification and a successful
+ * direct login. A BrightStack server seeds a random administrator and ignores
+ * ADMIN_MNEMONIC, so the tests cannot read the verification mail through the
+ * admin API. The registration token is checked instead, and a login attempt
+ * by the unverified user must be refused.
+ {{/isBrightStack}}
+ */
+describe('auth flow', () => {
+  const baseURL = process.env['E2E_BASE_URL'] ?? '';
+  const user = uniqueTestUser();
+  const mnemonic = generateTestMnemonic();
+  let token = '';
+
+{{#isMern}}
+  it('registers a user without a mnemonic and returns a generated one', async () => {
+    const result = await registerUser(baseURL, uniqueTestUser('gen'));
+    expect(result.status).toBe(201);
+    expect(result.data.mnemonic?.split(/\s+/)).toHaveLength(24);
+  });
+
+{{/isMern}}
+  it('registers a user with a password and a recovery mnemonic', async () => {
+    const result = await registerUser(baseURL, user, mnemonic);
+    expect(result.status).toBe(201);
+{{#isBrightStack}}
+    // BrightStack signs the new user in: the answer carries a token.
+    expect(result.data.data?.token?.split('.')).toHaveLength(3);
+    token = result.data.data?.token ?? '';
+{{/isBrightStack}}
+  });
+
+  it('rejects a duplicate registration', async () => {
+{{#isMern}}
+    // The suite currently answers a duplicate username with HTTP 500 instead
+    // of a 4xx, so only the rejection (not 201) is asserted.
+{{/isMern}}
+    const result = await registerUser(baseURL, user, mnemonic);
+    expect(result.status).not.toBe(201);
+    expect(result.status).toBeGreaterThanOrEqual(400);
+  });
+
+  it('does not log in a user whose email is not verified', async () => {
+    const result = await login(baseURL, user.username, mnemonic);
+    expect(result.status).toBeGreaterThanOrEqual(400);
+    expect(result.status).toBeLessThan(500);
+    expect(result.data.token).toBeUndefined();
+  });
+
+{{#isMern}}
+  it('logs in with a signed challenge after the email is verified', async () => {
+    await verifyEmailAsAdmin(baseURL, user.email);
+    const result = await login(baseURL, user.username, mnemonic);
+    expect(result.status).toBe(200);
+    expect(result.data.token?.split('.')).toHaveLength(3);
+    expect(result.data.user?.username).toBe(user.username);
+    token = result.data.token ?? '';
+  });
+
+{{/isMern}}
+  it('accepts the token on an authenticated endpoint', async () => {
+    const result = await verifyToken(baseURL, token);
+    expect(result.status).toBe(200);
+  });
+
+  it('rejects the same call without a token', async () => {
+    const result = await verifyToken(baseURL);
+    expect(result.status).toBe(401);
+  });
+
+  it('rejects the same call with a malformed token', async () => {
+    // MERN answers 400 and BrightStack 403 for a token that is not a JWT.
+    const result = await verifyToken(baseURL, 'not-a-real-token');
+    expect(result.status).toBeGreaterThanOrEqual(400);
+    expect(result.status).toBeLessThan(500);
+  });
+
+  it('rejects a challenge signed with the wrong key', async () => {
+    const challenge = await requestChallenge(baseURL);
+    const result = await submitChallenge(
+      baseURL,
+      user.username,
+      challenge,
+      signChallenge(generateTestMnemonic(), challenge),
+    );
+    expect(result.status).toBeGreaterThanOrEqual(400);
+    expect(result.status).toBeLessThan(500);
+    expect(result.data.token).toBeUndefined();
+  });
+});

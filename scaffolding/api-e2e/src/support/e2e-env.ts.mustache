@@ -1,0 +1,113 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
+/**
+ * Shared configuration of the e2e runs.
+ *
+ * An e2e run starts its own copy of the built API (dist/{{apiName}}/main.js)
+ * so it does not depend on port 3000 being free, on a running dev server or on
+ * the devcontainer paths in .env. This file is duplicated in {{apiE2eName}}
+ * and {{reactE2eName}}; keep the shared part in sync.
+ */
+
+export const API_NAME = '{{apiName}}';
+export const REACT_NAME = '{{reactName}}';
+
+/** Name of the in-memory database used by the e2e server. */
+export const E2E_DEV_DATABASE = 'e2e';
+
+{{#isMern}}
+/** Username of the administrator that the e2e server seeds. */
+export const TEST_ADMIN_USERNAME = 'admin';
+
+/**
+ * TEST-ONLY administrator mnemonic. It is handed to the e2e server through
+ * ADMIN_MNEMONIC so the tests know the administrator's credentials. The e2e
+ * server runs on a throwaway in-memory database. Never use this mnemonic for a
+ * real deployment: anybody who reads this repository knows it.
+ */
+export const TEST_ADMIN_MNEMONIC =
+  'toward entry river deliver nut panic near allow barrel gloom reduce dish bubble odor boy breeze slush code payment wave involve peace wrap embrace';
+{{/isMern}}
+
+/** Directory (relative to the workspace root) that holds the e2e copy of the API. */
+const E2E_SERVER_DIR = path.join('dist', '.e2e', API_NAME);
+
+/** Entry point of the e2e copy of the API, relative to the workspace root. */
+export const API_MAIN = path.join(E2E_SERVER_DIR, 'main.js');
+
+/**
+ * Replace (or append) KEY=value lines of a dotenv file.
+ *
+ * The generated server loads its .env file with override enabled, so the
+ * file wins over process environment variables. The e2e settings therefore
+ * have to be written into the .env file that the e2e server reads.
+ */
+export function applyEnvOverrides(
+  source: string,
+  overrides: Record<string, string>,
+): string {
+  const pending = new Map(Object.entries(overrides));
+  const lines = source.split('\n').map((line) => {
+    const key = /^([A-Za-z_][A-Za-z0-9_]*)=/.exec(line)?.[1];
+    if (key === undefined || !pending.has(key)) {
+      return line;
+    }
+    const value = pending.get(key) ?? '';
+    pending.delete(key);
+    return `${key}=${JSON.stringify(value)}`;
+  });
+  const appended = [...pending].map(
+    ([key, value]) => `${key}=${JSON.stringify(value)}`,
+  );
+  return [...lines, ...appended].join('\n');
+}
+
+function writeIfChanged(file: string, content: Buffer | string): void {
+  const next = Buffer.from(content);
+  if (fs.existsSync(file) && fs.readFileSync(file).equals(next)) {
+    return;
+  }
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, next);
+}
+
+/**
+ * Create the e2e copy of the built API: the same main.js with an .env that has
+ * the e2e settings (free port, in-memory database, test-only administrator and
+ * the real dist directories instead of the devcontainer paths). The deployable
+ * output in dist/{{apiName}} is not modified. Returns the entry point relative
+ * to the workspace root. Safe to call more than once.
+ */
+export function prepareE2eServer(workspaceRoot: string, port: number): string {
+  const builtDir = path.join(workspaceRoot, 'dist', API_NAME);
+  const builtMain = path.join(builtDir, 'main.js');
+  const builtEnv = path.join(builtDir, '.env');
+  if (!fs.existsSync(builtMain) || !fs.existsSync(builtEnv)) {
+    throw new Error(
+      `${builtDir} is not built. Run: npx nx run ${API_NAME}:post-build`,
+    );
+  }
+  // The server serves the built React app; an empty directory is enough when
+  // only the API is under test.
+  const reactDist = path.join(workspaceRoot, 'dist', REACT_NAME);
+  fs.mkdirSync(reactDist, { recursive: true });
+  const env = applyEnvOverrides(fs.readFileSync(builtEnv, 'utf-8'), {
+    PORT: String(port),
+    DEV_DATABASE: E2E_DEV_DATABASE,
+{{#isMern}}
+    ADMIN_MNEMONIC: TEST_ADMIN_MNEMONIC,
+{{/isMern}}
+    API_DIST_DIR: builtDir,
+    REACT_DIST_DIR: reactDist,
+  });
+  const serverDir = path.join(workspaceRoot, E2E_SERVER_DIR);
+  writeIfChanged(path.join(serverDir, '.env'), env);
+  writeIfChanged(path.join(serverDir, 'main.js'), fs.readFileSync(builtMain));
+  // The bundle is an ES module; declaring that avoids Node's re-parse warning.
+  writeIfChanged(
+    path.join(serverDir, 'package.json'),
+    JSON.stringify({ type: 'module' }) + '\n',
+  );
+  return API_MAIN;
+}

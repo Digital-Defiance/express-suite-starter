@@ -1,0 +1,236 @@
+import {
+  ECIES,
+  SecureString,
+  type IECIESConfig,
+} from '@digitaldefiance/ecies-lib';
+import { ECIESService } from '@digitaldefiance/node-ecies-lib';
+import axios from 'axios';
+import { generateMnemonic } from 'bip39';
+{{#isMern}}
+import { TEST_ADMIN_MNEMONIC, TEST_ADMIN_USERNAME } from './e2e-env';
+{{/isMern}}
+
+/**
+ * Helpers for the register, verify-email and direct-login flow of the suite.
+ * This file is duplicated in the react-e2e project; keep the two in sync.
+ *
+ * Every helper returns the HTTP status instead of throwing on 4xx, so tests
+ * can assert on rejected requests.
+ */
+
+export interface ITestUser {
+  username: string;
+  email: string;
+  displayName: string;
+}
+
+export interface IHttpResult<T> {
+  status: number;
+  data: T;
+}
+
+/** Register answers differ per stack: the mnemonic is at the top level or under data. */
+interface IRegisterResponse {
+  mnemonic?: string;
+  data?: { token?: string; mnemonic?: string };
+}
+
+/** Matches the suite's PasswordRegex: a letter, a digit and a symbol, 8+ characters. */
+export const TEST_PASSWORD = 'E2e-Passw0rd!';
+
+interface ILoginResponse {
+  token?: string;
+  user?: { username?: string };
+}
+
+interface IChallengeResponse {
+  challenge: string;
+}
+
+{{#isMern}}
+interface IMailMessage {
+  html?: string;
+  text?: string;
+}
+{{/isMern}}
+
+const eciesConfig: IECIESConfig = {
+  curveName: ECIES.CURVE_NAME,
+  primaryKeyDerivationPath: ECIES.PRIMARY_KEY_DERIVATION_PATH,
+  mnemonicStrength: ECIES.MNEMONIC_STRENGTH,
+  symmetricAlgorithm: ECIES.SYMMETRIC_ALGORITHM_CONFIGURATION,
+  symmetricKeyBits: ECIES.SYMMETRIC.KEY_BITS,
+  symmetricKeyMode: ECIES.SYMMETRIC.MODE,
+};
+
+async function call<T>(
+  baseURL: string,
+  method: 'GET' | 'POST',
+  url: string,
+  options: { data?: unknown; token?: string } = {},
+): Promise<IHttpResult<T>> {
+  const response = await axios.request<T>({
+    baseURL,
+    method,
+    url,
+    data: options.data,
+    headers: options.token
+      ? { Authorization: `Bearer ${options.token}` }
+      : undefined,
+    // Tests assert on the status, so never throw on 4xx/5xx.
+    validateStatus: () => true,
+  });
+  return { status: response.status, data: response.data };
+}
+
+/**
+ * A user that no earlier run has registered (usernames are 3-30 letters and
+ * digits). The email is not in @example.com because BrightStack refuses to
+ * register addresses of the site's own email domain.
+ */
+export function uniqueTestUser(prefix = 'e2e'): ITestUser {
+  const suffix = `${Date.now().toString(36)}${Math.floor(
+    Math.random() * 1_296,
+  ).toString(36)}`;
+  const username = `${prefix}${suffix}`.slice(0, 30);
+  return {
+    username,
+    email: `${username}@e2e-users.test`,
+    displayName: `E2E User ${suffix}`,
+  };
+}
+
+/** Sign a hex challenge with the key derived from a mnemonic; returns the hex signature. */
+export function signChallenge(mnemonic: string, challengeHex: string): string {
+  const service = new ECIESService<Buffer>(eciesConfig);
+  const { wallet } = service.walletAndSeedFromMnemonic(
+    new SecureString(mnemonic),
+  );
+  const signature = service.signMessage(
+    Buffer.from(wallet.getPrivateKey()),
+    Buffer.from(challengeHex, 'hex'),
+  );
+  return Buffer.from(signature).toString('hex');
+}
+
+/** A new random 24 word recovery mnemonic. */
+export function generateTestMnemonic(): string {
+  return generateMnemonic(ECIES.MNEMONIC_STRENGTH);
+}
+
+/**
+ * POST /api/user/register with a password. Pass a mnemonic to choose the
+ * recovery mnemonic; without one the server generates it.
+ */
+export function registerUser(
+  baseURL: string,
+  user: ITestUser,
+  mnemonic?: string,
+): Promise<IHttpResult<IRegisterResponse>> {
+  return call<IRegisterResponse>(baseURL, 'POST', '/api/user/register', {
+    data: {
+      ...user,
+      timezone: 'UTC',
+      password: TEST_PASSWORD,
+      ...(mnemonic ? { mnemonic } : {}),
+    },
+  });
+}
+
+/** POST /api/user/request-direct-login; the server answers with a challenge. */
+export async function requestChallenge(baseURL: string): Promise<string> {
+  const result = await call<IChallengeResponse>(
+    baseURL,
+    'POST',
+    '/api/user/request-direct-login',
+  );
+  if (result.status !== 200 || !result.data.challenge) {
+    throw new Error(`request-direct-login failed with status ${result.status}`);
+  }
+  return result.data.challenge;
+}
+
+/** POST /api/user/direct-challenge with an explicit signature. */
+export function submitChallenge(
+  baseURL: string,
+  username: string,
+  challenge: string,
+  signature: string,
+): Promise<IHttpResult<ILoginResponse>> {
+  return call<ILoginResponse>(baseURL, 'POST', '/api/user/direct-challenge', {
+    data: { challenge, signature, username },
+  });
+}
+
+/** Log in by signing a fresh challenge with the key of the given mnemonic. */
+export async function login(
+  baseURL: string,
+  username: string,
+  mnemonic: string,
+): Promise<IHttpResult<ILoginResponse>> {
+  const challenge = await requestChallenge(baseURL);
+  return submitChallenge(
+    baseURL,
+    username,
+    challenge,
+    signChallenge(mnemonic, challenge),
+  );
+}
+
+{{#isMern}}
+/** Log in as the seeded administrator and return its JWT. */
+export async function loginAsAdmin(baseURL: string): Promise<string> {
+  const result = await login(baseURL, TEST_ADMIN_USERNAME, TEST_ADMIN_MNEMONIC);
+  if (result.status !== 200 || !result.data.token) {
+    throw new Error(`Admin login failed with status ${result.status}`);
+  }
+  return result.data.token;
+}
+
+/**
+ * Self-registered users cannot log in until they verify their email. The e2e
+ * server uses the in-memory fake email service; the administrator can read the
+ * captured mail (GET /api/admin/emails/:address) and use the token in it.
+ */
+export async function verifyEmailAsAdmin(
+  baseURL: string,
+  email: string,
+): Promise<void> {
+  const adminToken = await loginAsAdmin(baseURL);
+  const mailbox = await call<IMailMessage[]>(
+    baseURL,
+    'GET',
+    `/api/admin/emails/${encodeURIComponent(email)}`,
+    { token: adminToken },
+  );
+  if (mailbox.status !== 200 || !Array.isArray(mailbox.data)) {
+    throw new Error(
+      `Could not read the mailbox of ${email} (${mailbox.status})`,
+    );
+  }
+  const bodies = mailbox.data
+    .map((message) => `${message.html ?? ''}${message.text ?? ''}`)
+    .join('\n');
+  const match = /verify-email\?token=([A-Fa-f0-9]+)/i.exec(bodies);
+  if (!match) {
+    throw new Error(`No verification token found in the mail for ${email}`);
+  }
+  const verified = await call<unknown>(
+    baseURL,
+    'POST',
+    '/api/user/verify-email',
+    { data: { token: match[1] } },
+  );
+  if (verified.status !== 200) {
+    throw new Error(`Email verification failed with status ${verified.status}`);
+  }
+}
+{{/isMern}}
+
+/** GET /api/user/verify, the authenticated check of the suite. */
+export function verifyToken(
+  baseURL: string,
+  token?: string,
+): Promise<IHttpResult<unknown>> {
+  return call<unknown>(baseURL, 'GET', '/api/user/verify', { token });
+}

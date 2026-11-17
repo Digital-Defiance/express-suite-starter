@@ -7,6 +7,7 @@ import {
   formatGeneratedCode,
   hasDependency,
   removeReactRouterDom,
+  removeStockE2eExample,
 } from '../../src/utils/generated-workspace';
 
 jest.mock('child_process');
@@ -134,6 +135,43 @@ describe('generated-workspace', () => {
     it('does not execute prettier in a dry run', () => {
       formatGeneratedCode(workspace, true);
       expect(mockExecSync).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('removeStockE2eExample', () => {
+    function writeExample(): string {
+      const dir = path.join(workspace, 'app-react-e2e', 'src');
+      fs.mkdirSync(dir, { recursive: true });
+      const file = path.join(dir, 'example.spec.ts');
+      fs.writeFileSync(file, "test('has title', () => {});");
+      return file;
+    }
+    it('deletes the stock example spec', () => {
+      const file = writeExample();
+      expect(removeStockE2eExample(workspace, 'app-react-e2e', false)).toBe(
+        true,
+      );
+      expect(fs.existsSync(file)).toBe(false);
+    });
+    it('keeps other specs in the project', () => {
+      writeExample();
+      const other = path.join(workspace, 'app-react-e2e', 'src', 'x.spec.ts');
+      fs.writeFileSync(other, '');
+      removeStockE2eExample(workspace, 'app-react-e2e', false);
+      expect(fs.existsSync(other)).toBe(true);
+    });
+    it('does nothing when the example is absent or there is no react e2e project', () => {
+      expect(removeStockE2eExample(workspace, 'app-react-e2e', false)).toBe(
+        false,
+      );
+      expect(removeStockE2eExample(workspace, '', false)).toBe(false);
+    });
+    it('leaves the file in a dry run', () => {
+      const file = writeExample();
+      expect(removeStockE2eExample(workspace, 'app-react-e2e', true)).toBe(
+        false,
+      );
+      expect(fs.existsSync(file)).toBe(true);
     });
   });
 });

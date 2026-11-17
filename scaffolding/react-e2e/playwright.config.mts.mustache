@@ -1,0 +1,76 @@
+import * as path from 'path';
+import { defineConfig, devices } from '@playwright/test';
+import {
+  WEB_BASE_URL,
+  WEB_PORT,
+  prepareE2eServer,
+} from './src/support/e2e-env';
+
+const isCI = Boolean(process.env['CI']);
+const workspaceRoot = path.resolve(import.meta.dirname, '..');
+
+/**
+ * Browser e2e for {{reactName}}.
+ *
+ * Playwright starts the BUILT API ({{apiName}}), which also serves the built
+ * React app, on a dedicated port with an in-memory database and a known
+ * test-only administrator (see src/support/e2e-env.ts). Build first with
+ * `yarn test:e2e:web`, which does that and then runs this config. Install the
+ * browsers once with `npx playwright install`.
+ *
+ * Generated as a .mts file so Node loads it as ESM whatever the workspace
+ * `type` is. The Nx Playwright plugin is not used on purpose.
+ */
+export default defineConfig({
+  testDir: './src',
+  outputDir: path.join(workspaceRoot, 'dist', '.playwright', 'results'),
+  forbidOnly: isCI,
+  retries: isCI ? 1 : 0,
+  reporter: isCI
+    ? [
+        ['list'],
+        [
+          'html',
+          {
+            open: 'never',
+            outputFolder: path.join(
+              workspaceRoot,
+              'dist',
+              '.playwright',
+              'report',
+            ),
+          },
+        ],
+      ]
+    : 'list',
+  use: {
+    baseURL: WEB_BASE_URL,
+    trace: 'on-first-retry',
+  },
+  webServer: {
+    command: `node ${prepareE2eServer(workspaceRoot, WEB_PORT)}`,
+    cwd: workspaceRoot,
+    url: `${WEB_BASE_URL}/api/health`,
+    // A server that is already running would not have the test-only
+    // administrator or the in-memory database.
+    reuseExistingServer: false,
+    timeout: 120_000,
+    // The server prints its generated credentials; set E2E_SERVER_LOG=1 to see its output.
+    stdout: process.env['E2E_SERVER_LOG'] ? 'pipe' : 'ignore',
+    stderr: 'pipe',
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+});

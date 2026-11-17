@@ -1,0 +1,17 @@
+{
+  "name": "{{apiE2eName}}",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["{{apiName}}"],
+  "targets": {
+    "e2e": {
+      "command": "jest --passWithNoTests",
+      "cache": false,
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "dependsOn": ["{{apiName}}:post-build"],
+      "options": {
+        "cwd": "{{apiE2eName}}"
+      }
+    }
+  }
+}

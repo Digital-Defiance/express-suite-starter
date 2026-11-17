@@ -10,6 +10,7 @@ import { Constants } from './constants';
 import { AppRouter } from './routers/app';
 import { ApiRouter } from './routers/base';
 import { initMiddleware } from './middlewares';
+import { registerHealthRoute } from './routers/health';
 import { PlatformID } from '@digitaldefiance/node-ecies-lib';
 
 /**
@@ -62,11 +63,8 @@ export class App<
       // decorator-based controllers (see routers/api.ts for examples).
       (app: IApplication<TID>): BrightDbApiRouter<TID> => {
         const apiRouter = new ApiRouter(app);
-        // Unauthenticated liveness probe (GET /api/health) used by the
-        // Dockerfile HEALTHCHECK and the API e2e project.
-        apiRouter.router.get('/health', (_req, res) => {
-          res.json({ status: 'ok', timestamp: new Date().toISOString() });
-        });
+        // Unauthenticated liveness probe (GET /api/health), see routers/health.ts
+        registerHealthRoute(apiRouter.router);
         return apiRouter;
       },
       undefined, // Default CSP config
