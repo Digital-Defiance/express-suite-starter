@@ -51,12 +51,16 @@ export function patchRolldownConfig(source: string, scope: string): string {
   // ESM output has no CommonJS `__dirname`/`__filename` globals; the
   // scaffolded main.ts (and some bundled code) rely on them. Inject a banner
   // that recreates them from import.meta.url.
-  if (!patched.includes('banner:')) {
-    patched = patched.replace(
-      ESM_FORMAT_ANCHOR,
-      `$1\n      banner:\n        "import { fileURLToPath as __esmFileURLToPath } from 'node:url';\\nimport { dirname as __esmDirname } from 'node:path';\\nconst __filename = __esmFileURLToPath(import.meta.url);\\nconst __dirname = __esmDirname(__filename);",`,
-    );
+  if (patched.includes('banner:')) {
+    throw missingAnchor('no pre-existing output banner');
   }
+  if (!ESM_FORMAT_ANCHOR.test(patched)) {
+    throw missingAnchor("format: 'esm',");
+  }
+  patched = patched.replace(
+    ESM_FORMAT_ANCHOR,
+    `$1\n      banner:\n        "import { fileURLToPath as __esmFileURLToPath } from 'node:url';\\nimport { dirname as __esmDirname } from 'node:path';\\nconst __filename = __esmFileURLToPath(import.meta.url);\\nconst __dirname = __esmDirname(__filename);",`,
+  );
   // Broaden externalization to all bare specifiers (transitive deps, node:
   // builtins) EXCEPT the workspace's own internal libs.
   if (!patched.includes(EXTERNAL_CHECK_ANCHOR)) {

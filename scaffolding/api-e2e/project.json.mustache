@@ -5,7 +5,7 @@
   "implicitDependencies": ["{{apiName}}"],
   "targets": {
     "e2e": {
-      "command": "jest --passWithNoTests",
+      "command": "jest",
       "cache": false,
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "dependsOn": ["{{apiName}}:post-build"],

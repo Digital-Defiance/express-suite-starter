@@ -176,7 +176,7 @@ Make it **optional** via configuration:
    - ✅ Added integration tests
    - ✅ Tested with/without react-lib
    - ✅ Tested checkpoint/rollback
-   - ✅ 90%+ coverage on core components
+   - Coverage: run `yarn test --coverage` for current numbers
 
 ### Test Coverage Summary
 
@@ -450,7 +450,7 @@ yarn sync-templates    # Sync templates from reference project
 
 2. **Comprehensive Testing**
    - Test counts: see README Quality gates
-   - 100% coverage on critical components
+   - Coverage: run `yarn test --coverage` for current numbers
    - All TypeScript strict mode compliant
 
 3. **Advanced Features**

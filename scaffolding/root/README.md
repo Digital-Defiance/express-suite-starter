@@ -237,8 +237,8 @@ The specs cover:
 - verify the email (the test reads the captured mail through the admin API)
 - log in with the direct-login challenge (sign the challenge with the key
   derived from the mnemonic) and receive a JWT
-- `GET /api/user/verify` returns 200 with the token, and 401 without a token or
-  with a malformed token
+- `GET /api/user/verify` returns 200 with the token and 401 without a token;
+  a malformed token is rejected with a 4xx (400 on MERN, 403 on BrightStack)
 - a challenge signed with the wrong key is rejected
 
 ### Browser end-to-end tests: `yarn test:e2e:web`

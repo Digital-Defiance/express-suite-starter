@@ -220,6 +220,13 @@ export default defineConfig([
 
   it.each([
     ['cjs format', "format: 'cjs'", "format: 'umd'", "format: 'cjs'"],
+    ['esm format comma', "format: 'cjs',", "format: 'cjs'", "format: 'esm',"],
+    [
+      'no pre-existing banner',
+      "format: 'cjs',",
+      "format: 'cjs',\n      banner: 'x',",
+      'no pre-existing output banner',
+    ],
     [
       'external check',
       'dependencies.some((dep) => id === dep || id.startsWith(`${dep}/`))',
