@@ -52,7 +52,10 @@ export function patchRolldownConfig(source: string, scope: string): string {
   // scaffolded main.ts (and some bundled code) rely on them. Inject a banner
   // that recreates them from import.meta.url.
   if (patched.includes('banner:')) {
-    throw missingAnchor('no pre-existing output banner');
+    throw new Error(
+      'Cannot patch rolldown.config.ts: an output banner is already present. ' +
+        'The @nx/node rolldown template changed; update patchRolldownConfig.',
+    );
   }
   if (!ESM_FORMAT_ANCHOR.test(patched)) {
     throw missingAnchor("format: 'esm',");

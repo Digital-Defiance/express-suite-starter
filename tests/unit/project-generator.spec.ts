@@ -225,7 +225,7 @@ export default defineConfig([
       'no pre-existing banner',
       "format: 'cjs',",
       "format: 'cjs',\n      banner: 'x',",
-      'no pre-existing output banner',
+      'output banner is already present',
     ],
     [
       'external check',

@@ -180,31 +180,7 @@ Make it **optional** via configuration:
 
 ### Test Coverage Summary
 
-**Unit Tests (16 files):** ✅ All Passing
-
-- config-schema.spec.ts
-- template-engine.spec.ts
-- project-config-builder.spec.ts
-- project-generator.spec.ts
-- step-executor.spec.ts
-- template-renderer.spec.ts
-- logger.spec.ts
-- shell-utils.spec.ts
-- plugin-manager.spec.ts
-- post-generation-validator.spec.ts
-- package-resolver.spec.ts
-- dry-run-executor.spec.ts
-- doc-generator.spec.ts
-- diff-viewer.spec.ts
-- devcontainer-config.spec.ts
-- system-check.spec.ts
-
-**Integration Tests (3 files):** ✅ All Passing
-
-- full-generation.spec.ts
-- plugin-integration.spec.ts
-- validation-integration.spec.ts
-
+**Unit and integration tests:** run `yarn test` (all suites under `tests/unit` and `tests/integration`); file lists are not duplicated here.
 **Coverage:** run `yarn test:coverage` for current figures
 
 **Latest Test Run:** see `yarn test` (historical 18-suite figures removed)
